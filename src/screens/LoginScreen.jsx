@@ -5,11 +5,11 @@ import CustomButton from '../components/CustomButton'
 import { Colors } from '../color'
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "space-between"}}>
-                <ChevronLeftIcon color={Colors.BLACK} style={{}}></ChevronLeftIcon>
+                <ChevronLeftIcon color={Colors.BLACK} style={{}} onPress={() => navigation.goBack()}></ChevronLeftIcon>
                 <Text style={{ color: Colors.BLACK, fontSize: 16, fontWeight: "600" }}>Login</Text>
                 <View></View>
             </View>

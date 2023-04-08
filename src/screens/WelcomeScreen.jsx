@@ -4,7 +4,7 @@ import Logo from "../assets/images/ic_bpitlogo.svg";
 import { Colors } from "../colors.js";
 import CustomButton from "../components/CustomButton";
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <StatusBar
@@ -43,7 +43,9 @@ const WelcomeScreen = () => {
         TechBPIT is a platform that promotes community driven learning
       </Text>
 
-      <CustomButton title="Login"></CustomButton>
+      <CustomButton title="Login" onPress={() =>
+        navigation.navigate('Login')
+      }></CustomButton>
       <Text
         style={{
           textAlign: "center",
