@@ -1,10 +1,10 @@
-import { StatusBar} from 'react-native'
+
 import React from 'react'
-import WelcomeScreen from './src/screens/WelcomeScreen'
+import LoginScreen from './src/screens/LoginScreen'
 
 const App = () => {
   return (
-   <WelcomeScreen/>
+    <LoginScreen></LoginScreen>
   )
 }
 

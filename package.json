@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.71.6",
+    "react-native-heroicons": "^3.2.0",
     "react-native-svg": "^13.9.0",
     "react-native-svg-transformer": "^1.0.0"
   },
