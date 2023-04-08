@@ -1,11 +1,18 @@
-import { View, ScrollView, Text } from "react-native";
+import { StatusBar, ScrollView, Text } from "react-native";
 import React from "react";
 import Logo from "../assets/images/ic_bpitlogo.svg";
 import { Colors } from "../colors.js";
+import CustomButton from "../components/CustomButton";
 
 const WelcomeScreen = () => {
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <StatusBar
+        barStyle="light-content"
+        hidden={false}
+        backgroundColor={Colors.PRIMARY_BLUE}
+      />
+
       <Logo
         style={{
           marginTop: 80,
@@ -29,19 +36,22 @@ const WelcomeScreen = () => {
           textAlign: "center",
           color: Colors.GREY_4A,
           fontSize: 16,
-          padding:16,
-          marginTop:32
+          padding: 16,
+          marginTop: 32,
         }}
       >
         TechBPIT is a platform that promotes community driven learning
       </Text>
+
+      <CustomButton title="Login"></CustomButton>
       <Text
         style={{
           textAlign: "center",
           color: Colors.PRIMARY_BLUE,
           fontSize: 16,
+          fontWeight: 500,
           marginTop: 60,
-          marginBottom: 32
+          marginBottom: 32,
         }}
       >
         Create New Account
