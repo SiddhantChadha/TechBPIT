@@ -8,12 +8,13 @@ const LoginScreen = () => {
         <ScrollView>
             <Text>Type in your Email ID and Password and click Go to Feed</Text>
             <InputBox></InputBox>
+            <InputBox></InputBox>
             <CustomButton title="Go to Feed" onClick={login}></CustomButton>
         </ScrollView>
     )
 }
 
-function login(){
+function login() {
     console.log("login clicked")
 }
 

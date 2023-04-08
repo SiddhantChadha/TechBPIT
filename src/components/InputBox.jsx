@@ -1,4 +1,4 @@
-import { View, Text, TextInputComponent } from 'react-native'
+import { TextInput } from 'react-native'
 import React, { useState } from 'react'
 
 const InputBox = () => {
@@ -7,7 +7,7 @@ const InputBox = () => {
 
 
     return (
-        <TextInput value={data} onChangeText={setData}></TextInput>
+        <TextInput value={data} onChangeText={setData} style={{}}></TextInput>
     )
 }
 

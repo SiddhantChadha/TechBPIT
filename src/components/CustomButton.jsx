@@ -1,11 +1,16 @@
-import { Button } from 'react-native'
+import { Button, View } from 'react-native'
 import React from 'react'
-import { PRIMARY_COLOR } from '../color'
+import { Colors } from '../color'
+import { TouchableOpacity } from 'react-native'
 
 
 const CustomButton = (props) => {
   return (
-    <Button onPress={props.onClick} title={props.title} color={PRIMARY_COLOR} />
+
+    <View style={{ marginHorizontal: '10%', borderRadius: 50 }}>
+      <Button onPress={props.onClick} title={props.title} color={Colors.PRIMARY_BLUE} />
+    </View>
+
   )
 }
 
