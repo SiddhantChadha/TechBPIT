@@ -55,6 +55,7 @@ const WelcomeScreen = ({navigation}) => {
           marginTop: 60,
           marginBottom: 32,
         }}
+        onPress={() => navigation.navigate('Signup')}
       >
         Create New Account
       </Text>

@@ -12,8 +12,7 @@ const LoginScreen = ({navigation}) => {
                 <ChevronLeftIcon color={Colors.BLACK} style={{position: 'absolute'}} onPress={() => navigation.goBack()}></ChevronLeftIcon>
                 <Text style={{ color: Colors.BLACK, fontSize: 18, fontWeight: "600", alignSelf:"center", marginHorizontal:"20%" }}>Login</Text>
             </View>
-            <Text style={{ color: Colors.GREY_4A, marginHorizontal: '10%', marginTop:36 }}>Type in your Email ID and Password and click Go to Feed</Text>
-            <InputBox placeholder="Email"></InputBox>
+            <Text style={{ color: Colors.GREY_4A, marginHorizontal: '10%', marginTop:36, textAlign:'center' }}>Type in your Email ID and Password and click Go to Feed</Text>            <InputBox placeholder="Email"></InputBox>
             <InputBox placeholder="Password" secureTextEntry={true}></InputBox>
             <CustomButton title="Go to Feed" onPress={login}></CustomButton>
         </ScrollView>
