@@ -1,18 +1,23 @@
-import { TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { Colors } from '../color';
+import {TextInput} from 'react-native';
+import React, {useState} from 'react';
 
-const InputBox = (props) => {
+const InputBox = props => {
+  const [data, setData] = useState('');
 
-    const [data, setData] = useState("");
+  return (
+    <TextInput
+      value={data}
+      onChangeText={setData}
+      style={{
+        marginHorizontal: '10%',
+        marginVertical: '5%',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: '4%',
+      }}
+      placeholder={props.placeholder}
+      secureTextEntry={props.secureTextEntry}/>
+  );
+};
 
-
-    return (
-        <TextInput value={data} onChangeText={setData}
-            style={{ marginHorizontal: '10%', marginVertical: '5%', borderWidth: 1, borderRadius: 10, paddingHorizontal: '4%' }}
-            placeholder={props.placeholder} secureTextEntry={props.secureTextEntry}>
-        </TextInput>
-    )
-}
-
-export default InputBox
+export default InputBox;
