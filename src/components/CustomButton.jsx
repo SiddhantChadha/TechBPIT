@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 3,
     backgroundColor: Colors.PRIMARY_BLUE,
+    marginVertical:'5%'
   },
   text: {
     fontSize: 16,

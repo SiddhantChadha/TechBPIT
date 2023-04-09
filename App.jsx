@@ -1,10 +1,12 @@
 
 import React from 'react'
-import LoginScreen from './src/screens/LoginScreen'
+import OTPScreen from './src/screens/OTPScreen'
+
 
 const App = () => {
+
   return (
-    <LoginScreen></LoginScreen>
+
   )
 }
 
