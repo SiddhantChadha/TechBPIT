@@ -2,7 +2,7 @@ import {ScrollView, Text, View} from 'react-native';
 import React from 'react';
 import InputBox from '../components/InputBox';
 import CustomButton from '../components/CustomButton';
-import {Colors} from '../color';
+import {Colors} from '../colors';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 
 const LoginScreen = ({navigation}) => {
