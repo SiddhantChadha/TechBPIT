@@ -1,7 +1,7 @@
 import {ScrollView, Text, View} from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import React, {useState} from 'react';
-import {Colors} from '../color';
+import {Colors} from '../colors';
 import CustomButton from '../components/CustomButton';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 
