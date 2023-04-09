@@ -8,21 +8,23 @@ import SignupScreen from './src/screens/SignupScreen';
 import EventItem from './src/components/EventItem';
 import EventPostItem from './src/components/EventPostItem';
 import PostDetailsScreen from './src/screens/PostDetailsScreen';
+import HomeScreen from './src/screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Otp" component={OTPScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator
+    //     initialRouteName="Welcome"
+    //     screenOptions={{headerShown: false}}>
+    //     <Stack.Screen name="Welcome" component={WelcomeScreen} />
+    //     <Stack.Screen name="Login" component={LoginScreen} />
+    //     <Stack.Screen name="Otp" component={OTPScreen} />
+    //     <Stack.Screen name="Signup" component={SignupScreen} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+    <HomeScreen/>
 
   );
 };
