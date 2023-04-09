@@ -1,6 +1,5 @@
-import { TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { Colors } from '../color';
+import {TextInput} from 'react-native'
+import React, {useState} from 'react'
 
 const InputBox = (props) => {
 
@@ -9,8 +8,14 @@ const InputBox = (props) => {
 
     return (
         <TextInput value={data} onChangeText={setData}
-            style={{ marginHorizontal: '10%', marginVertical: '5%', borderWidth: 1, borderRadius: 10, paddingHorizontal: '4%' }}
-            placeholder={props.placeholder} secureTextEntry={props.secureTextEntry}>
+                   style={{
+                       marginHorizontal: '10%',
+                       marginVertical: '5%',
+                       borderWidth: 1,
+                       borderRadius: 10,
+                       paddingHorizontal: '4%'
+                   }}
+                   placeholder={props.placeholder} secureTextEntry={props.secureTextEntry}>
         </TextInput>
     )
 }
