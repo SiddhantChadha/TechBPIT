@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OTPScreen from './src/screens/OTPScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import EventItem from './src/components/EventItem';
+import EventPostItem from './src/components/EventPostItem';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ const App = () => {
     //     <Stack.Screen name="Signup" component={SignupScreen} />
     //   </Stack.Navigator>
     // </NavigationContainer>
-    <EventItem />
+    <EventPostItem></EventPostItem>
   );
 };
 
