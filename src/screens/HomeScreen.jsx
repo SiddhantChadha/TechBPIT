@@ -259,8 +259,7 @@ const DATA = [
 ];
 
 const HomeScreen = () => {
-  //   const DATA = getAllPosts();
-  //   console.log(DATA);
+  
   const BATA = ROUTES.getAllPosts();
   return (
     <SafeAreaView>
