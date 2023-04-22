@@ -1,8 +1,18 @@
 import {TextInput} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, forwardRef, useImperativeHandle} from 'react';
 
-const InputBox = props => {
+const InputBox = forwardRef((props, ref) => {
   const [data, setData] = useState('');
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getData: () => {
+        return data;
+      },
+    }),
+    [data],
+  );
 
   return (
     <TextInput
@@ -16,8 +26,9 @@ const InputBox = props => {
         paddingHorizontal: '4%',
       }}
       placeholder={props.placeholder}
-      secureTextEntry={props.secureTextEntry}/>
+      secureTextEntry={props.secureTextEntry}
+    />
   );
-};
+});
 
 export default InputBox;

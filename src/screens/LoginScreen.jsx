@@ -1,11 +1,35 @@
 import {ScrollView, Text, View} from 'react-native';
-import React from 'react';
+import React, {useRef, useContext} from 'react';
 import InputBox from '../components/InputBox';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
+import {
+  SEND_LOGIN_REQUEST,
+  postLoginRequest,
+} from '../APIController/controller';
+import {LoggedInContext} from '../context/LoggedInContext';
 
 const LoginScreen = ({navigation}) => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const setIsLoggedIn = useContext(LoggedInContext);
+  const login = () => {
+    postLoginRequest(
+      emailRef.current.getData(),
+      passwordRef.current.getData(),
+      onResponseReceived,
+    );
+  };
+
+  const onResponseReceived = data => {
+    console.log(data);
+    setIsLoggedIn(true);
+    // navigation.navigate('Home');
+  };
+
+  const onResponseFailed = () => {};
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
@@ -34,15 +58,15 @@ const LoginScreen = ({navigation}) => {
         }}>
         Type in your Email ID and Password and click Go to Feed
       </Text>
-      <InputBox placeholder="Email" />
-      <InputBox placeholder="Password" secureTextEntry={true} />
-      <CustomButton title="Go to Feed" onPress={login} />
+      <InputBox placeholder="Email" ref={emailRef} />
+      <InputBox
+        placeholder="Password"
+        secureTextEntry={true}
+        ref={passwordRef}
+      />
+      <CustomButton title="Go to Feed" onPress={() => login()} />
     </ScrollView>
   );
 };
-
-function login() {
-  console.log('login clicked');
-}
 
 export default LoginScreen;

@@ -1,8 +1,14 @@
 import {StyleSheet, View, Text, Image} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
+import {timestampToAgoFormat} from '../Utils/DateTimeUtils';
 
-const CommunityPostItem = () => {
+const CommunityPostItem = props => {
+  const itemData = props.itemData;
+  console.log(
+    '----------------------------------------------------------------------------------',
+  );
+  console.log(itemData);
   return (
     <View
       style={{
@@ -21,7 +27,7 @@ const CommunityPostItem = () => {
         }}>
         <Image
           source={{
-            uri: 'https://www.javatpoint.com/js/nodejs/images/node-js-tutorial.png',
+            uri: itemData.groupId.image,
           }}
           style={{
             width: 50,
@@ -37,23 +43,28 @@ const CommunityPostItem = () => {
             flexShrink: 1,
           }}>
           <Text style={{fontSize: 16, fontWeight: 500, color: Colors.BLACK}}>
-            Tushar Jain
+            {itemData.groupId.groupName}
           </Text>
-          <Text style={{fontSize: 10, color: Colors.GREY_70}}>7 mins ago</Text>
+          <Text style={{fontSize: 10, color: Colors.GREY_70}}>
+            {timestampToAgoFormat(itemData.timestamp)}
+          </Text>
         </View>
       </View>
-      <Image
-        source={{
-          uri: 'https://png.pngtree.com/png-clipart/20220709/ourmid/pngtree-book-color-open-book-stack-books-png-image_5836804.png',
-        }}
-        style={{
-          width: '90%',
-          aspectRatio: '1',
-          marginTop: 8,
-          alignSelf: 'center',
-        }}
-        resizeMethod="scale"
-      />
+      {itemData.imageUrl ? (
+        <Image
+          source={{
+            uri: itemData.imageUrl,
+          }}
+          style={{
+            width: '90%',
+            aspectRatio: '1',
+            marginTop: 8,
+            alignSelf: 'center',
+          }}
+          resizeMethod="scale"
+        />
+      ) : null}
+
       <Text
         style={{
           fontSize: 16,
@@ -62,8 +73,7 @@ const CommunityPostItem = () => {
           marginBottom: 20,
           marginHorizontal: '5%',
         }}>
-        We are tryinh to build a platform strnger than twitter. Also, we don't
-        charge $8 a month
+        {itemData.description}
       </Text>
     </View>
   );
