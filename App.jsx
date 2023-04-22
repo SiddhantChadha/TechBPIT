@@ -31,9 +31,6 @@ const App = () => {
       setIsLoggedIn(true);
     }
   };
-  const handleLogin = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
   useEffect(() => {
     checkIfLoggedIn();
   }, []);
@@ -41,18 +38,31 @@ const App = () => {
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          {isLoggedIn ? (
-            <Stack.Screen name="Home" component={HomeScreen} />
-          ) : (
-            <>
-              <Stack.Screen name="Welcome" component={WelcomeScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Otp" component={OTPScreen} />
-              <Stack.Screen name="Signup" component={SignupScreen} />
-            </>
-          )}
-        </Stack.Navigator>
+        {isLoggedIn ? (
+          <Tab.Navigator
+            screenOptions={{
+              headerShown: false,
+              tabBarInactiveTintColor: Colors.BLACK,
+              tabBarLabelPosition: 'beside-icon',
+            }}>
+            <Tab.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: () => {
+                  return <HomeIcon color={Colors.BLACK} />;
+                },
+              }}
+            />
+          </Tab.Navigator>
+        ) : (
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Otp" component={OTPScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+          </Stack.Navigator>
+        )}
       </NavigationContainer>
     </LoggedInContext.Provider>
 

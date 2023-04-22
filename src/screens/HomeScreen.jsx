@@ -1,14 +1,16 @@
 import {ActivityIndicator, FlatList, View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import ResourceItem from '../components/ResourceItem';
 import CommunityPostItem from '../components/CommunityPostItem';
 import EventPostItem from '../components/EventPostItem';
 import {ROUTES} from '../APIController/routes';
 import {getAllPosts} from '../APIController/controller';
+import {LoggedInContext} from '../context/LoggedInContext';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const setIsLoggedIn = useContext(LoggedInContext);
 
   const fetchData = async () => {
     setData(await getAllPosts());
