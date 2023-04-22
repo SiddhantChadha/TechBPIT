@@ -38,6 +38,7 @@ const App = () => {
         screenOptions={{
           headerShown: false,
           tabBarInactiveTintColor: Colors.BLACK,
+          tabBarLabelPosition: 'beside-icon',
         }}>
         <Tab.Screen
           name="Home"
