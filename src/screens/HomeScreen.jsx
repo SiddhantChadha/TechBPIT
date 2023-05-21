@@ -1,13 +1,8 @@
 import {ActivityIndicator, FlatList, View, Text} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import ResourceItem from '../components/ResourceItem';
 import CommunityPostItem from '../components/CommunityPostItem';
-import EventPostItem from '../components/EventPostItem';
-import {ROUTES} from '../APIController/routes';
 import {getAllPosts} from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
-import GroupMessage from '../components/GroupMessage';
-import ChatScreen from './ChatScreen';
 import CustomTopBar from '../components/CustomTopBar';
 import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';

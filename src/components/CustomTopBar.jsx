@@ -7,7 +7,6 @@ const CustomTopBar = ({navigation, title, showBackButton, rightComponent}) => {
   return (
     <View
       style={{
-        flex: 1,
         justifyContent: 'center',
         marginVertical: 24,
         marginHorizontal: 8,

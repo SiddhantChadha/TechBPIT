@@ -26,32 +26,9 @@ const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
-function HomeStackScreen() {
+function HomeTabs() {
   return (
-    <HomeStack.Navigator screenOptions={{headerShown: false}}>
-      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-      <HomeStack.Screen name="RecentChat" component={RecentChatScreen} />
-    </HomeStack.Navigator>
-  );
-}
-
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const checkIfLoggedIn = async () => {
-    if ((await getAccessToken()) != null) {
-      setIsLoggedIn(true);
-    }
-  };
-  loggedInStateSetter(setIsLoggedIn);
-  useEffect(() => {
-    checkIfLoggedIn();
-  }, []);
-
-  return (
-    <LoggedInContext.Provider value={setIsLoggedIn}>
-      <NavigationContainer>
-        {isLoggedIn ? (
-          <Tab.Navigator
+    <Tab.Navigator
             screenOptions={{
               headerShown: false,
               tabBarInactiveTintColor: Colors.BLACK,
@@ -60,7 +37,7 @@ const App = () => {
             shifting={true}>
             <Tab.Screen
               name="Home"
-              component={HomeStackScreen}
+              component={HomeScreen}
               options={{
                 tabBarIcon: () => {
                   return <HomeIcon color={Colors.BLACK} />;
@@ -95,6 +72,29 @@ const App = () => {
               }}
             />
           </Tab.Navigator>
+  );
+}
+
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const checkIfLoggedIn = async () => {
+    if ((await getAccessToken()) != null) {
+      setIsLoggedIn(true);
+    }
+  };
+  loggedInStateSetter(setIsLoggedIn);
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
+  return (
+    <LoggedInContext.Provider value={setIsLoggedIn}>
+      <NavigationContainer>
+        {isLoggedIn ? (
+          <Stack.Navigator screenOptions={{headerShown:false}}>
+            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            <Stack.Screen name="RecentChat" component={RecentChatScreen} /> 
+          </Stack.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
