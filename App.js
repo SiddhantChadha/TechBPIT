@@ -29,8 +29,8 @@ const Tab = createMaterialBottomTabNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={{headerShown: false}}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Chat" component={RecentChatScreen} />
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+      <HomeStack.Screen name="RecentChat" component={RecentChatScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -50,7 +50,7 @@ const App = () => {
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
       <NavigationContainer>
-        {/* {isLoggedIn ? (
+        {isLoggedIn ? (
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
@@ -102,8 +102,8 @@ const App = () => {
             <Stack.Screen name="Otp" component={OTPScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
           </Stack.Navigator>
-        )} */}
-        <RecentChatScreen />
+        )}
+
       </NavigationContainer>
     </LoggedInContext.Provider>
   );

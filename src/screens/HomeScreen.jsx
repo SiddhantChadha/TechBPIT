@@ -20,7 +20,7 @@ const HomeScreen = ({navigation}) => {
     <ChatBubbleLeftIcon
       color={Colors.BLACK}
       style={{position: 'absolute', alignSelf: 'flex-end'}}
-      onPress={() => navigation.navigate('Chat')}
+      onPress={() => navigation.navigate('RecentChat')}
     />
   );
 
