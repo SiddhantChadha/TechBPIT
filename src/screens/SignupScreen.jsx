@@ -4,11 +4,12 @@ import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import React from 'react';
+import CustomTopBar from '../components/CustomTopBar';
 
 const SignupScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
+      {/* <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
         <ChevronLeftIcon
           color={Colors.BLACK}
           style={{position: 'absolute'}}
@@ -24,7 +25,9 @@ const SignupScreen = ({navigation}) => {
           }}>
           Signup
         </Text>
-      </View>
+      </View> */}
+
+      <CustomTopBar navigation={navigation} title={'Signup'} />
 
       <Text
         style={{
