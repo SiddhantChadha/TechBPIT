@@ -1,16 +1,12 @@
-import React, {useEffect, useState, useCallback, createContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginScreen from './src/screens/LoginScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OTPScreen from './src/screens/OTPScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import EventItem from './src/components/EventItem';
-import EventPostItem from './src/components/EventPostItem';
-import PostDetailsScreen from './src/screens/PostDetailsScreen';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
-  ChevronLeftIcon,
   UserIcon,
   HomeIcon,
   CalendarDaysIcon,
@@ -23,7 +19,7 @@ import {LoggedInContext} from './src/context/LoggedInContext';
 import {loggedInStateSetter} from './src/APIController/controller';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,7 +48,6 @@ const App = () => {
             <Tab.Screen
               name="Home"
               component={HomeScreen}
-              
               options={{
                 tabBarIcon: () => {
                   return <HomeIcon color={Colors.BLACK} />;
