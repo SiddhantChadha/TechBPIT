@@ -25,13 +25,6 @@ export async function getAllPosts(onResponseReceived, onResponseFailed) {
     });
     const data = await response.json();
     onResponseReceived(1, data);
-    // setAccessToken(null);
-    // setRefreshToken(null);
-    if (setIsLoggedIn != null) {
-      setIsLoggedIn(false);
-      console.log('logging out');
-    }
-    console.log('setIsLoggedIn is null HAI');
 
     if (response.status === 401) {
       await postRefreshToken();
@@ -57,6 +50,8 @@ async function postRefreshToken() {
       await setAccessToken(data.access_token);
     }
     if (response.status === 401) {
+      setAccessToken(null);
+      setRefreshToken(null);
     }
   } catch (error) {}
 }
