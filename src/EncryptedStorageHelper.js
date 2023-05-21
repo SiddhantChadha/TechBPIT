@@ -28,7 +28,6 @@ export async function setRefreshToken(refreshToken) {
 export async function getAccessToken() {
     try {   
         const accessToken = await EncryptedStorage.getItem("access_token");
-        console.log(accessToken)
 
         if (accessToken !== undefined) {
             return accessToken

@@ -23,7 +23,6 @@ const LoginScreen = ({navigation}) => {
   };
 
   const onResponseReceived = data => {
-    console.log(data);
     setIsLoggedIn(true);
     // navigation.navigate('Home');
   };

@@ -5,10 +5,6 @@ import {timestampToAgoFormat} from '../Utils/DateTimeUtils';
 
 const CommunityPostItem = props => {
   const itemData = props.itemData;
-  console.log(
-    '----------------------------------------------------------------------------------',
-  );
-  console.log(itemData);
   return (
     <View
       style={{

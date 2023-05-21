@@ -20,6 +20,7 @@ import {Colors} from './src/colors';
 import HomeScreen from './src/screens/HomeScreen';
 import {getAccessToken} from './src/EncryptedStorageHelper';
 import {LoggedInContext} from './src/context/LoggedInContext';
+import {loggedInStateSetter} from './src/APIController/controller';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +32,7 @@ const App = () => {
       setIsLoggedIn(true);
     }
   };
+  loggedInStateSetter(setIsLoggedIn);
   useEffect(() => {
     checkIfLoggedIn();
   }, []);
