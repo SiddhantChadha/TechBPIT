@@ -20,7 +20,7 @@ import {loggedInStateSetter} from './src/APIController/controller';
 import ProfileScreen from './src/screens/ProfileScreen';
 import EventScreen from './src/screens/EventScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
-import ChatScreen from './src/screens/ChatScreen';
+import RecentChatScreen from './src/screens/RecentChatScreen';
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -30,7 +30,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator  screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Chat" component={ChatScreen} />
+      <HomeStack.Screen name="Chat" component={RecentChatScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -50,7 +50,7 @@ const App = () => {
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
       <NavigationContainer>
-        {isLoggedIn ? (
+        {/* {isLoggedIn ? (
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
@@ -103,7 +103,8 @@ const App = () => {
             <Stack.Screen name="Otp" component={OTPScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
           </Stack.Navigator>
-        )}
+        )} */}
+        <RecentChatScreen />
       </NavigationContainer>
     </LoggedInContext.Provider>
   );
