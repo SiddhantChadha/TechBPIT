@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OTPScreen from './src/screens/OTPScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {
   UserIcon,
   HomeIcon,
@@ -28,7 +28,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator  screenOptions={{ headerShown: false }}>
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Chat" component={ChatScreen} />
     </HomeStack.Navigator>
@@ -57,8 +57,7 @@ const App = () => {
               tabBarInactiveTintColor: Colors.BLACK,
               tabBarLabelPosition: 'beside-icon',
             }}
-            shifting={true}
-            >
+            shifting={true}>
             <Tab.Screen
               name="Home"
               component={HomeStackScreen}

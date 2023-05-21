@@ -2,32 +2,17 @@ import {ScrollView, Text, View} from 'react-native';
 import InputBox from '../components/InputBox';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
-import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import React from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 
 const SignupScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {/* <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
-        <ChevronLeftIcon
-          color={Colors.BLACK}
-          style={{position: 'absolute'}}
-          onPress={() => navigation.goBack()}
-        />
-        <Text
-          style={{
-            color: Colors.BLACK,
-            fontSize: 18,
-            fontWeight: '600',
-            alignSelf: 'center',
-            marginHorizontal: '20%',
-          }}>
-          Signup
-        </Text>
-      </View> */}
-
-      <CustomTopBar navigation={navigation} title={'Signup'} />
+      <CustomTopBar
+        navigation={navigation}
+        title={'Signup'}
+        showBackButton={true}
+      />
 
       <Text className="text-grey_4a mx-10 text-center">
         Fill in the required details and click Proceed
