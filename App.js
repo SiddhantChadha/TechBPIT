@@ -17,9 +17,23 @@ import HomeScreen from './src/screens/HomeScreen';
 import {getAccessToken} from './src/EncryptedStorageHelper';
 import {LoggedInContext} from './src/context/LoggedInContext';
 import {loggedInStateSetter} from './src/APIController/controller';
+import ProfileScreen from './src/screens/ProfileScreen';
+import EventScreen from './src/screens/EventScreen';
+import ExploreScreen from './src/screens/ExploreScreen';
+import ChatScreen from './src/screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator  screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Chat" component={ChatScreen} />
+    </HomeStack.Navigator>
+  );
+}
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,7 +61,7 @@ const App = () => {
             >
             <Tab.Screen
               name="Home"
-              component={HomeScreen}
+              component={HomeStackScreen}
               options={{
                 tabBarIcon: () => {
                   return <HomeIcon color={Colors.BLACK} />;
@@ -56,7 +70,7 @@ const App = () => {
             />
             <Tab.Screen
               name="Explore"
-              component={HomeScreen}
+              component={ExploreScreen}
               options={{
                 tabBarIcon: () => {
                   return <MagnifyingGlassIcon color={Colors.BLACK} />;
@@ -65,7 +79,7 @@ const App = () => {
             />
             <Tab.Screen
               name="Events"
-              component={HomeScreen}
+              component={EventScreen}
               options={{
                 tabBarIcon: () => {
                   return <CalendarDaysIcon color={Colors.BLACK} />;
@@ -74,7 +88,7 @@ const App = () => {
             />
             <Tab.Screen
               name="Profile"
-              component={HomeScreen}
+              component={ProfileScreen}
               options={{
                 tabBarIcon: ({color}) => {
                   return <UserIcon color={color} />;
