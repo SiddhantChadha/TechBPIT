@@ -46,13 +46,43 @@ const App = () => {
               headerShown: false,
               tabBarInactiveTintColor: Colors.BLACK,
               tabBarLabelPosition: 'beside-icon',
-            }}>
+            }}
+            shifting={true}
+            >
             <Tab.Screen
               name="Home"
               component={HomeScreen}
+              
               options={{
                 tabBarIcon: () => {
                   return <HomeIcon color={Colors.BLACK} />;
+                },
+              }}
+            />
+            <Tab.Screen
+              name="Explore"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: () => {
+                  return <MagnifyingGlassIcon color={Colors.BLACK} />;
+                },
+              }}
+            />
+            <Tab.Screen
+              name="Events"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: () => {
+                  return <CalendarDaysIcon color={Colors.BLACK} />;
+                },
+              }}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: ({color}) => {
+                  return <UserIcon color={color} />;
                 },
               }}
             />
@@ -67,54 +97,6 @@ const App = () => {
         )}
       </NavigationContainer>
     </LoggedInContext.Provider>
-
-    // <NavigationContainer>
-    //   <Tab.Navigator
-    //     screenOptions={{
-    //       headerShown: false,
-    //       tabBarInactiveTintColor: Colors.BLACK,
-    //       tabBarLabelPosition: 'beside-icon',
-    //     }}>
-    //     <Tab.Screen
-    //       name="Home"
-    //       component={WelcomeScreen}
-    //       options={{
-    //         tabBarIcon: () => {
-    //           return <HomeIcon color={Colors.BLACK} />;
-    //         },
-    //       }}
-    //     />
-    //     <Tab.Screen
-    //       name="Explore"
-    //       component={SignupScreen}
-    //       options={{
-    //         tabBarIcon: () => {
-    //           return <MagnifyingGlassIcon color={Colors.BLACK} />;
-    //         },
-    //       }}
-    //     />
-
-    //     <Tab.Screen
-    //       name="Events"
-    //       component={OTPScreen}
-    //       options={{
-    //         tabBarIcon: () => {
-    //           return <CalendarDaysIcon color={Colors.BLACK} />;
-    //         },
-    //       }}
-    //     />
-    //     <Tab.Screen
-    //       name="Profile"
-    //       component={OTPScreen}
-    //       options={{
-    //         tabBarActiveTintColor: 'blue',
-    //         tabBarIcon: ({focused, color, size}) => {
-    //           return <UserIcon color={color} />;
-    //         },
-    //       }}
-    //     />
-    //   </Tab.Navigator>
-    // </NavigationContainer>
   );
 };
 

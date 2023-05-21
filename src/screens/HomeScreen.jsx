@@ -6,6 +6,8 @@ import EventPostItem from '../components/EventPostItem';
 import {ROUTES} from '../APIController/routes';
 import {getAllPosts} from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
+import GroupMessage from '../components/GroupMessage';
+import ChatScreen from './ChatScreen';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
