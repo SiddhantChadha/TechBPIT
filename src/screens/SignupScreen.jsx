@@ -29,12 +29,7 @@ const SignupScreen = ({navigation}) => {
 
       <CustomTopBar navigation={navigation} title={'Signup'} />
 
-      <Text
-        style={{
-          color: Colors.GREY_4A,
-          marginHorizontal: '10%',
-          textAlign: 'center',
-        }}>
+      <Text className="text-grey_4a mx-10 text-center">
         Fill in the required details and click Proceed
       </Text>
       <InputBox placeholder="Enter Your Email" />

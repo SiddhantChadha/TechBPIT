@@ -1,14 +1,23 @@
 import {View, Text} from 'react-native';
-import {ChevronLeftIcon} from 'react-native-heroicons/outline';
+import {
+  ChatBubbleLeftIcon,
+  ChevronLeftIcon,
+} from 'react-native-heroicons/outline';
 import React from 'react';
 import {Colors} from '../colors';
 
 const CustomTopBar = ({navigation, title}) => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        marginVertical: 24,
+        marginHorizontal: 8,
+      }}>
       <ChevronLeftIcon
         color={Colors.BLACK}
-        style={{position: 'absolute'}}
+        style={{position: 'absolute', alignSelf: 'flex-start'}}
         onPress={() => navigation.goBack()}
       />
       <Text
@@ -21,9 +30,9 @@ const CustomTopBar = ({navigation, title}) => {
         }}>
         {title}
       </Text>
-      <ChevronLeftIcon
-        color={Colors.GREEN}
-        style={{position: 'absolute'}}
+      <ChatBubbleLeftIcon
+        color={Colors.BLACK}
+        style={{position: 'absolute', alignSelf: 'flex-end'}}
         onPress={() => navigation.goBack()}
       />
     </View>
