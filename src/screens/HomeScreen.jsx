@@ -8,11 +8,21 @@ import {getAllPosts} from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
 import GroupMessage from '../components/GroupMessage';
 import ChatScreen from './ChatScreen';
+import CustomTopBar from '../components/CustomTopBar';
+import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
+import {Colors} from '../colors';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const setIsLoggedIn = useContext(LoggedInContext);
+  const chatButton = (
+    <ChatBubbleLeftIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-end'}}
+      onPress={() => navigation.navigate('Chat')}
+    />
+  );
 
   const fetchData = async () => {
     setData(await getAllPosts());
@@ -31,6 +41,12 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View>
+      <CustomTopBar
+        navigation={navigation}
+        title={'Home Feed'}
+        rightComponent={chatButton}
+      />
+
       {isLoading ? (
         <ActivityIndicator />
       ) : (

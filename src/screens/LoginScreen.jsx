@@ -9,6 +9,7 @@ import {
   postLoginRequest,
 } from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
+import CustomTopBar from '../components/CustomTopBar';
 
 const LoginScreen = ({navigation}) => {
   const emailRef = useRef();
@@ -31,23 +32,11 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
-        <ChevronLeftIcon
-          color={Colors.BLACK}
-          style={{position: 'absolute'}}
-          onPress={() => navigation.goBack()}
-        />
-        <Text
-          style={{
-            color: Colors.BLACK,
-            fontSize: 18,
-            fontWeight: '600',
-            alignSelf: 'center',
-            marginHorizontal: '20%',
-          }}>
-          Login
-        </Text>
-      </View>
+      <CustomTopBar
+        navigation={navigation}
+        title={'Login'}
+        showBackButton={true}
+      />
       <Text
         style={{
           color: Colors.GREY_4A,
