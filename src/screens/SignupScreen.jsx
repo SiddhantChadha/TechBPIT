@@ -56,8 +56,6 @@ const SignupScreen = ({navigation}) => {
   );
 };
 
-function signup() {
-  console.log('signup');
-}
+function signup() {}
 
 export default SignupScreen;

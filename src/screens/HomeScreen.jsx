@@ -19,8 +19,14 @@ const HomeScreen = ({navigation}) => {
     setLoading(false);
   };
 
+  const onResponseReceived = (command, data) => {
+    setData(data);
+    setLoading(false);
+  };
+  const onResponseFailed = (command, error) => {};
+
   useEffect(() => {
-    fetchData();
+    getAllPosts(onResponseReceived, onResponseFailed);
   }, []);
 
   return (

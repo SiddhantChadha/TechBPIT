@@ -4,9 +4,18 @@ import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
+  setRefreshToken,
 } from '../EncryptedStorageHelper';
 
-export async function getAllPosts() {
+let setIsLoggedIn = null;
+
+export function loggedInStateSetter(setIsLoggedIna) {
+  console.log('SETTING STATE');
+  setIsLoggedIn = setIsLoggedIna;
+  return () => (setIsLoggedIn = null);
+}
+
+export async function getAllPosts(onResponseReceived, onResponseFailed) {
   try {
     const response = await fetch(ROUTES.GET_ALL_POSTS, {
       method: 'GET',
@@ -15,14 +24,21 @@ export async function getAllPosts() {
       },
     });
     const data = await response.json();
-    console.log(data);
+    onResponseReceived(1, data);
+    // setAccessToken(null);
+    // setRefreshToken(null);
+    if (setIsLoggedIn != null) {
+      setIsLoggedIn(false);
+      console.log('logging out');
+    }
+    console.log('setIsLoggedIn is null HAI');
+
     if (response.status === 401) {
-      console.log(response.status);
       await postRefreshToken();
     }
     return data;
   } catch (error) {
-    console.log(error);
+    onResponseFailed(1, error);
   }
 }
 async function postRefreshToken() {
@@ -39,12 +55,10 @@ async function postRefreshToken() {
     if (response.ok) {
       const data = await response.json();
       await setAccessToken(data.access_token);
-      console.log(data);
     }
-    console.log(response.status);
-  } catch (error) {
-    console.log(error);
-  }
+    if (response.status === 401) {
+    }
+  } catch (error) {}
 }
 
 export async function postLoginRequest(email, password, onResponseReceived) {
@@ -62,7 +76,5 @@ export async function postLoginRequest(email, password, onResponseReceived) {
     const data = await response.json();
     setAuthTokens(data.access_token, data.refresh_token);
     onResponseReceived(data);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
