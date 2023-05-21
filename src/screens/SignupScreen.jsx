@@ -4,11 +4,12 @@ import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import React from 'react';
+import CustomTopBar from '../components/CustomTopBar';
 
 const SignupScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
+      {/* <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
         <ChevronLeftIcon
           color={Colors.BLACK}
           style={{position: 'absolute'}}
@@ -24,14 +25,11 @@ const SignupScreen = ({navigation}) => {
           }}>
           Signup
         </Text>
-      </View>
+      </View> */}
 
-      <Text
-        style={{
-          color: Colors.GREY_4A,
-          marginHorizontal: '10%',
-          textAlign: 'center',
-        }}>
+      <CustomTopBar navigation={navigation} title={'Signup'} />
+
+      <Text className="text-grey_4a mx-10 text-center">
         Fill in the required details and click Proceed
       </Text>
       <InputBox placeholder="Enter Your Email" />
