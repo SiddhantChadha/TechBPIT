@@ -1,75 +1,107 @@
+import {REST_COMMANDS} from './RestCommands';
+import {getAllPosts} from './PostsController';
+import {postLoginRequest} from './AuthController';
 import {ROUTES} from './routes';
 import {
   setAuthTokens,
   getAccessToken,
   getRefreshToken,
   setAccessToken,
-  setRefreshToken,
 } from '../EncryptedStorageHelper';
-
 let setIsLoggedIn = null;
-
 export function loggedInStateSetter(setIsLoggedIna) {
-  console.log('SETTING STATE');
   setIsLoggedIn = setIsLoggedIna;
-  return () => (setIsLoggedIn = null);
 }
 
-export async function getAllPosts(onResponseReceived, onResponseFailed) {
-  try {
-    const response = await fetch(ROUTES.GET_ALL_POSTS, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-    const data = await response.json();
-    onResponseReceived(1, data);
-
-    if (response.status === 401) {
-      await postRefreshToken();
-    }
-    return data;
-  } catch (error) {
-    onResponseFailed(1, error);
+export async function execute(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  switch (command) {
+    case REST_COMMANDS.REQ_GET_ALL_POSTS:
+      await getAllPosts(command, request, onResponseReceived, onResponseFailed);
+      break;
+    case REST_COMMANDS.REQ_POST_LOGIN:
+      await postLoginRequest(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
+    default:
+      break;
   }
 }
-async function postRefreshToken() {
+export async function basicResponseHandler(
+  command,
+  response,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  console.log('called');
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    onResponseReceived(command, data);
+  } else if (response.status === 401) {
+    await postRefreshToken(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } else {
+    onResponseFailed(command, response);
+  }
+}
+let refreshTokenPromise = Promise.resolve();
+async function postRefreshToken(
+  command,
+  responseData,
+  onResponseReceived,
+  onResponseFailed,
+) {
   try {
+    await refreshTokenPromise;
+
+    let refresh_token = await getRefreshToken();
+    let access_token = await getAccessToken();
+    if (refresh_token == null) {
+      refreshTokenPromise = Promise.resolve();
+      return;
+    }
+    if (
+      access_token !== null &&
+      access_token !== responseData.headers.get('Authorization')
+    ) {
+      execute(command, responseData.body, onResponseReceived, onResponseFailed);
+      refreshTokenPromise = Promise.resolve();
+      return;
+    }
     const response = await fetch(ROUTES.POST_RENEW_TOKEN, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        refresh_token: await getRefreshToken(),
+        refresh_token: refresh_token,
       }),
     });
+
     if (response.ok) {
       const data = await response.json();
       await setAccessToken(data.access_token);
+      execute(command, responseData.body, onResponseReceived, onResponseFailed);
     }
     if (response.status === 401) {
-      setAccessToken(null);
-      setRefreshToken(null);
+      setIsLoggedIn(false);
+      await setAuthTokens(null, null);
     }
-  } catch (error) {}
-}
-
-export async function postLoginRequest(email, password, onResponseReceived) {
-  try {
-    const response = await fetch(ROUTES.POST_LOGIN, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    const data = await response.json();
-    setAuthTokens(data.access_token, data.refresh_token);
-    onResponseReceived(data);
-  } catch (error) {}
+    refreshTokenPromise = Promise.resolve();
+  } catch (error) {
+    refreshTokenPromise = Promise.reject(error);
+  }
 }

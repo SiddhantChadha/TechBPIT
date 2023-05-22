@@ -1,16 +1,21 @@
-import {ActivityIndicator, FlatList, View, Text} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  View,
+  Text,
+  SafeAreaView,
+} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
-import {getAllPosts} from '../APIController/controller';
-import {LoggedInContext} from '../context/LoggedInContext';
+import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
 import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
+import {REST_COMMANDS} from '../APIController/RestCommands';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const setIsLoggedIn = useContext(LoggedInContext);
   const chatButton = (
     <ChatBubbleLeftIcon
       color={Colors.BLACK}
@@ -19,19 +24,25 @@ const HomeScreen = ({navigation}) => {
     />
   );
 
-  const fetchData = async () => {
-    setData(await getAllPosts());
-    setLoading(false);
-  };
-
   const onResponseReceived = (command, data) => {
-    setData(data);
-    setLoading(false);
+    switch (command) {
+      case REST_COMMANDS.REQ_GET_ALL_POSTS:
+        setData(data);
+        setLoading(false);
+        break;
+      default:
+        break;
+    }
   };
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
-    getAllPosts(onResponseReceived, onResponseFailed);
+    execute(
+      REST_COMMANDS.REQ_GET_ALL_POSTS,
+      {},
+      onResponseReceived,
+      onResponseFailed,
+    );
   }, []);
 
   return (
@@ -45,11 +56,13 @@ const HomeScreen = ({navigation}) => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <FlatList
-          data={data}
-          renderItem={({item}) => getPostType(item)}
-          keyExtractor={item => item._id}
-        />
+        <SafeAreaView>
+          <FlatList
+            data={data}
+            renderItem={({item}) => getPostType(item)}
+            keyExtractor={item => item._id}
+          />
+        </SafeAreaView>
       )}
     </View>
   );

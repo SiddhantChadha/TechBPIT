@@ -3,32 +3,42 @@ import React, {useRef, useContext} from 'react';
 import InputBox from '../components/InputBox';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
-import {ChevronLeftIcon} from 'react-native-heroicons/outline';
-import {
-  SEND_LOGIN_REQUEST,
-  postLoginRequest,
-} from '../APIController/controller';
+import {execute} from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
 import CustomTopBar from '../components/CustomTopBar';
+import {setAuthTokens} from '../EncryptedStorageHelper';
+import {REST_COMMANDS} from '../APIController/RestCommands';
 
 const LoginScreen = ({navigation}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const setIsLoggedIn = useContext(LoggedInContext);
+
+  const onResponseReceived = (command, data) => {
+    console.log('oasjdnf');
+    switch (command) {
+      case REST_COMMANDS.REQ_POST_LOGIN:
+        setAuthTokens(data.access_token, data.refresh_token);
+        setIsLoggedIn(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onResponseFailed = (command, error) => {};
+
   const login = () => {
-    postLoginRequest(
-      emailRef.current.getData(),
-      passwordRef.current.getData(),
+    execute(
+      REST_COMMANDS.REQ_POST_LOGIN,
+      {
+        email: emailRef.current.getData(),
+        password: passwordRef.current.getData(),
+      },
       onResponseReceived,
+      onResponseFailed,
     );
   };
-
-  const onResponseReceived = data => {
-    setIsLoggedIn(true);
-    // navigation.navigate('Home');
-  };
-
-  const onResponseFailed = () => {};
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

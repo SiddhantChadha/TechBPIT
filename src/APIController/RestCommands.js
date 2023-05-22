@@ -1,0 +1,4 @@
+export const REST_COMMANDS = {
+  REQ_POST_LOGIN: 1,
+  REQ_GET_ALL_POSTS: 2,
+};

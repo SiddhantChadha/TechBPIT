@@ -29,49 +29,49 @@ const Tab = createMaterialBottomTabNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              tabBarInactiveTintColor: Colors.BLACK,
-              tabBarLabelPosition: 'beside-icon',
-            }}
-            shifting={true}>
-            <Tab.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                tabBarIcon: () => {
-                  return <HomeIcon color={Colors.BLACK} />;
-                },
-              }}
-            />
-            <Tab.Screen
-              name="Explore"
-              component={ExploreScreen}
-              options={{
-                tabBarIcon: () => {
-                  return <MagnifyingGlassIcon color={Colors.BLACK} />;
-                },
-              }}
-            />
-            <Tab.Screen
-              name="Events"
-              component={EventScreen}
-              options={{
-                tabBarIcon: () => {
-                  return <CalendarDaysIcon color={Colors.BLACK} />;
-                },
-              }}
-            />
-            <Tab.Screen
-              name="Profile"
-              component={ProfileScreen}
-              options={{
-                tabBarIcon: ({color}) => {
-                  return <UserIcon color={color} />;
-                },
-              }}
-            />
-          </Tab.Navigator>
+      screenOptions={{
+        headerShown: false,
+        tabBarInactiveTintColor: Colors.BLACK,
+        tabBarLabelPosition: 'beside-icon',
+      }}
+      shifting={true}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: () => {
+            return <HomeIcon color={Colors.BLACK} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreScreen}
+        options={{
+          tabBarIcon: () => {
+            return <MagnifyingGlassIcon color={Colors.BLACK} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Events"
+        component={EventScreen}
+        options={{
+          tabBarIcon: () => {
+            return <CalendarDaysIcon color={Colors.BLACK} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({color}) => {
+            return <UserIcon color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
@@ -91,9 +91,9 @@ const App = () => {
     <LoggedInContext.Provider value={setIsLoggedIn}>
       <NavigationContainer>
         {isLoggedIn ? (
-          <Stack.Navigator screenOptions={{headerShown:false}}>
+          <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
-            <Stack.Screen name="RecentChat" component={RecentChatScreen} /> 
+            <Stack.Screen name="RecentChat" component={RecentChatScreen} />
           </Stack.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -103,7 +103,6 @@ const App = () => {
             <Stack.Screen name="Signup" component={SignupScreen} />
           </Stack.Navigator>
         )}
-
       </NavigationContainer>
     </LoggedInContext.Provider>
   );
