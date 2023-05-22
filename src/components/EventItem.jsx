@@ -14,16 +14,15 @@ const EventItem = () => {
       <View
         style={{
           flex: 1,
+          flexDirection: 'column',
           borderWidth: 3,
           borderColor: Colors.BLACK,
           height: '100%',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text>
-          <Text style={{fontWeight: '800', color: Colors.BLACK}}>Start:</Text>
-          <Text style={{fontWeight: '800', color: Colors.BLACK}}>1250 pm</Text>
-        </Text>
+        <Text style={{fontWeight: '800', color: Colors.BLACK}}>Start:</Text>
+        <Text style={{fontWeight: '800', color: Colors.BLACK}}>12:50 pm</Text>
       </View>
       <View
         style={{

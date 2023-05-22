@@ -5,13 +5,16 @@ import {
   Text,
   SafeAreaView,
 } from 'react-native';
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
 import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
+import EventItem from '../components/EventItem';
+import JoinCommunityCard from '../components/JoinCommunityCard';
+import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -44,7 +47,6 @@ const HomeScreen = ({navigation}) => {
       onResponseFailed,
     );
   }, []);
-
   return (
     <View>
       <CustomTopBar
