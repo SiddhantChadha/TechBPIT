@@ -73,14 +73,16 @@ async function postRefreshToken(
       refreshTokenPromise = Promise.resolve();
       return;
     }
-    if (
-      access_token !== null &&
-      access_token !== responseData.headers.get('Authorization')
-    ) {
-      execute(command, responseData.body, onResponseReceived, onResponseFailed);
-      refreshTokenPromise = Promise.resolve();
-      return;
-    }
+    //not working because of null header in responseData
+    // if (
+    //   access_token !== null &&
+    //   access_token !== responseData.headers.get('authorization')
+    // ) {
+    //   console.log('fuck', access_token, '  ', responseData);
+    //   execute(command, responseData.body, onResponseReceived, onResponseFailed);
+    //   refreshTokenPromise = Promise.resolve();
+    //   return;
+    // }
     const response = await fetch(ROUTES.POST_RENEW_TOKEN, {
       method: 'POST',
       headers: {

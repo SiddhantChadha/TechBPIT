@@ -17,6 +17,7 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
+import SearchBar from '../components/SearchBar';
 
 const ExploreScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -49,11 +50,11 @@ const ExploreScreen = ({navigation}) => {
   return (
     <View>
       <CustomTopBar navigation={navigation} title={'Explore'} />
-
       {isLoading ? (
         <ActivityIndicator />
       ) : (
         <ScrollView>
+          <SearchBar />
           <Text className="text-black font-semibold text-base mx-4">
             Communities you may want to join
           </Text>

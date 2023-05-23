@@ -7,8 +7,8 @@ const EventItem = () => {
     <View
       style={{
         flexDirection: 'row',
-        marginHorizontal: '10%',
-        marginVertical: 20,
+        marginHorizontal: '5%',
+        marginVertical: 10,
         height: 70,
       }}>
       <View
