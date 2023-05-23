@@ -60,16 +60,16 @@ const ExploreScreen = ({navigation}) => {
           </Text>
           <Carousel
             data={data}
-            ref={isCarousel}
+            // ref={isCarousel}
             sliderWidth={screenWidth}
             itemWidth={screenWidth - 50}
-            layoutCardOffset={9}
-            layout={'tinder'}
-            onSnapToItem={index => setIndex(index)}
-            useScrollView={true}
+            // layoutCardOffset={9}
+            // layout={'tinder'}
+            // onSnapToItem={index => setIndex(index)}
+            // useScrollView={true}
             renderItem={JoinCommunityCard}
           />
-          <Pagination
+          {/* <Pagination
             dotsLength={data.length}
             activeDotIndex={index}
             carouselRef={isCarousel}
@@ -83,7 +83,7 @@ const ExploreScreen = ({navigation}) => {
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
             tappableDots={true}
-          />
+          /> */}
           <Text className="text-black font-semibold text-base mx-4">
             People you may know{' '}
           </Text>
