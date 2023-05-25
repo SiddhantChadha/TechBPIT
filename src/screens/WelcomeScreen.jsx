@@ -7,12 +7,6 @@ import CustomButton from '../components/CustomButton';
 const WelcomeScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <StatusBar
-        barStyle="light-content"
-        hidden={false}
-        backgroundColor={Colors.PRIMARY_BLUE}
-      />
-
       <Logo
         style={{
           marginTop: 80,

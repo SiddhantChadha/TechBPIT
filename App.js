@@ -21,6 +21,8 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import EventScreen from './src/screens/EventScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
 import RecentChatScreen from './src/screens/RecentChatScreen';
+import SetupProfileScreen from './src/screens/SetupProfileScreen';
+import {StatusBar} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -89,11 +91,16 @@ const App = () => {
 
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
+      <StatusBar
+        barStyle="light-content"
+        hidden={false}
+        backgroundColor={Colors.PRIMARY_BLUE}
+      />
       <NavigationContainer>
         {isLoggedIn ? (
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
-            <Stack.Screen name="RecentChat" component={RecentChatScreen} />
+            <Stack.Screen name="RecentChat" component={SetupProfileScreen} />
           </Stack.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{headerShown: false}}>
