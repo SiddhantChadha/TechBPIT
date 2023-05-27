@@ -1,8 +1,8 @@
-import { SafeAreaView,FlatList } from 'react-native'
-import React from 'react'
-import ChatThreadCard from '../components/ChatThreadCard'
+import {SafeAreaView, FlatList} from 'react-native';
+import React from 'react';
+import ChatThreadCard from '../components/ChatThreadCard';
 
-const DATA= [
+const DATA = [
   {
       _id: "63add1dc5086f6fca8576f01",
       email: "tjain210@gmail.com",
@@ -17,20 +17,22 @@ const DATA= [
           timestamp: "1685184759271",
           imageUrl: "",
           readAt: "1685184759271",
-         
+          
       }
   }
-];
+]
 
 const PersonalRecent = () => {
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <FlatList
+        className="h-full bg-w"
         data={DATA}
-        renderItem={({item}) => <ChatThreadCard obj={item} />}
+        renderItem={({item}) => <ChatThreadCard image={item.image} lastMessage={item.lastMessage} 
+        name={item.username} id={item._id} />}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default PersonalRecent
+export default PersonalRecent;

@@ -3,7 +3,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import CustomTopBar from '../components/CustomTopBar';
 import {PlusIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
-import {Text} from 'react-native';
+import {Text,ScrollView} from 'react-native';
 import PersonalRecent from './PersonalRecent';
 import GroupRecent from './GroupRecent';
 
