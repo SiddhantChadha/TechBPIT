@@ -37,11 +37,19 @@ export async function execute(
         onResponseReceived,
         onResponseFailed,
       );
+      break;
+    case REST_COMMANDS.REQ_GET_ALL_EVENTS:
+      await getAllEvents(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
     default:
       break;
   }
 }
-export async function basicResponseHandler(
+async function basicResponseHandler(
   command,
   response,
   onResponseReceived,
@@ -114,7 +122,7 @@ async function postRefreshToken(
   }
 }
 
-export async function postLoginRequest(
+async function postLoginRequest(
   command,
   request,
   onResponseReceived,
@@ -142,7 +150,7 @@ export async function postLoginRequest(
   }
 }
 
-export async function getAllPosts(
+async function getAllPosts(
   command,
   request,
   onResponseReceived,
@@ -166,8 +174,31 @@ export async function getAllPosts(
     onResponseFailed(command, error);
   }
 }
+async function getAllEvents(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_ALL_EVENTS, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
 
-export async function getSearchedExplore(
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+async function getSearchedExplore(
   command,
   request,
   onResponseReceived,
@@ -192,6 +223,7 @@ export async function getSearchedExplore(
       onResponseFailed,
     );
   } catch (error) {
+    console.log(error);
     onResponseFailed(command, error);
   }
 }

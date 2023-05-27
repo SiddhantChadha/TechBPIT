@@ -25,10 +25,13 @@ const EventScreen = ({navigation}) => {
       onPress={() => navigation.navigate('RecentChat')}
     />
   );
+  const renderItem = item => {
+    return <EventItem itemData={item} />;
+  };
 
   const onResponseReceived = (command, data) => {
     switch (command) {
-      case REST_COMMANDS.REQ_GET_ALL_POSTS:
+      case REST_COMMANDS.REQ_GET_ALL_EVENTS:
         setData(data);
         setLoading(false);
         break;
@@ -40,7 +43,7 @@ const EventScreen = ({navigation}) => {
 
   useEffect(() => {
     execute(
-      REST_COMMANDS.REQ_GET_ALL_POSTS,
+      REST_COMMANDS.REQ_GET_ALL_EVENTS,
       {},
       onResponseReceived,
       onResponseFailed,
@@ -60,7 +63,7 @@ const EventScreen = ({navigation}) => {
         <SafeAreaView>
           <FlatList
             data={data}
-            renderItem={({item}) => getPostType(item)}
+            renderItem={({item}) => renderItem(item)}
             keyExtractor={item => item._id}
           />
         </SafeAreaView>
@@ -69,7 +72,4 @@ const EventScreen = ({navigation}) => {
   );
 };
 
-function getPostType(item) {
-  if (item.postType === 'eventPost') return <EventItem />;
-}
 export default EventScreen;

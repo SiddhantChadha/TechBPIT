@@ -20,3 +20,11 @@ export const timestampToAgoFormat = timestamp => {
     return 'Just now';
   }
 };
+export const dateStringToDDMMM = dateString => {
+  const date = new Date(dateString);
+
+  const options = {day: 'numeric', month: 'short'};
+  const formattedDate = date.toLocaleDateString('en-IN', options);
+
+  return formattedDate;
+};

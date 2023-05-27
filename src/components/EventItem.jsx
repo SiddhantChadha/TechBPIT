@@ -1,8 +1,9 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
+import {dateStringToDDMMM} from '../Utils/DateTimeUtils';
 
-const EventItem = () => {
+const EventItem = ({itemData}) => {
   return (
     <View
       style={{
@@ -10,6 +11,7 @@ const EventItem = () => {
         marginHorizontal: '5%',
         marginVertical: 10,
         height: 70,
+        flexWrap: 'wrap',
       }}>
       <View
         style={{
@@ -22,7 +24,9 @@ const EventItem = () => {
           justifyContent: 'center',
         }}>
         <Text style={{fontWeight: '800', color: Colors.BLACK}}>Start:</Text>
-        <Text style={{fontWeight: '800', color: Colors.BLACK}}>12:50 pm</Text>
+        <Text style={{fontWeight: '800', color: Colors.BLACK}}>
+          {itemData.eventTime}
+        </Text>
       </View>
       <View
         style={{
@@ -33,27 +37,31 @@ const EventItem = () => {
           justifyContent: 'center',
           borderLeftWidth: 0,
           borderRightWidth: 0,
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}>
         <Text>
           <Text style={{color: Colors.BLACK, fontWeight: '800'}}>
             Event Name:
           </Text>
           <Text style={{color: Colors.GREEN, fontWeight: '800'}}>
-            Test Topic
+            {itemData.topic}
           </Text>
         </Text>
         <Text>
           <Text style={{color: Colors.BLACK, fontWeight: '800'}}>
             Community:
           </Text>
-          <Text style={{color: Colors.GREEN, fontWeight: '800'}}>NodeJS</Text>
+          <Text style={{color: Colors.GREEN, fontWeight: '800'}}>
+            {itemData.groupId.groupName}
+          </Text>
         </Text>
         <Text>
           <Text style={{color: Colors.BLACK, fontWeight: '800'}}>
             Location:
           </Text>
-          <Text style={{color: Colors.GREEN, fontWeight: '800'}}>Online</Text>
+          <Text style={{color: Colors.GREEN, fontWeight: '800'}}>
+            {itemData.mode === 'Online' ? 'Online' : itemData.venue}
+          </Text>
         </Text>
       </View>
 
@@ -67,7 +75,9 @@ const EventItem = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{color: Colors.WHITE, fontWeight: 600}}>05 Jan</Text>
+        <Text style={{color: Colors.WHITE, fontWeight: 600}}>
+          {dateStringToDDMMM(itemData.eventDate)}
+        </Text>
       </View>
     </View>
   );
