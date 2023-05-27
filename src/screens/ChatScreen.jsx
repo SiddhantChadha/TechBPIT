@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
@@ -15,9 +15,9 @@ const ChatScreen = ({navigation}) => {
         typing={'typing...'}
         image="https://wallpaperaccess.com/full/6424278.jpg"
       />
-      <View className="flex-grow">
+      <ScrollView className="flex-grow">
         <MessageComponent />
-      </View>
+      </ScrollView>
       <View className="flex-row items-center">
         <MessageInputBox />
         <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
