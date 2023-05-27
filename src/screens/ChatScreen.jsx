@@ -1,16 +1,32 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
+import MessageComponent from '../components/MessageComponent';
+import MessageInputBox from '../components/MessageInputBox';
+import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
+import {Colors} from '../colors';
 
 const ChatScreen = ({navigation}) => {
   return (
-    <View>
+    <View className="flex-col bg-white h-full">
       <ChatThreadHeader
         navigation={navigation}
-        name="Tushar jain"
+        name="Babu Bhaiya"
         typing={'typing...'}
-        image="https://media.licdn.com/dms/image/C5103AQHExyLqyBIe8w/profile-displayphoto-shrink_400_400/0/1567182680271?e=1690416000&v=beta&t=GiDtuuOw570GjY9zaX81J3IkRJCTxtQKhHBD8sm5MII"
+        image="https://wallpaperaccess.com/full/6424278.jpg"
       />
+      <View className="flex-grow">
+        <MessageComponent />
+      </View>
+      <View className="flex-row items-center">
+        <MessageInputBox />
+        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
+          <PhotoIcon color={Colors.WHITE} />
+        </View>
+        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
+          <PaperAirplaneIcon color={Colors.WHITE} />
+        </View>
+      </View>
     </View>
   );
 };

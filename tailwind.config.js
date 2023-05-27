@@ -10,8 +10,11 @@ module.exports = {
       colors: {
         grey_4a: '#4A4A4A',
         primary_blue: '#2E3094',
+        primary_red: '#f14440',
+        grey_f5: '#f7f7f7',
       },
     },
+    maxWidth: {'1/2': '50%'},
   },
   plugins: [],
 };
