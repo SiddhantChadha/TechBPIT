@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import React from 'react';
 
 const ChatThreadCard = ({obj}) => {
@@ -18,7 +18,9 @@ const ChatThreadCard = ({obj}) => {
         <Text>You:Image</Text>
       </View>
       <View className="self-end">
-        <Text className="text-GRAY_70 text-md flex-1">{obj.lastMessage.timestamp}</Text>
+        <Text className="text-GRAY_70 text-md flex-1">
+          {obj.lastMessage.timestamp}
+        </Text>
       </View>
     </View>
   );
