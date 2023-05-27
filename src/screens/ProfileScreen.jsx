@@ -13,7 +13,7 @@ const ProfileScreen = ({navigation}) => {
     <PencilIcon
       color={Colors.BLACK}
       style={{position: 'absolute', alignSelf: 'flex-end'}}
-      onPress={() => navigation.navigate('RecentChat')}
+      onPress={() => navigation.navigate('SetupProfile')}
     />
   );
   const data = [

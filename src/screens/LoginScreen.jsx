@@ -1,5 +1,5 @@
 import {ScrollView, Text, View} from 'react-native';
-import React, {useRef, useContext} from 'react';
+import React, {useRef, useContext, useState} from 'react';
 import InputBox from '../components/InputBox';
 import CustomButton from '../components/CustomButton';
 import {Colors} from '../colors';
@@ -13,6 +13,7 @@ const LoginScreen = ({navigation}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const setIsLoggedIn = useContext(LoggedInContext);
+  const [isApiCalling, setIsApiCalling] = useState(false);
 
   const onResponseReceived = (command, data) => {
     console.log('oasjdnf');
@@ -20,15 +21,19 @@ const LoginScreen = ({navigation}) => {
       case REST_COMMANDS.REQ_POST_LOGIN:
         setAuthTokens(data.access_token, data.refresh_token);
         setIsLoggedIn(true);
+        setIsApiCalling(false);
         break;
       default:
         break;
     }
   };
 
-  const onResponseFailed = (command, error) => {};
+  const onResponseFailed = (command, error) => {
+    setIsApiCalling(false);
+  };
 
   const login = () => {
+    setIsApiCalling(true);
     execute(
       REST_COMMANDS.REQ_POST_LOGIN,
       {
@@ -62,7 +67,11 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry={true}
         ref={passwordRef}
       />
-      <CustomButton title="Go to Feed" onPress={() => login()} />
+      {isApiCalling ? (
+        <CustomButton title="Logging in ..." />
+      ) : (
+        <CustomButton title="Go to Feed" onPress={() => login()} />
+      )}
     </ScrollView>
   );
 };

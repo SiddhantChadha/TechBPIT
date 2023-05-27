@@ -100,7 +100,8 @@ const App = () => {
         {isLoggedIn ? (
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
-            <Stack.Screen name="RecentChat" component={SetupProfileScreen} />
+            <Stack.Screen name="RecentChat" component={RecentChatScreen} />
+            <Stack.Screen name="SetupProfile" component={SetupProfileScreen} />
           </Stack.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{headerShown: false}}>

@@ -22,6 +22,11 @@ import SearchBar from '../components/SearchBar';
 const ExploreScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [searchedData, setSearchedData] = useState([]);
+  const screenWidth = Dimensions.get('window').width;
+  const [index, setIndex] = React.useState(0);
+  const isCarousel = React.useRef(null);
+  const [searchString, setSearchString] = useState('');
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -29,11 +34,17 @@ const ExploreScreen = ({navigation}) => {
         setData(data);
         setLoading(false);
         break;
+      case REST_COMMANDS.REQ_GET_SEARCH_EXPLORE:
+        setSearchedData(data);
+        console.log(data);
+        break;
       default:
         break;
     }
   };
-  const onResponseFailed = (command, error) => {};
+  const onResponseFailed = (command, error) => {
+    console.log(error);
+  };
 
   useEffect(() => {
     execute(
@@ -43,9 +54,28 @@ const ExploreScreen = ({navigation}) => {
       onResponseFailed,
     );
   }, []);
-  const screenWidth = Dimensions.get('window').width;
-  const [index, setIndex] = React.useState(0);
-  const isCarousel = React.useRef(null);
+
+  useEffect(() => {
+    if (searchString.length < 3) {
+      setSearchedData([]);
+    }
+    console.log(searchedData);
+  }, [searchString]);
+
+  const getSearchedString = text => {
+    console.log('MAking api calls');
+    execute(
+      REST_COMMANDS.REQ_GET_SEARCH_EXPLORE,
+      {searchString: text},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  };
+
+  const clearData = () => {
+    setSearchString('');
+    setSearchedData([]);
+  };
 
   return (
     <View>
@@ -54,22 +84,39 @@ const ExploreScreen = ({navigation}) => {
         <ActivityIndicator />
       ) : (
         <ScrollView>
-          <SearchBar />
-          <Text className="text-black font-semibold text-base mx-4">
-            Communities you may want to join
-          </Text>
-          <Carousel
-            data={data}
-            // ref={isCarousel}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth - 50}
-            // layoutCardOffset={9}
-            // layout={'tinder'}
-            // onSnapToItem={index => setIndex(index)}
-            // useScrollView={true}
-            renderItem={JoinCommunityCard}
+          <SearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+            getSearchedString={getSearchedString}
+            clearData={clearData}
           />
-          {/* <Pagination
+          {searchString ? (
+            <View>
+              <FlatList
+                data={searchedData}
+                renderItem={JoinCommunityCard}
+                keyExtractor={item => item._id}
+                className="bg-black"
+                scrollEnabled={false}
+              />
+            </View>
+          ) : (
+            <View>
+              <Text className="text-black font-semibold text-base mx-4">
+                Communities you may want to join
+              </Text>
+              <Carousel
+                data={data}
+                // ref={isCarousel}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth - 50}
+                // layoutCardOffset={9}
+                // layout={'tinder'}
+                // onSnapToItem={index => setIndex(index)}
+                // useScrollView={true}
+                renderItem={JoinCommunityCard}
+              />
+              {/* <Pagination
             dotsLength={data.length}
             activeDotIndex={index}
             carouselRef={isCarousel}
@@ -84,16 +131,19 @@ const ExploreScreen = ({navigation}) => {
             inactiveDotScale={0.6}
             tappableDots={true}
           /> */}
-          <Text className="text-black font-semibold text-base mx-4">
-            People you may know{' '}
-          </Text>
-          <FlatList
-            data={data}
-            renderItem={PeopleMayKnowCard}
-            numColumns={2}
-            keyExtractor={item => item._id}
-            className="p-4"
-          />
+              <Text className="text-black font-semibold text-base mx-4">
+                People you may know{' '}
+              </Text>
+              <FlatList
+                data={data}
+                renderItem={PeopleMayKnowCard}
+                numColumns={2}
+                keyExtractor={item => item._id}
+                className="p-4"
+                scrollEnabled={false}
+              />
+            </View>
+          )}
         </ScrollView>
       )}
     </View>
