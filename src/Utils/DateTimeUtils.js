@@ -28,3 +28,12 @@ export const dateStringToDDMMM = dateString => {
 
   return formattedDate;
 };
+
+export const checkIfDateStringUpcoming = dateString => {
+  const date = new Date(dateString);
+  const currentDate = new Date();
+
+  if (date > currentDate) {
+    return true;
+  }
+};

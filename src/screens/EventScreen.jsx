@@ -15,6 +15,8 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import EventItem from '../components/EventItem';
 import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
+import {checkIfDateStringUpcoming} from '../Utils/DateTimeUtils';
+import Calendar from '../assets/images/ic_calendar.svg';
 const EventScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -32,6 +34,7 @@ const EventScreen = ({navigation}) => {
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_ALL_EVENTS:
+        data = data.filter(item => checkIfDateStringUpcoming(item.eventDate));
         setData(data);
         setLoading(false);
         break;
@@ -59,7 +62,7 @@ const EventScreen = ({navigation}) => {
 
       {isLoading ? (
         <ActivityIndicator />
-      ) : (
+      ) : data.length > 0 ? (
         <SafeAreaView>
           <FlatList
             data={data}
@@ -67,6 +70,13 @@ const EventScreen = ({navigation}) => {
             keyExtractor={item => item._id}
           />
         </SafeAreaView>
+      ) : (
+        <View className="justify-center items-center p-10">
+          <Calendar />
+          <Text className="mt-12 font-medium text-gray-500">
+            No Upcomig Event Found :/
+          </Text>
+        </View>
       )}
     </View>
   );
