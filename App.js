@@ -23,6 +23,7 @@ import ExploreScreen from './src/screens/ExploreScreen';
 import RecentChatScreen from './src/screens/RecentChatScreen';
 import SetupProfileScreen from './src/screens/SetupProfileScreen';
 import {StatusBar} from 'react-native';
+import ChatScreen from './src/screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -100,7 +101,7 @@ const App = () => {
         {isLoggedIn ? (
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
-            <Stack.Screen name="RecentChat" component={RecentChatScreen} />
+            <Stack.Screen name="RecentChat" component={ChatScreen} />
             <Stack.Screen name="SetupProfile" component={SetupProfileScreen} />
           </Stack.Navigator>
         ) : (

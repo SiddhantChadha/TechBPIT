@@ -1,4 +1,5 @@
 import {View, Text, Image} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import React from 'react';
 
 const ChatThreadCard = ({id,name,image,lastMessage}) => {
