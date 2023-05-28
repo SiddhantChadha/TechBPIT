@@ -45,7 +45,7 @@ const ChatScreen = ({navigation, route}) => {
         if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
         if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
-        if(!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead)
+        if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
       default:
         break;
@@ -102,7 +102,7 @@ const ChatScreen = ({navigation, route}) => {
       receiver: id,
       imageUrl: '',
       isSent: false,
-      isError:false
+      isError: false,
     };
     setData([...data, msg]);
     await sendPersonalMessage(msg, id);

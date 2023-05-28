@@ -25,15 +25,15 @@ export const instantiateSocket = async () => {
 export const sendPersonalMessage = async (messageObj, receiver) => {
   let socket = await getSocket();
 
-    socket.emit('msg',messageObj,receiver,(response)=>{
-        messageObj.id = response.id;
-        if(response.isSuccessful){
-            messageObj.isSent = true;
-        }else{
-            messageObj.isError = true;
-        }
-    })
-}
+  socket.emit('msg', messageObj, receiver, response => {
+    messageObj.id = response.id;
+    if (response.isSuccessful) {
+      messageObj.isSent = true;
+    } else {
+      messageObj.isError = true;
+    }
+  });
+};
 
 export const emitIsTyping = async (
   selfId,
