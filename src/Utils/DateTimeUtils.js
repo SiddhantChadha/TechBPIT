@@ -29,6 +29,20 @@ export const dateStringToDDMMM = dateString => {
   return formattedDate;
 };
 
+
+export const convertToLocalTime = (timestamp)=>{
+  const d = new Date(Number(timestamp));
+  let result='';
+
+  if((d.getHours()%12) > 0 ){
+    result += '0' + d.getHours()%12 + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' pm';
+  }else{
+    result += d.getHours() + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' am';
+  }
+
+  return result;
+}
+
 export const checkIfDateStringUpcoming = dateString => {
   const date = new Date(dateString);
   const currentDate = new Date();

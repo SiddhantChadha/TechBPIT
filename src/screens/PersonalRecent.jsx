@@ -1,36 +1,62 @@
-import {SafeAreaView, FlatList} from 'react-native';
-import React from 'react';
+import {SafeAreaView, FlatList, Pressable,ActivityIndicator} from 'react-native';
+import React, { useState,useEffect } from 'react';
 import ChatThreadCard from '../components/ChatThreadCard';
+import {REST_COMMANDS} from '../APIController/RestCommands';
+import {execute} from '../APIController/controller';
 
-const DATA = [
-  {
-      _id: "63add1dc5086f6fca8576f01",
-      email: "tjain210@gmail.com",
-      username: "Tushar Jain",
-      image: "http://res.cloudinary.com/dmigta0dz/image/upload/v1673687173/ts5pi0lvpocxs5wykesr.jpg",
-      lastMessage: {
-          _id: "6471e0f85812e555c537e53c",
-          msgType: "direct-message",
-          sender: "645354875812e555c537c071",
-          receiver: "63add1dc5086f6fca8576f01",
-          message: "gyggggh",
-          timestamp: "1685184759271",
-          imageUrl: "",
-          readAt: "1685184759271",
-          
-      }
-  }
-]
+const PersonalRecent = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-const PersonalRecent = () => {
+
+  const onResponseReceived = (command, data) => {
+    switch (command) {
+      case REST_COMMANDS.REQ_GET_PERSONAL_RECENT_CHAT:
+        setData(data);
+        setIsLoading(false);
+        break;
+      default:
+        break;
+    }
+  };
+  const onResponseFailed = (command, error) => {};
+
+  useEffect(() => {
+    execute(
+      REST_COMMANDS.REQ_GET_PERSONAL_RECENT_CHAT,
+      {},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  }, []);
+
   return (
     <SafeAreaView>
-      <FlatList
-        className="h-full bg-w"
-        data={DATA}
-        renderItem={({item}) => <ChatThreadCard image={item.image} lastMessage={item.lastMessage} 
-        name={item.username} id={item._id} />}
-      />
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          className="h-full bg-w"
+          data={data}
+          renderItem={({item}) => (
+            <Pressable
+              onPress={() =>
+                navigation.navigate('Chat', {
+                  id: item._id,
+                  image: item.image,
+                  name: item.username,
+                })
+              }>
+              <ChatThreadCard
+                image={item.image}
+                lastMessage={item.lastMessage}
+                name={item.username}
+                id={item._id}
+              />
+            </Pressable>
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };

@@ -1,6 +1,6 @@
 import {View, Text, Image} from 'react-native';
-import {View, Text, Image} from 'react-native';
 import React from 'react';
+import { convertToLocalTime } from '../Utils/DateTimeUtils';
 
 const ChatThreadCard = ({id,name,image,lastMessage}) => {
   return (
@@ -39,17 +39,5 @@ const ChatThreadCard = ({id,name,image,lastMessage}) => {
   );
 };
 
-function convertToLocalTime(timestamp){
-  const d = new Date(Number(timestamp));
-  let result='';
-  
-  if(d.getHours()%12 > 0 ){
-    result += '0' + d.getHours()%12 + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' pm';
-  }else{
-    result += d.getHours() + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' am';
-  }
-
-  return result;
-}
 
 export default ChatThreadCard;

@@ -1,4 +1,4 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image,Pressable} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
 import {ArrowLeftIcon} from 'react-native-heroicons/outline';
@@ -7,6 +7,7 @@ const ChatThreadHeader = ({navigation, name, image, typing}) => {
   return (
     <View className="flex-row items-center bg-primary_blue py-2 px-4 flex-wrap mb-2">
       <ArrowLeftIcon color={Colors.WHITE} onPress={() => navigation.goBack()} />
+      
       <Image
         source={{
           uri: image,
@@ -21,6 +22,7 @@ const ChatThreadHeader = ({navigation, name, image, typing}) => {
           <View />
         )}
       </View>
+    
     </View>
   );
 };
