@@ -1,29 +1,29 @@
 import {io} from 'socket.io-client';
 import {BASE_URL} from '@env';
-import { getSelfId } from '../EncryptedStorageHelper';
+import {getSelfId} from '../EncryptedStorageHelper';
 
-let socket=null;
+let socket = null;
 
-export const getSocket = async ()=>{
-    if(socket==null){
-        return await instantiateSocket()
-    }
+export const getSocket = async () => {
+  if (socket == null) {
+    return await instantiateSocket();
+  }
 
-    return socket;
-}
+  return socket;
+};
 
-export const instantiateSocket = async ()=>{
-    socket = io.connect(BASE_URL,{
-        query:{
-            "userId": await getSelfId()
-        }
-    });
+export const instantiateSocket = async () => {
+  socket = io.connect(BASE_URL, {
+    query: {
+      userId: await getSelfId(),
+    },
+  });
 
-    return socket;
-}
+  return socket;
+};
 
-export const sendPersonalMessage = async (messageObj,receiver)=>{
-    let socket = await getSocket();
+export const sendPersonalMessage = async (messageObj, receiver) => {
+  let socket = await getSocket();
 
     socket.emit('msg',messageObj,receiver,(response)=>{
         messageObj.id = response.id;

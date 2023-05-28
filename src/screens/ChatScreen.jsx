@@ -14,7 +14,13 @@ import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {getSocket, sendPersonalMessage} from '../Utils/socket';
+import {
+  emitAllReadStatus,
+  emitIsTyping,
+  getSocket,
+  listenIsTyping,
+  sendPersonalMessage,
+} from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 
@@ -23,15 +29,19 @@ const ChatScreen = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const typingTimerRef = useRef(null);
+  const selfTypingTimerRef = useRef(null);
+  const receiverTypingTimerRef = useRef(null);
   const {id, image, name} = route.params;
   const selfId = useRef();
+  const isGrpchat = false;
 
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
+        if (!isGrpchat) emitAllReadStatus(selfId.current, id);
+        listenIsTyping(`${id}-isTyping`, typingListener);
         break;
       default:
         break;
@@ -54,12 +64,21 @@ const ChatScreen = ({navigation, route}) => {
 
   const handleTyping = text => {
     setMessage(text);
-    setIsTyping(true);
-    clearTimeout(typingTimerRef.current);
-
-    typingTimerRef.current = setTimeout(() => {
-      setIsTyping(false);
+    clearTimeout(selfTypingTimerRef.current);
+    emitIsTyping(selfId.current, id, true, isGrpchat, 'Tushar Jain');
+    selfTypingTimerRef.current = setTimeout(() => {
+      emitIsTyping(selfId.current, id, false, isGrpchat, 'Tushar Jain');
     }, 1000);
+  };
+
+  const typingListener = (status, senderName) => {
+    if (!isGrpchat) {
+      setIsTyping(status);
+      clearTimeout(receiverTypingTimerRef.current);
+      receiverTypingTimerRef.current = setTimeout(() => {
+        setIsTyping(false);
+      }, 1000);
+    }
   };
 
   const sendMessage = async () => {
@@ -80,7 +99,8 @@ const ChatScreen = ({navigation, route}) => {
 
   useEffect(() => {
     return () => {
-      clearTimeout(typingTimerRef.current);
+      clearTimeout(selfTypingTimerRef.current);
+      clearTimeout(receiverTypingTimerRef.current);
     };
   }, []);
 
