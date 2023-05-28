@@ -3,11 +3,14 @@ import {
   FlatList,
   Pressable,
   ActivityIndicator,
+  ScrollView,
+  View,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import ChatThreadCard from '../components/ChatThreadCard';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const PersonalRecent = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +40,258 @@ const PersonalRecent = ({navigation}) => {
   return (
     <SafeAreaView>
       {isLoading ? (
-        <ActivityIndicator />
+        <ScrollView className="bg-white h-full">
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+          </SkeletonPlaceholder>
+        </ScrollView>
       ) : (
         <FlatList
           className="h-full bg-white"
