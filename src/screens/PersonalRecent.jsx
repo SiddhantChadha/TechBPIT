@@ -1,5 +1,10 @@
-import {SafeAreaView, FlatList, Pressable,ActivityIndicator} from 'react-native';
-import React, { useState,useEffect } from 'react';
+import {
+  SafeAreaView,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import ChatThreadCard from '../components/ChatThreadCard';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
@@ -7,7 +12,6 @@ import {execute} from '../APIController/controller';
 const PersonalRecent = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -36,7 +40,7 @@ const PersonalRecent = ({navigation}) => {
         <ActivityIndicator />
       ) : (
         <FlatList
-          className="h-full bg-w"
+          className="h-full bg-white"
           data={data}
           renderItem={({item}) => (
             <Pressable
