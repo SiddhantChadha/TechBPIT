@@ -4,9 +4,9 @@ import { getSelfId } from '../EncryptedStorageHelper';
 
 let socket=null;
 
-export const getSocket = ()=>{
+export const getSocket = async ()=>{
     if(socket==null){
-        return instantiateSocket()
+        return await instantiateSocket()
     }
 
     return socket;
@@ -19,8 +19,13 @@ export const instantiateSocket = async ()=>{
         }
     });
 
-    
-
     return socket;
 }
 
+export const sendPersonalMessage = async (messageObj,receiver)=>{
+    let socket = await getSocket();
+
+    socket.emit('msg',messageObj,receiver,(response)=>{
+        console.log(response);
+    })
+}

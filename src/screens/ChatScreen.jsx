@@ -14,7 +14,8 @@ import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { getSocket } from '../Utils/socket';
+import {getSocket, sendPersonalMessage} from '../Utils/socket';
+import {getSelfId} from '../EncryptedStorageHelper';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,13 +24,13 @@ const ChatScreen = ({navigation, route}) => {
   const [isTyping, setIsTyping] = useState(false);
   const typingTimerRef = useRef(null);
   const {id, image, name} = route.params;
+  const selfId = useRef();
 
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
-        getSocket();
         break;
       default:
         break;
@@ -38,15 +39,16 @@ const ChatScreen = ({navigation, route}) => {
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
+    (async () => {
+      selfId.current = await getSelfId();
+    })();
+
     execute(
       REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
       {id},
       onResponseReceived,
       onResponseFailed,
     );
-    
-
-
   }, []);
 
   const handleTyping = text => {
@@ -57,6 +59,24 @@ const ChatScreen = ({navigation, route}) => {
     typingTimerRef.current = setTimeout(() => {
       setIsTyping(false);
     }, 1000);
+  };
+
+  const sendMessage = async () => {
+
+
+
+    await sendPersonalMessage(
+      {
+        id: '6444fd21da36e5e81dc6b3fa',
+        isRead: false,
+        message,
+        receiver: id,
+        sender: selfId.current,
+        timestamp: 1685264262,
+        type:"direct-message",
+      },
+      id,
+    );
   };
 
   useEffect(() => {
@@ -215,7 +235,7 @@ const ChatScreen = ({navigation, route}) => {
           <PhotoIcon color={Colors.WHITE} />
         </View>
         <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
-          <PaperAirplaneIcon color={Colors.WHITE} />
+          <PaperAirplaneIcon color={Colors.WHITE} onPress={sendMessage} />
         </View>
       </View>
     </View>
