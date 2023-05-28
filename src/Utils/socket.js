@@ -47,3 +47,8 @@ export const listenIsTyping = async (event, typingListener) => {
     typingListener(arg.status, arg.senderName);
   });
 };
+
+export const emitAllReadStatus = async (selfId, receiverId) => {
+  let socket = await getSocket();
+  socket.emit('read-status', selfId, receiverId, Date.now().toString());
+};

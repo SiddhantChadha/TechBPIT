@@ -15,6 +15,7 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {
+  emitAllReadStatus,
   emitIsTyping,
   getSocket,
   listenIsTyping,
@@ -38,6 +39,7 @@ const ChatScreen = ({navigation, route}) => {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
+        if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
         break;
       default:
