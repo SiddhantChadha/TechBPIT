@@ -4,6 +4,7 @@ import {
   View,
   Text,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
@@ -17,6 +18,8 @@ import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import {checkIfDateStringUpcoming} from '../Utils/DateTimeUtils';
 import Calendar from '../assets/images/ic_calendar.svg';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
 const EventScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -61,7 +64,64 @@ const EventScreen = ({navigation}) => {
       />
 
       {isLoading ? (
-        <ActivityIndicator />
+        <ScrollView>
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 20,
+                  height: 65,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 20,
+                  height: 65,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 20,
+                  height: 65,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 20,
+                  height: 65,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
+        </ScrollView>
       ) : data.length > 0 ? (
         <SafeAreaView>
           <FlatList

@@ -18,6 +18,7 @@ import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
 import SearchBar from '../components/SearchBar';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ExploreScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -81,7 +82,136 @@ const ExploreScreen = ({navigation}) => {
     <View>
       <CustomTopBar navigation={navigation} title={'Explore'} />
       {isLoading ? (
-        <ActivityIndicator />
+        <ScrollView>
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 20,
+                  height: 40,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                width: '50%',
+                height: 20,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+              }}
+            />
+            <View
+              style={{
+                width: '70%',
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                alignSelf: 'center',
+              }}
+            />
+
+            <View
+              style={{
+                width: '50%',
+                height: 20,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+              }}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+              <View
+                style={{
+                  width: 2,
+                  height: 150,
+                  borderRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  flexGrow: 1,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                width: '50%',
+                height: 20,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+              }}
+            />
+            <View
+              style={{
+                width: '75%',
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                alignSelf: 'center',
+                aspectRatio: '3/4',
+              }}
+            />
+          </SkeletonPlaceholder>
+        </ScrollView>
       ) : (
         <ScrollView>
           <SearchBar

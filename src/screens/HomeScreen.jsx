@@ -4,6 +4,7 @@ import {
   View,
   Text,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
@@ -15,6 +16,7 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import EventItem from '../components/EventItem';
 import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -56,7 +58,213 @@ const HomeScreen = ({navigation}) => {
       />
 
       {isLoading ? (
-        <ActivityIndicator />
+        <ScrollView>
+          <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
+            <SkeletonPlaceholder>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginLeft: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 35,
+                    borderRadius: 5,
+                    marginLeft: '5%',
+                    marginRight: '10%',
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 20,
+                    height: 35,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+            </SkeletonPlaceholder>
+          </View>
+
+          <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
+            <SkeletonPlaceholder>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginLeft: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 35,
+                    borderRadius: 5,
+                    marginLeft: '5%',
+                    marginRight: '10%',
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 20,
+                    height: 200,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+            </SkeletonPlaceholder>
+          </View>
+
+          <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
+            <SkeletonPlaceholder>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginLeft: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 35,
+                    borderRadius: 5,
+                    marginLeft: '5%',
+                    marginRight: '10%',
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 20,
+                    height: 150,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 40,
+                    height: 35,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                  }}
+                />
+                <View
+                  style={{
+                    width: 20,
+                    height: 35,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+            </SkeletonPlaceholder>
+          </View>
+
+          <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
+            <SkeletonPlaceholder>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginLeft: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 35,
+                    borderRadius: 5,
+                    marginLeft: '5%',
+                    marginRight: '10%',
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 20,
+                    height: 200,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+            </SkeletonPlaceholder>
+          </View>
+
+          <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
+            <SkeletonPlaceholder>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                    marginLeft: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: 60,
+                    height: 35,
+                    borderRadius: 5,
+                    marginLeft: '5%',
+                    marginRight: '10%',
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 20,
+                    height: 35,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: 12,
+                    flexGrow: 1,
+                  }}
+                />
+              </View>
+            </SkeletonPlaceholder>
+          </View>
+        </ScrollView>
       ) : (
         <SafeAreaView>
           <FlatList
