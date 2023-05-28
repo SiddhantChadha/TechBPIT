@@ -7,5 +7,6 @@ export const ROUTES = {
   GET_SEARCH_EXPLORE: `${BASE_URL}/explore/all?`,
   GET_ALL_EVENTS: `${BASE_URL}/post/all/event`,
   GET_PERSONAL_CHAT:`${BASE_URL}/chat/personal`,
-  GET_PERSONAL_RECENT_CHAT:`${BASE_URL}/chat/recent/personal`
+  GET_PERSONAL_RECENT_CHAT:`${BASE_URL}/chat/recent/personal`,
+  GET_USER_PROFILE:`${BASE_URL}/user`,
 };

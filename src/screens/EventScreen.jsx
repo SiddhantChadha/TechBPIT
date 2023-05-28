@@ -1,5 +1,4 @@
 import {
-  ActivityIndicator,
   FlatList,
   View,
   Text,
@@ -7,15 +6,12 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
-import CommunityPostItem from '../components/CommunityPostItem';
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
 import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import EventItem from '../components/EventItem';
-import JoinCommunityCard from '../components/JoinCommunityCard';
-import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import {checkIfDateStringUpcoming} from '../Utils/DateTimeUtils';
 import Calendar from '../assets/images/ic_calendar.svg';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';

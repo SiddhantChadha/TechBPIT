@@ -86,16 +86,29 @@ const ChatScreen = ({navigation, route}) => {
   };
   const onNewMessage = message => {
     if (!isGrpchat) {
+        setData([message,...data]);
     }
   };
 
   const onTempMessageRead = () => {
     //todo: mark all sent message read
+    let newData = [...data];
+    newData.every((obj)=>{
+      if(obj.isRead == true){
+        return false;
+      }
+
+      obj.isRead = true;
+      return true;
+    })
+
+    setData(newData);
+
   };
 
   const sendMessage = async () => {
     let msg = {
-      type: 'direct-message',
+      msgType: 'direct-message',
       message,
       sender: selfId.current,
       timestamp: getCurrentTimestamp(),
@@ -104,7 +117,7 @@ const ChatScreen = ({navigation, route}) => {
       isSent: false,
       isError: false,
     };
-    setData([...data, msg]);
+    setData([msg,...data]);
     await sendPersonalMessage(msg, id);
     setMessage('');
   };
@@ -123,6 +136,7 @@ const ChatScreen = ({navigation, route}) => {
         name={name}
         typing={isTyping ? 'typing...' : ''}
         image={image}
+        id={id}
       />
 
       {isLoading ? (

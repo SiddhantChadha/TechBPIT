@@ -26,6 +26,7 @@ export const sendPersonalMessage = async (messageObj, receiver) => {
   let socket = await getSocket();
 
   socket.emit('msg', messageObj, receiver, response => {
+    console.log(response)
     messageObj.id = response.id;
     if (response.isSuccessful) {
       messageObj.isSent = true;
@@ -66,7 +67,7 @@ export const listenNewMessageEvent = async (event, onNewMessage) => {
 };
 export const listenTempMessageRead = async (event, onTempMessageRead) => {
   let socket = await getSocket();
-  socket.on(event, arg => {
+  socket.on(event, () => {
     onTempMessageRead();
   });
 };

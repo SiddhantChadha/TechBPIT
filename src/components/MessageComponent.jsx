@@ -7,8 +7,9 @@ import {
   CheckIcon,
   ClockIcon,
   ExclamationCircleIcon,
+  ExclamationTriangleIcon,
 } from 'react-native-heroicons/outline';
-import { Colors } from '../colors';
+import {Colors} from '../colors';
 
 export default function MessageComponent({
   item,
@@ -30,16 +31,18 @@ export default function MessageComponent({
             <Text className="mx-1 text-xs">
               {convertToLocalTime(item.timestamp)}
             </Text>
-            {item.isSent && item.isSent == false ? (
-              <ClockIcon color={Colors.BLACK} />
-            ) : item.isSent ? (
-              item.isRead == true ? (
-                <DoubleTick />
+            {item.isSent!==undefined ? (
+              item.isSent == true ? (
+                <CheckIcon color={Colors.GREY_4A} />
+              ) : item.isError == true ? (
+                <ExclamationTriangleIcon color="red" />
               ) : (
-                <CheckIcon color={Colors.BLACK} />
+                <ClockIcon color={Colors.GREY_4A} />
               )
+            ) : item.isRead == true ? (
+              <DoubleTick />
             ) : (
-              <ExclamationCircleIcon color={Colors.BLACK} />
+              <CheckIcon color={Colors.BLACK} />
             )}
           </View>
         </View>
