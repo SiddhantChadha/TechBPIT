@@ -1,5 +1,12 @@
-import {View, Text, ScrollView, TextInput, ActivityIndicator,FlatList} from 'react-native';
-import React, {useState, useRef, useEffect}, {useState,useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  ActivityIndicator,
+  FlatList,
+} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
 import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
@@ -7,11 +14,13 @@ import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 
-const ChatScreen = ({navigation,route}) => {
+const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-
-  const {id,image,name} = route.params;
+  const [message, setMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimerRef = useRef(null);
+  const {id, image, name} = route.params;
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -34,11 +43,6 @@ const ChatScreen = ({navigation,route}) => {
     );
   }, []);
 
-const ChatScreen = ({navigation}) => {
-  const [message, setMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const typingTimerRef = useRef(null);
-
   const handleTyping = text => {
     setMessage(text);
     setIsTyping(true);
@@ -60,18 +64,27 @@ const ChatScreen = ({navigation}) => {
       <ChatThreadHeader
         navigation={navigation}
         name={name}
-        typing={'typing...'}
+        typing={isTyping ? 'typing...' : ''}
         image={image}
       />
 
-      <ScrollView className="flex-grow">
-        {isLoading ? <ActivityIndicator size={42} /> : 
-        <FlatList data={data} inverted  renderItem={({item}) => (
-          
-           <MessageComponent item={item} receiver={id} receiverImg={image} receiverName={name} />
-        )} />
-        }
-      </ScrollView>
+      {isLoading ? (
+        <ActivityIndicator size={42} className="flex-grow" />
+      ) : (
+        <FlatList
+          data={data}
+          inverted
+          className="flex-grow"
+          renderItem={({item}) => (
+            <MessageComponent
+              item={item}
+              receiver={id}
+              receiverImg={image}
+              receiverName={name}
+            />
+          )}
+        />
+      )}
       <View className="flex-row items-center">
         <TextInput
           value={message}
