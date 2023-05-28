@@ -17,6 +17,25 @@ export async function setRefreshToken(refreshToken) {
   } catch (error) {}
 }
 
+export async function setSelfId(userId){
+  try{
+    await EncryptedStorage.setItem('self_id',userId);
+  }catch(err){
+
+  }
+}
+
+export async function getSelfId(){
+  try {
+    const selfId = await EncryptedStorage.getItem('self_id');
+
+    if (selfId !== undefined) {
+      return selfId;
+    }
+  } catch (error) {}
+  return null;
+}
+
 export async function getAccessToken() {
   try {
     const accessToken = await EncryptedStorage.getItem('access_token');

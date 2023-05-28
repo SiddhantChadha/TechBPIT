@@ -6,7 +6,7 @@ import {Colors} from '../colors';
 import {execute} from '../APIController/controller';
 import {LoggedInContext} from '../context/LoggedInContext';
 import CustomTopBar from '../components/CustomTopBar';
-import {setAuthTokens} from '../EncryptedStorageHelper';
+import {setAuthTokens,setSelfId} from '../EncryptedStorageHelper';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 
 const LoginScreen = ({navigation}) => {
@@ -20,6 +20,7 @@ const LoginScreen = ({navigation}) => {
     switch (command) {
       case REST_COMMANDS.REQ_POST_LOGIN:
         setAuthTokens(data.access_token, data.refresh_token);
+        setSelfId(data._id);
         setIsLoggedIn(true);
         setIsApiCalling(false);
         break;

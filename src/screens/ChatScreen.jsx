@@ -14,6 +14,7 @@ import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { getSocket } from '../Utils/socket';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,7 @@ const ChatScreen = ({navigation, route}) => {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
+        getSocket();
         break;
       default:
         break;
@@ -42,6 +44,9 @@ const ChatScreen = ({navigation, route}) => {
       onResponseReceived,
       onResponseFailed,
     );
+    
+
+
   }, []);
 
   const handleTyping = text => {
