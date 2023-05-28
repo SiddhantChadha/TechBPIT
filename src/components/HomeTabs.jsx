@@ -1,23 +1,25 @@
-import React from "react";
+import React, {useContext} from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {
-    UserIcon,
-    HomeIcon,
-    CalendarDaysIcon,
-    MagnifyingGlassIcon,
-  } from 'react-native-heroicons/outline';
+  UserIcon,
+  HomeIcon,
+  CalendarDaysIcon,
+  MagnifyingGlassIcon,
+} from 'react-native-heroicons/outline';
 
-import { Colors } from "../colors";
-import HomeScreen from "../screens/HomeScreen";
-import ExploreScreen from "../screens/ExploreScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import EventScreen from "../screens/EventScreen";
-import useUser from "../hooks/useUser";
+import {Colors} from '../colors';
+import HomeScreen from '../screens/HomeScreen';
+import ExploreScreen from '../screens/ExploreScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import EventScreen from '../screens/EventScreen';
+import {UserContext} from '../context/UserIdContext';
+// import useUser from "../hooks/useUser";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const HomeTabs = ()=>{
-  const selfId = useUser();
+const HomeTabs = () => {
+  const selfId = useContext(UserContext);
+  console.log('In home tabs', selfId);
 
   return (
     <Tab.Navigator
@@ -56,7 +58,7 @@ const HomeTabs = ()=>{
       />
       <Tab.Screen
         name="Profile"
-        initialParams={{id:selfId,test:"test"}}
+        initialParams={{id: selfId, test: 'test'}}
         component={ProfileScreen}
         options={{
           tabBarIcon: ({color}) => {
@@ -66,6 +68,6 @@ const HomeTabs = ()=>{
       />
     </Tab.Navigator>
   );
-}
+};
 
 export default HomeTabs;

@@ -1,8 +1,8 @@
-import UserContext from "../context/UserIdContext";
-import { useContext } from "react";
+// import UserContext from "../context/UserIdContext";
+// import { useContext } from "react";
 
-const useUser = () => {
-    return useContext(UserContext);
-  };
+// const useUser = () => {
+//     return useContext(UserContext);
+//   };
   
-  export default useUser;
+//   export default useUser;

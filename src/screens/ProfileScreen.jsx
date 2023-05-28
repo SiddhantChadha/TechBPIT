@@ -1,5 +1,5 @@
 import {View, Text, Image, Dimensions, ScrollView} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {PencilIcon, PlusIcon} from 'react-native-heroicons/outline';
 import CustomTopBar from '../components/CustomTopBar';
 import {Colors} from '../colors';
@@ -7,15 +7,16 @@ import HorizontalLine from '../components/HorizontalLine';
 import ProjectCard from '../components/ProjectCard';
 import SocialLinks from '../components/SocialLinks';
 import {Carousel} from 'react-native-snap-carousel-v4';
-import useUser from '../hooks/useUser';
+// import useUser from '../hooks/useUser';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {UserContext} from '../context/UserIdContext';
 
 const ProfileScreen = ({navigation, route}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState({});
-  const selfId = useUser();
+  const selfId = useContext(UserContext);
   const {id, name} = route.params;
 
   const projectData = [];
@@ -111,7 +112,7 @@ const ProfileScreen = ({navigation, route}) => {
           <HorizontalLine />
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View 
+              <View
                 style={{
                   width: 20,
                   height: 200,
@@ -123,7 +124,6 @@ const ProfileScreen = ({navigation, route}) => {
               />
             </View>
           </SkeletonPlaceholder>
-        
         </ScrollView>
       ) : (
         <ScrollView className="bg-gray-100">

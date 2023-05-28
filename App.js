@@ -7,7 +7,7 @@ import OTPScreen from './src/screens/OTPScreen';
 import SignupScreen from './src/screens/SignupScreen';
 
 import {Colors} from './src/colors';
-import {getAccessToken} from './src/EncryptedStorageHelper';
+import {getAccessToken, getSelfId} from './src/EncryptedStorageHelper';
 import {LoggedInContext} from './src/context/LoggedInContext';
 import {loggedInStateSetter} from './src/APIController/controller';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -15,21 +15,22 @@ import RecentChatScreen from './src/screens/RecentChatScreen';
 import SetupProfileScreen from './src/screens/SetupProfileScreen';
 import {StatusBar} from 'react-native';
 import ChatScreen from './src/screens/ChatScreen';
-import { UserProvider } from './src/context/UserIdContext';
+import {UserContext} from './src/context/UserIdContext';
 import HomeTabs from './src/components/HomeTabs';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selfId, setSelfId] = useState(null);
   const checkIfLoggedIn = async () => {
     if ((await getAccessToken()) != null) {
+      setSelfId(await getSelfId());
       setIsLoggedIn(true);
     }
   };
   loggedInStateSetter(setIsLoggedIn);
   useEffect(() => {
     checkIfLoggedIn();
-
   }, []);
 
   return (
@@ -41,15 +42,18 @@ const App = () => {
       />
       <NavigationContainer>
         {isLoggedIn ? (
-          <UserProvider>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="HomeTabs" component={HomeTabs} />
-            <Stack.Screen name="RecentChat" component={RecentChatScreen} />
-            <Stack.Screen name="SetupProfile" component={SetupProfileScreen} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
-            <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
-          </Stack.Navigator>
-          </UserProvider>
+          <UserContext.Provider value={selfId}>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Screen name="HomeTabs" component={HomeTabs} />
+              <Stack.Screen name="RecentChat" component={RecentChatScreen} />
+              <Stack.Screen
+                name="SetupProfile"
+                component={SetupProfileScreen}
+              />
+              <Stack.Screen name="Chat" component={ChatScreen} />
+              <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
+            </Stack.Navigator>
+          </UserContext.Provider>
         ) : (
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
