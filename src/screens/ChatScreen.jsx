@@ -1,8 +1,7 @@
-import {View, Text, ScrollView, ActivityIndicator,FlatList} from 'react-native';
-import React, {useState,useEffect} from 'react';
+import {View, Text, ScrollView, TextInput, ActivityIndicator,FlatList} from 'react-native';
+import React, {useState, useRef, useEffect}, {useState,useEffect} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
-import MessageInputBox from '../components/MessageInputBox';
 import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
@@ -35,6 +34,27 @@ const ChatScreen = ({navigation,route}) => {
     );
   }, []);
 
+const ChatScreen = ({navigation}) => {
+  const [message, setMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimerRef = useRef(null);
+
+  const handleTyping = text => {
+    setMessage(text);
+    setIsTyping(true);
+    clearTimeout(typingTimerRef.current);
+
+    typingTimerRef.current = setTimeout(() => {
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(typingTimerRef.current);
+    };
+  }, []);
+
   return (
     <View className="flex-col bg-white h-full">
       <ChatThreadHeader
@@ -53,7 +73,12 @@ const ChatScreen = ({navigation,route}) => {
         }
       </ScrollView>
       <View className="flex-row items-center">
-        <MessageInputBox />
+        <TextInput
+          value={message}
+          onChangeText={text => handleTyping(text)}
+          className="m-2 px-5 rounded-3xl border  border-grey_4a flex-grow"
+          placeholder={'Type a message'}
+        />
         <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
           <PhotoIcon color={Colors.WHITE} />
         </View>
