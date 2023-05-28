@@ -26,6 +26,11 @@ export const sendPersonalMessage = async (messageObj,receiver)=>{
     let socket = await getSocket();
 
     socket.emit('msg',messageObj,receiver,(response)=>{
-        console.log(response);
+        messageObj.id = response.id;
+        if(response.isSuccessful){
+            messageObj.isSent = true;
+        }else{
+            messageObj.isError = true;
+        }
     })
 }

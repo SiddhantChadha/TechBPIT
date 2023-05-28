@@ -16,6 +16,7 @@ import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {getSocket, sendPersonalMessage} from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
+import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -62,21 +63,19 @@ const ChatScreen = ({navigation, route}) => {
   };
 
   const sendMessage = async () => {
-
-
-
-    await sendPersonalMessage(
-      {
-        id: '6444fd21da36e5e81dc6b3fa',
-        isRead: false,
-        message,
-        receiver: id,
-        sender: selfId.current,
-        timestamp: 1685264262,
-        type:"direct-message",
-      },
-      id,
-    );
+    let msg = {
+      type: 'direct-message',
+      message,
+      sender: selfId.current,
+      timestamp: getCurrentTimestamp(),
+      receiver: id,
+      imageUrl: '',
+      isSent: false,
+      isError:false
+    };
+    setData([...data, msg]);
+    await sendPersonalMessage(msg, id);
+    setMessage('');
   };
 
   useEffect(() => {

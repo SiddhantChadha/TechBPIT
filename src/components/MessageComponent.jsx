@@ -3,8 +3,19 @@ import DoubleTick from '../assets/images/ic_double_tick.svg';
 import React from 'react';
 import {getColorCodeFromName} from '../Utils/NameToColorUtil';
 import {convertToLocalTime} from '../Utils/DateTimeUtils';
+import {
+  CheckIcon,
+  ClockIcon,
+  ExclamationCircleIcon,
+} from 'react-native-heroicons/outline';
+import { Colors } from '../colors';
 
-export default function MessageComponent({item, receiver,receiverImg,receiverName}) {
+export default function MessageComponent({
+  item,
+  receiver,
+  receiverImg,
+  receiverName,
+}) {
   return (
     <View>
       {/* <Text className="self-center px-4 py-2 bg-gray-200 rounded-full text-gray-600">
@@ -19,7 +30,17 @@ export default function MessageComponent({item, receiver,receiverImg,receiverNam
             <Text className="mx-1 text-xs">
               {convertToLocalTime(item.timestamp)}
             </Text>
-            <DoubleTick />
+            {item.isSent && item.isSent == false ? (
+              <ClockIcon color={Colors.BLACK} />
+            ) : item.isSent ? (
+              item.isRead == true ? (
+                <DoubleTick />
+              ) : (
+                <CheckIcon color={Colors.BLACK} />
+              )
+            ) : (
+              <ExclamationCircleIcon color={Colors.BLACK} />
+            )}
           </View>
         </View>
       ) : (
@@ -40,8 +61,20 @@ export default function MessageComponent({item, receiver,receiverImg,receiverNam
             />
           </View>
           <View className="flex-row mx-2 self-end">
-            <Text className="mx-1 text-xs">{convertToLocalTime(item.timestamp)}</Text>
-            <DoubleTick />
+            <Text className="mx-1 text-xs">
+              {convertToLocalTime(item.timestamp)}
+            </Text>
+            {item.isSent && item.isSent == false ? (
+              <ClockIcon />
+            ) : item.isSent ? (
+              item.isRead == true ? (
+                <DoubleTick />
+              ) : (
+                <CheckIcon />
+              )
+            ) : (
+              <ExclamationCircleIcon />
+            )}
           </View>
         </View>
       ) : (
@@ -50,7 +83,10 @@ export default function MessageComponent({item, receiver,receiverImg,receiverNam
       {item.msgType === 'direct-message' && item.sender == receiver ? (
         <View className="mb-2">
           <View className="flex-row items-center">
-            <Image source={{uri: receiverImg}} className="rounded-full h-8 w-8 mx-1" />
+            <Image
+              source={{uri: receiverImg}}
+              className="rounded-full h-8 w-8 mx-1"
+            />
             <View className="max-w-1/2 p-4 bg-grey_f5 mx-1 rounded-b-lg rounded-tr-lg">
               <Text
                 className="text-xs mb-1 font-semibold"
@@ -60,7 +96,9 @@ export default function MessageComponent({item, receiver,receiverImg,receiverNam
               <Text className="text-black text-base">{item.message}</Text>
             </View>
           </View>
-          <Text className="mx-12 text-xs">{convertToLocalTime(item.timestamp)}</Text>
+          <Text className="mx-12 text-xs">
+            {convertToLocalTime(item.timestamp)}
+          </Text>
         </View>
       ) : (
         <></>
@@ -92,7 +130,9 @@ export default function MessageComponent({item, receiver,receiverImg,receiverNam
               />
             </View>
           </View>
-          <Text className="mx-12 text-xs">{convertToLocalTime(item.timestamp)}</Text>
+          <Text className="mx-12 text-xs">
+            {convertToLocalTime(item.timestamp)}
+          </Text>
         </View>
       ) : (
         <></>

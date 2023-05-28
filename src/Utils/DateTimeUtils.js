@@ -51,3 +51,7 @@ export const checkIfDateStringUpcoming = dateString => {
     return true;
   }
 };
+
+export const getCurrentTimestamp = ()=>{
+  return Date.now();
+}
