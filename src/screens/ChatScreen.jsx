@@ -13,6 +13,7 @@ import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,7 +70,120 @@ const ChatScreen = ({navigation, route}) => {
       />
 
       {isLoading ? (
-        <ActivityIndicator size={42} className="flex-grow" />
+        <ScrollView className="bg-white h-full">
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'column-reverse', flexGrow: 1}}>
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginVertical: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+              <View
+                style={{
+                  width: '50%',
+                  height: 200,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopRightRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopRightRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <View
+                style={{
+                  width: '50%',
+                  height: 200,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopRightRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+              <View
+                style={{
+                  width: '30%',
+                  height: 30,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderTopLeftRadius: 5,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                  alignSelf: 'flex-end',
+                }}
+              />
+            </View>
+          </SkeletonPlaceholder>
+        </ScrollView>
       ) : (
         <FlatList
           data={data}
