@@ -34,3 +34,39 @@ export const sendPersonalMessage = async (messageObj, receiver) => {
         }
     })
 }
+
+export const emitIsTyping = async (
+  selfId,
+  receiverId,
+  isTyping,
+  isGrpChat,
+  selfName,
+) => {
+  let socket = await getSocket();
+  socket.emit('isTyping', selfId, receiverId, isTyping, isGrpChat, selfName);
+};
+
+export const listenIsTyping = async (event, typingListener) => {
+  let socket = await getSocket();
+  socket.on(event, arg => {
+    typingListener(arg.status, arg.senderName);
+  });
+};
+
+export const emitAllReadStatus = async (selfId, receiverId) => {
+  let socket = await getSocket();
+  socket.emit('read-status', selfId, receiverId, Date.now().toString());
+};
+
+export const listenNewMessageEvent = async (event, onNewMessage) => {
+  let socket = await getSocket();
+  socket.on(event, arg => {
+    onNewMessage(arg);
+  });
+};
+export const listenTempMessageRead = async (event, onTempMessageRead) => {
+  let socket = await getSocket();
+  socket.on(event, arg => {
+    onTempMessageRead();
+  });
+};

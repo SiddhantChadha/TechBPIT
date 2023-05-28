@@ -19,6 +19,8 @@ import {
   emitIsTyping,
   getSocket,
   listenIsTyping,
+  listenNewMessageEvent,
+  listenTempMessageRead,
   sendPersonalMessage,
 } from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
@@ -42,6 +44,8 @@ const ChatScreen = ({navigation, route}) => {
         setIsLoading(false);
         if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
+        if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
+        if(!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead)
         break;
       default:
         break;
@@ -79,6 +83,14 @@ const ChatScreen = ({navigation, route}) => {
         setIsTyping(false);
       }, 1000);
     }
+  };
+  const onNewMessage = message => {
+    if (!isGrpchat) {
+    }
+  };
+
+  const onTempMessageRead = () => {
+    //todo: mark all sent message read
   };
 
   const sendMessage = async () => {
