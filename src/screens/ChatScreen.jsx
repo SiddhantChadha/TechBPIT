@@ -44,6 +44,7 @@ const ChatScreen = ({navigation, route}) => {
         setIsLoading(false);
         if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
+        console.log("in use effect",data.length)
         if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
         if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
@@ -86,24 +87,35 @@ const ChatScreen = ({navigation, route}) => {
   };
   const onNewMessage = message => {
     if (!isGrpchat) {
-        setData([message,...data]);
+       console.log("just before update",data.length)
+        // let newData = [message,...data];
+        // setData(newData);
+        setData(d=>{return [message,...d]});
     }
   };
 
   const onTempMessageRead = () => {
     //todo: mark all sent message read
-    let newData = [...data];
-    newData.every((obj)=>{
-      if(obj.isRead == true){
-        return false;
-      }
+    // let newData = [...data];
+    // newData.every((obj)=>{
+    //   if(obj.isRead == true){
+    //     return false;
+    //   }
 
-      obj.isRead = true;
-      return true;
-    })
+    //   obj.isRead = true;
+    //   return true;
+    // })
 
-    setData(newData);
+    // let newData = data.map((item)=>{
+    //   if(item.isRead == false){
+    //     item.isRead = true;
+    //   }
 
+    //   return item;
+    // })
+
+    // setData(newData);
+    // setData(d=>{return newData});
   };
 
   const sendMessage = async () => {
