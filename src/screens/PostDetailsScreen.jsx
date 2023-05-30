@@ -2,65 +2,125 @@ import {ScrollView, View, Text, Image} from 'react-native';
 import React from 'react';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
+import {timestampToAgoFormat} from '../Utils/DateTimeUtils';
+import CustomTopBar from '../components/CustomTopBar';
+const headerTitle = postType => {
+  if (postType === 'resourcePost') return 'Resource Details';
+  if (postType === 'communityPost') return 'Post Details';
+  if (postType === 'eventPost') return 'Event Details';
+  return 'kya ho rha h';
+};
+const PostDetailsScreen = ({route, navigation}) => {
+  const item = route.params.itemData;
 
-const PostDetailsScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
-        <ChevronLeftIcon
-          color={Colors.BLACK}
-          style={{position: 'absolute'}}
-          onPress={() => navigation.goBack()}
-        />
+      <CustomTopBar
+        showBackButton={true}
+        navigation={navigation}
+        title={headerTitle(item.postType)}
+      />
+      <View style={{marginHorizontal: '10%'}}>
+        {item.imageUrl ? (
+          <Image
+            source={{
+              uri: item.imageUrl,
+            }}
+            style={{
+              width: '90%',
+              aspectRatio: 1,
+              alignSelf: 'center',
+              marginVertical: 10,
+            }}
+          />
+        ) : (
+          <View />
+        )}
+        {item.topic ? (
+          <Text style={{fontSize: 34, color: Colors.BLACK, fontWeight: 'bold'}}>
+            {item.topic}
+          </Text>
+        ) : (
+          <></>
+        )}
+
         <Text
           style={{
+            fontSize: 16,
+            marginVertical: 10,
             color: Colors.BLACK,
-            fontSize: 18,
-            fontWeight: '600',
-            alignSelf: 'center',
-            marginHorizontal: '20%',
           }}>
-          Event Details
+          {item.description}
         </Text>
-      </View>
 
-      <View style={{marginHorizontal: '10%'}}>
-        <Image
-          source={{
-            uri: 'https://content.jdmagicbox.com/comp/ernakulam/m4/0484px484.x484.140206113128.a9m4/catalogue/we-create-events-panampilly-nagar-ernakulam-event-management-companies-nsobpzm660.jpg?clr=123354',
-          }}
-          style={{width: '90%', aspectRatio: 1,alignSelf:"center", marginVertical:10}}
-        />
-        <Text style={{fontSize: 34, color: Colors.BLACK, fontWeight: 'bold'}}>
-          Welcome to NSCC
-        </Text>
-        <Text style={{fontSize: 16, marginVertical: 10}}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ipsum,
-          eligendi ipsam deleniti cumque, eum aspernatur suscipit quos eius sit
-          nulla laudantium fugiat temporibus eveniet libero. Saepe quo impedit
-          quaerat. Nemo ex quidem enim, ea, ut quos amet dolorem cupiditate
-          accusantium eligendi nulla sequi voluptate, harum earum! Quos dicta
-          praesentium perspiciatis! Totam dignissimos facere iste excepturi
-          dolor perspiciatis repellendus maiores! Totam neque quos suscipit
-          perspiciatis perferendis fugiat modi! Nulla consequuntur enim earum
-          minus eius iure laudantium! Veniam ipsam maiores distinctio, delectus
-          odio excepturi, minus deserunt doloremque labore, odit itaque
-          deleniti? Voluptas deleniti eos, nihil aliquam voluptates debitis quae
-          officia itaque ipsa nostrum ipsum. Neque obcaecati laborum recusandae
-          suscipit veritatis harum quod enim mollitia reiciendis. Maiores omnis
-          molestias deleniti repellat. Deserunt! Perferendis, quis quod eos
-          dolores atque saepe laborum natus eveniet culpa odio quaerat corrupti
-          veniam iste in harum fuga aliquid ipsam aspernatur eius? Qui deleniti
-          autem sint voluptatibus repudiandae atque! Eius aut ipsam dignissimos
-          aspernatur repellat magnam provident perferendis eos tenetur explicabo
-          illo exercitationem, quae ad consequuntur magni totam sed tempora,
-          asperiores reprehenderit et quasi minima enim ut quo. Voluptates.
-          Aperiam voluptatem alias natus eligendi nam maiores quas vero. Tenetur
-          velit fuga perspiciatis dolorem doloribus ullam repudiandae, at ab
-          itaque culpa nesciunt, optio harum vel qui voluptatibus facere
-          quisquam similique! Quis voluptatibus, molestiae eaque nemo vitae
-          mollitia, beatae, voluptates reiciendis neque commodi odio provident.
-        </Text>
+        {item.organizer ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">
+              Organizer:{' '}
+            </Text>
+            <Text className="text-base font-medium text-black">
+              {item.organizer}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {item.eventDate ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">Date: </Text>
+            <Text className="text-base font-medium text-black">
+              {item.eventDate}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {item.eventTime ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">Time: </Text>
+            <Text className="text-base font-medium text-black">
+              {item.eventTime}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+        {item.venue ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">Venue: </Text>
+            <Text className="text-base font-medium text-black">
+              {item.venue}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {item.resourceTime ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">
+              Read Time:{' '}
+            </Text>
+            <Text className="text-base font-medium text-black">
+              {item.resourceTime}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {item.link ? (
+          <View className="flex-row items-center">
+            <Text className="text-base font-medium text-black">Link: </Text>
+            <Text className="text-base font-medium text-blue-500">
+              {item.link}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
 
         <View
           style={{
@@ -70,7 +130,7 @@ const PostDetailsScreen = () => {
           }}>
           <Image
             source={{
-              uri: 'https://www.javatpoint.com/js/nodejs/images/node-js-tutorial.png',
+              uri: item.author.image,
             }}
             style={{
               width: 50,
@@ -79,9 +139,10 @@ const PostDetailsScreen = () => {
             }}
             resizeMode="center"
           />
+
           <View style={{marginLeft: 10}}>
             <Text style={{color: Colors.BLACK, fontWeight: 'bold'}}>
-              Tushar Jain
+              {item.author.username}
             </Text>
             <Text>Author</Text>
           </View>
@@ -95,7 +156,7 @@ const PostDetailsScreen = () => {
           }}>
           <Image
             source={{
-              uri: 'https://www.javatpoint.com/js/nodejs/images/node-js-tutorial.png',
+              uri: item.groupId.image,
             }}
             style={{
               width: 50,
@@ -106,13 +167,15 @@ const PostDetailsScreen = () => {
           />
           <View style={{marginLeft: 10}}>
             <Text style={{color: Colors.BLACK, fontWeight: 'bold'}}>
-              NodeJS
+              {item.groupId.groupName}
             </Text>
             <Text>Owner</Text>
           </View>
         </View>
 
-        <Text style={{marginVertical: 10}}>15 Jan 2023</Text>
+        <Text style={{marginVertical: 10}}>
+          {timestampToAgoFormat(item.timestamp)}
+        </Text>
       </View>
     </ScrollView>
   );

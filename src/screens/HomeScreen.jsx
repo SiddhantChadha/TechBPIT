@@ -5,6 +5,8 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
+  VirtualizedList,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
@@ -17,6 +19,8 @@ import EventItem from '../components/EventItem';
 import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import EventPostItem from '../components/EventPostItem';
+import ResourceItem from '../components/ResourceItem';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -267,10 +271,20 @@ const HomeScreen = ({navigation}) => {
         </ScrollView>
       ) : (
         <SafeAreaView>
-          <FlatList
+          <VirtualizedList
             data={data}
-            renderItem={({item}) => getPostType(item)}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('PostDetails', {itemData: item})
+                }>
+                {getPostType(item)}
+              </TouchableOpacity>
+            )}
             keyExtractor={item => item._id}
+            initialNumToRender={4}
+            getItemCount={_data => _data.length}
+            getItem={(_data, index) => _data[index]}
           />
         </SafeAreaView>
       )}
@@ -279,10 +293,10 @@ const HomeScreen = ({navigation}) => {
 };
 
 function getPostType(item) {
-  // if (item.postType === 'resourcePost') return <ResourceItem />;
+  if (item.postType === 'resourcePost') return <ResourceItem itemData={item} />;
   if (item.postType === 'communityPost')
     return <CommunityPostItem itemData={item} />;
-  // if (item.postType === 'eventPost') return <EventPostItem />;
+  if (item.postType === 'eventPost') return <EventPostItem itemData={item} />;
 }
 
 export default HomeScreen;

@@ -8,7 +8,8 @@ const CustomTopBar = ({navigation, title, showBackButton, rightComponent}) => {
     <View
       style={{
         justifyContent: 'center',
-        marginVertical: 24,
+        marginBottom: 24,
+        marginTop: 36,
         marginHorizontal: 8,
       }}>
       {showBackButton ? (

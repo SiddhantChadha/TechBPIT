@@ -29,19 +29,27 @@ export const dateStringToDDMMM = dateString => {
   return formattedDate;
 };
 
-
-export const convertToLocalTime = (timestamp)=>{
+export const convertToLocalTime = timestamp => {
   const d = new Date(Number(timestamp));
-  let result='';
+  let result = '';
 
-  if((d.getHours()/12) > 0 ){
-    result += (d.getHours()<10?'0':'') + d.getHours()%12 + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' pm';
-  }else{
-    result += d.getHours() + ':' + (d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes()) + ' am';
+  if (d.getHours() / 12 > 0) {
+    result +=
+      (d.getHours() < 10 ? '0' : '') +
+      (d.getHours() % 12) +
+      ':' +
+      (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
+      ' pm';
+  } else {
+    result +=
+      d.getHours() +
+      ':' +
+      (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
+      ' am';
   }
 
   return result;
-}
+};
 
 export const checkIfDateStringUpcoming = dateString => {
   const date = new Date(dateString);
@@ -52,6 +60,6 @@ export const checkIfDateStringUpcoming = dateString => {
   }
 };
 
-export const getCurrentTimestamp = ()=>{
+export const getCurrentTimestamp = () => {
   return Date.now();
-}
+};

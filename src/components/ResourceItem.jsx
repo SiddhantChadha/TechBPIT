@@ -3,7 +3,7 @@ import React from 'react';
 import {ChevronDownIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 
-const ResourceItem = () => {
+const ResourceItem = ({itemData}) => {
   return (
     <View
       style={{
@@ -23,7 +23,7 @@ const ResourceItem = () => {
         }}>
         <Image
           source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png',
+            uri: itemData.groupId.image,
           }}
           style={{
             width: 50,
@@ -39,10 +39,10 @@ const ResourceItem = () => {
             marginHorizontal: '3%',
           }}>
           <Text style={{fontSize: 16, fontWeight: 500, color: Colors.BLACK}}>
-            A new resource was added to Node Js community
+            A new resource was added to {itemData.groupId.groupName} community
           </Text>
           <Text style={{fontSize: 10, color: Colors.GREY_70}}>
-            15 mins read time
+            {itemData.resourceTime} read time
           </Text>
         </View>
         <ChevronDownIcon
@@ -52,7 +52,9 @@ const ResourceItem = () => {
       </View>
       <Image
         source={{
-          uri: 'https://static.toiimg.com/photo/msid-91006178/91006178.jpg',
+          uri: itemData.imageUrl
+            ? itemData.imageUrl
+            : 'https://static.toiimg.com/photo/msid-91006178/91006178.jpg',
         }}
         style={{
           width: '100%',

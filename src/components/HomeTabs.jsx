@@ -26,7 +26,6 @@ const HomeTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarInactiveTintColor: Colors.BLACK,
-        tabBarLabelPosition: 'beside-icon',
       }}
       shifting={true}>
       <Tab.Screen
