@@ -44,7 +44,7 @@ const ChatScreen = ({navigation, route}) => {
         setIsLoading(false);
         if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
-        console.log("in use effect",data.length)
+        
         if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
         if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
@@ -59,12 +59,13 @@ const ChatScreen = ({navigation, route}) => {
       selfId.current = await getSelfId();
     })();
 
-    execute(
+     execute(
       REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
       {id},
       onResponseReceived,
       onResponseFailed,
     );
+
   }, []);
 
   const handleTyping = text => {
@@ -87,35 +88,23 @@ const ChatScreen = ({navigation, route}) => {
   };
   const onNewMessage = message => {
     if (!isGrpchat) {
-       console.log("just before update",data.length)
-        // let newData = [message,...data];
-        // setData(newData);
-        setData(d=>{return [message,...d]});
+      setData(d => {
+        return [message, ...d];
+      });
     }
   };
 
   const onTempMessageRead = () => {
-    //todo: mark all sent message read
-    // let newData = [...data];
-    // newData.every((obj)=>{
-    //   if(obj.isRead == true){
-    //     return false;
-    //   }
-
-    //   obj.isRead = true;
-    //   return true;
-    // })
-
-    // let newData = data.map((item)=>{
-    //   if(item.isRead == false){
-    //     item.isRead = true;
-    //   }
-
-    //   return item;
-    // })
-
-    // setData(newData);
-    // setData(d=>{return newData});
+    //mark all sent message read
+    setData(d => {
+      return d.map(item => {
+        if (item.isRead == false) {
+          item.isRead = true;
+        }
+       
+        return item;
+      });
+    });
   };
 
   const sendMessage = async () => {
@@ -128,9 +117,10 @@ const ChatScreen = ({navigation, route}) => {
       imageUrl: '',
       isSent: false,
       isError: false,
+      isRead:false
     };
-    setData([msg,...data]);
-    await sendPersonalMessage(msg, id);
+    setData([msg, ...data]);
+    await sendPersonalMessage(msg, id, setData);
     setMessage('');
   };
 

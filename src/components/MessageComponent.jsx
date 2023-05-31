@@ -31,18 +31,14 @@ export default function MessageComponent({
             <Text className="mx-1 text-xs">
               {convertToLocalTime(item.timestamp)}
             </Text>
-            {item.isSent!==undefined ? (
-              item.isSent == true ? (
-                <CheckIcon color={Colors.GREY_4A} />
-              ) : item.isError == true ? (
-                <ExclamationTriangleIcon color="red" />
-              ) : (
-                <ClockIcon color={Colors.GREY_4A} />
-              )
-            ) : item.isRead == true ? (
+            {item.isRead ? (
               <DoubleTick />
-            ) : (
+            ) : item.isSent ? (
               <CheckIcon color={Colors.BLACK} />
+            ) : item.isError ? (
+              <ExclamationTriangleIcon color="red" />
+            ) : (
+              <ClockIcon color={Colors.GREY_4A} />
             )}
           </View>
         </View>

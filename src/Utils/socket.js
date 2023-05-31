@@ -25,7 +25,7 @@ export const instantiateSocket = async () => {
 export const sendPersonalMessage = async (
   messageObj,
   receiver,
-  setIsLoading,
+  setData,
 ) => {
   let socket = await getSocket();
   let msgToBeEmitted = {msgType:messageObj.msgType,sender:messageObj.sender,receiver:messageObj.receiver,
@@ -39,10 +39,11 @@ export const sendPersonalMessage = async (
     } else {
       messageObj.isError = true;
     }
-    //need find method to render UI whenever data mutate this is not a feasible solution as discussed with siddhant
-    //Please solve this asap
-    setIsLoading(true);
-    setIsLoading(false);
+    
+    setData((d)=>{
+      return [messageObj,...d.slice(2)]
+    })
+
   });
 };
 
