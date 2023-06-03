@@ -17,6 +17,9 @@ import {StatusBar} from 'react-native';
 import ChatScreen from './src/screens/ChatScreen';
 import {UserContext} from './src/context/UserIdContext';
 import HomeTabs from './src/components/HomeTabs';
+import { GestureHandlerRootView} from 'react-native-gesture-handler';
+import CameraScreen from './src/screens/CameraScreen';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -34,6 +37,7 @@ const App = () => {
   }, []);
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <LoggedInContext.Provider value={setIsLoggedIn}>
       <StatusBar
         barStyle="light-content"
@@ -51,6 +55,7 @@ const App = () => {
                 component={SetupProfileScreen}
               />
               <Stack.Screen name="Chat" component={ChatScreen} />
+              <Stack.Screen name="Camera" component={CameraScreen} />
               <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
             </Stack.Navigator>
           </UserContext.Provider>
@@ -64,6 +69,7 @@ const App = () => {
         )}
       </NavigationContainer>
     </LoggedInContext.Provider>
+    </GestureHandlerRootView>
   );
 };
 

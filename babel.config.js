@@ -10,5 +10,10 @@ module.exports = {
       },
     ],
     'nativewind/babel',
+    [
+      'react-native-reanimated/plugin', {
+          relativeSourceLocation: true,
+      },
+  ]
   ],
 };

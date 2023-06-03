@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect,useCallback} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
 import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
@@ -25,6 +25,7 @@ import {
 } from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
+import ImageBottomSheet from '../components/ImageBottomSheet';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +37,12 @@ const ChatScreen = ({navigation, route}) => {
   const {id, image, name} = route.params;
   const selfId = useRef();
   const isGrpchat = false;
+  
+  const bottomSheetModalRef = useRef(null);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current.present();
+  }, []);
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -279,12 +286,13 @@ const ChatScreen = ({navigation, route}) => {
           placeholder={'Type a message'}
         />
         <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
-          <PhotoIcon color={Colors.WHITE} />
+          <PhotoIcon color={Colors.WHITE} onPress={handlePresentModalPress} />
         </View>
         <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
           <PaperAirplaneIcon color={Colors.WHITE} onPress={sendMessage} />
         </View>
       </View>
+      <ImageBottomSheet ref={bottomSheetModalRef} />
     </View>
   );
 };
