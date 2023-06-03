@@ -86,6 +86,13 @@ export async function execute(
         onResponseFailed,
       );
       break;
+    case REST_COMMANDS.REQ_GET_USERS_PROJECT:
+      await getUsersProjects(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
     default:
       break;
   }
@@ -378,8 +385,7 @@ async function getExploreUsers(
 ) {
   try {
     const response = await fetch(
-      ROUTES.GET_EXPLORE_USERS +
-        new URLSearchParams({count: request.count}),
+      ROUTES.GET_EXPLORE_USERS + new URLSearchParams({count: request.count}),
       {
         method: 'GET',
         headers: {
@@ -387,6 +393,32 @@ async function getExploreUsers(
         },
       },
     );
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    console.log(error);
+    onResponseFailed(command, error);
+  }
+}
+
+async function getUsersProjects(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_USERS_PROJECTS + request.id, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
 
     basicResponseHandler(
       command,

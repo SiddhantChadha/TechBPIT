@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import {FlatList, View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
@@ -52,7 +46,7 @@ const EventScreen = ({navigation}) => {
     );
   }, []);
   return (
-    <View>
+    <View style={{flex: 1}}>
       <CustomTopBar
         navigation={navigation}
         title={'Upcoming Events'}
@@ -119,13 +113,11 @@ const EventScreen = ({navigation}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : data.length > 0 ? (
-        <SafeAreaView>
-          <FlatList
-            data={data}
-            renderItem={({item}) => renderItem(item)}
-            keyExtractor={item => item._id}
-          />
-        </SafeAreaView>
+        <FlatList
+          data={data}
+          renderItem={({item}) => renderItem(item)}
+          keyExtractor={item => item._id}
+        />
       ) : (
         <View className="justify-center items-center p-10">
           <Calendar />

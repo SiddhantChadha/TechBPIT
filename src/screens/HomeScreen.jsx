@@ -54,7 +54,7 @@ const HomeScreen = ({navigation}) => {
     );
   }, []);
   return (
-    <View>
+    <View style={{flex: 1}}>
       <CustomTopBar
         navigation={navigation}
         title={'Home Feed'}
@@ -270,23 +270,21 @@ const HomeScreen = ({navigation}) => {
           </View>
         </ScrollView>
       ) : (
-        <SafeAreaView>
-          <VirtualizedList
-            data={data}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('PostDetails', {itemData: item})
-                }>
-                {getPostType(item)}
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item._id}
-            initialNumToRender={4}
-            getItemCount={_data => _data.length}
-            getItem={(_data, index) => _data[index]}
-          />
-        </SafeAreaView>
+        <VirtualizedList
+          data={data}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('PostDetails', {itemData: item})
+              }>
+              {getPostType(item)}
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item._id}
+          initialNumToRender={4}
+          getItemCount={_data => _data.length}
+          getItem={(_data, index) => _data[index]}
+        />
       )}
     </View>
   );

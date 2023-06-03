@@ -1,5 +1,7 @@
 import React, {useContext} from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import {
   UserIcon,
   HomeIcon,

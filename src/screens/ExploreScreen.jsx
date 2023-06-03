@@ -92,7 +92,7 @@ const ExploreScreen = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <CustomTopBar navigation={navigation} title={'Explore'} />
       {isGroupLoading || isUserLoading ? (
         <ScrollView>
@@ -276,9 +276,5 @@ const ExploreScreen = ({navigation}) => {
     </View>
   );
 };
-
-function getPostType(item) {
-  if (item.postType === 'communityPost') return <PeopleMayKnowCard />;
-}
 
 export default ExploreScreen;

@@ -7,12 +7,20 @@ const PeopleMayKnowCard = ({item, navigation}) => {
   return (
     <View className="w-1/2">
       <View className="rounded-lg shadow-lg bg-white p-4 m-2 items-center justify-center flex-1">
-        <Image
-          source={{
-            uri: itemData.image,
-          }}
-          className="rounded-full w-12 h-12"
-        />
+        <Pressable
+          onPress={() =>
+            navigation.navigate('ViewUserProfile', {
+              id: itemData._id,
+              name: itemData.username,
+            })
+          }>
+          <Image
+            source={{
+              uri: itemData.image,
+            }}
+            className="rounded-full w-12 h-12"
+          />
+        </Pressable>
         <Text className="text-black text-base mt-2 text-center">
           {itemData.username}
         </Text>
