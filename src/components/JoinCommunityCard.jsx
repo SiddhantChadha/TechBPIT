@@ -4,7 +4,7 @@ import React from 'react';
 const JoinCommunityCard = ({item}) => {
   const itemData = item.item;
   return (
-    <View className="p-4 rounded-lg shadow-lg my-4 mx-6 bg-gray-50 w-11/12">
+    <View className="p-4 rounded-lg shadow-lg my-4 mx-6 bg-white w-11/12">
       <View className="flex-row justify-between">
         <View className="flex-row items-center">
           <Image

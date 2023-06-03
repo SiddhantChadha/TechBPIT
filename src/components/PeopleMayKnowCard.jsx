@@ -1,7 +1,7 @@
-import {View, Text, Image, Dimensions} from 'react-native';
+import {View, Text, Image, Dimensions, Pressable} from 'react-native';
 import React from 'react';
 
-const PeopleMayKnowCard = ({item}) => {
+const PeopleMayKnowCard = ({item, navigation}) => {
   const itemData = item.item;
   console.log('aa gya items', itemData);
   return (
@@ -20,9 +20,18 @@ const PeopleMayKnowCard = ({item}) => {
           {itemData.about}
         </Text>
         <View>
-          <Text className="bg-white text-blue-500 px-2 py-1 rounded-lg border border-blue-500 text-sm mt-2">
-            Message
-          </Text>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Chat', {
+                id: itemData._id,
+                image: itemData.image,
+                name: itemData.username,
+              })
+            }>
+            <Text className="bg-white text-blue-500 px-2 py-1 rounded-lg border border-blue-500 text-sm mt-2">
+              Message
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View>

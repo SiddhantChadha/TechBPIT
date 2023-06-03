@@ -237,9 +237,8 @@ const ExploreScreen = ({navigation}) => {
             <View>
               <FlatList
                 data={searchedData}
-                renderItem={SearchedItem}
+                renderItem={item => <SearchedItem item={item} />}
                 keyExtractor={item => item._id}
-                className="bg-black"
                 scrollEnabled={false}
               />
             </View>
@@ -259,7 +258,9 @@ const ExploreScreen = ({navigation}) => {
               </Text>
               <FlatList
                 data={userData}
-                renderItem={item => <PeopleMayKnowCard item={item} />}
+                renderItem={item => (
+                  <PeopleMayKnowCard item={item} navigation={navigation} />
+                )}
                 numColumns={2}
                 keyExtractor={item => item._id}
                 scrollEnabled={false}
