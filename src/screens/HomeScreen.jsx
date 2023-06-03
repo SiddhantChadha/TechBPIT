@@ -12,7 +12,10 @@ import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
-import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
+import {
+  ChatBubbleLeftIcon,
+  PencilSquareIcon,
+} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import EventItem from '../components/EventItem';
@@ -24,6 +27,7 @@ import ResourceItem from '../components/ResourceItem';
 
 const HomeScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
+  const [isModerator, setIsModerator] = useState(false);
   const [data, setData] = useState([]);
   const chatButton = (
     <ChatBubbleLeftIcon
@@ -33,6 +37,13 @@ const HomeScreen = ({navigation}) => {
     />
   );
 
+  const leftHeaderComponent = (
+    <PencilSquareIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-start'}}
+      onPress={() => navigation.navigate('ModeratorGroups')}
+    />
+  );
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_ALL_POSTS:
@@ -59,6 +70,8 @@ const HomeScreen = ({navigation}) => {
         navigation={navigation}
         title={'Home Feed'}
         rightComponent={chatButton}
+        showLeftComponent={true}
+        leftComponent={leftHeaderComponent}
       />
 
       {isLoading ? (

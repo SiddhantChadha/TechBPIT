@@ -2,7 +2,7 @@ import {TextInput} from 'react-native';
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
 
 const InputBox = forwardRef((props, ref) => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState(props.data);
 
   useImperativeHandle(
     ref,

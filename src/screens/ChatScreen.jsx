@@ -5,6 +5,7 @@ import {
   TextInput,
   ActivityIndicator,
   FlatList,
+  VirtualizedList,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
@@ -117,7 +118,7 @@ const ChatScreen = ({navigation, route}) => {
       isError: false,
     };
     setData([msg, ...data]);
-    await sendPersonalMessage(msg, id);
+    await sendPersonalMessage(msg, id, setIsLoading);
     setMessage('');
   };
 
@@ -254,10 +255,14 @@ const ChatScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : (
-        <FlatList
+        <VirtualizedList
           data={data}
           inverted
           className="flex-grow"
+          keyExtractor={(item, index) => index}
+          initialNumToRender={12}
+          getItemCount={_data => _data.length}
+          getItem={(_data, index) => _data[index]}
           renderItem={({item}) => (
             <MessageComponent
               item={item}

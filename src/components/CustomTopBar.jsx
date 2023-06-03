@@ -3,7 +3,14 @@ import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import React from 'react';
 import {Colors} from '../colors';
 
-const CustomTopBar = ({navigation, title, showBackButton, rightComponent}) => {
+const CustomTopBar = ({
+  navigation,
+  title,
+  showBackButton,
+  rightComponent,
+  leftComponent,
+  showLeftComponent,
+}) => {
   return (
     <View
       style={{
@@ -31,6 +38,7 @@ const CustomTopBar = ({navigation, title, showBackButton, rightComponent}) => {
         }}>
         {title}
       </Text>
+      {leftComponent}
       {rightComponent}
     </View>
   );

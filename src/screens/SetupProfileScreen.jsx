@@ -8,8 +8,8 @@ import AddSkillsInput from '../components/AddSkillInput';
 import {MinusIcon, PlusIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 
-const SetupProfileScreen = ({navigation}) => {
-  const data = [
+const SetupProfileScreen = ({navigation, data}) => {
+  const labelData = [
     {label: '1st year'},
     {label: '2nd year'},
     {label: '3rd year'},
@@ -49,7 +49,7 @@ const SetupProfileScreen = ({navigation}) => {
       <InputBox placeholder="About" />
 
       <Dropdown
-        data={data}
+        data={labelData}
         placeholder="Select year of study"
         labelField="label"
         valueField="label"
@@ -66,7 +66,7 @@ const SetupProfileScreen = ({navigation}) => {
           setValue(item.label);
         }}
       />
-      <InputBox placeholder="Add Skills (Eg. Android, Node, Sql" />
+      <InputBox placeholder="Add Skills (Eg. Android, Node, Sql)" />
       {addSocialLink ? (
         <TouchableOpacity onPress={() => setAddSocialLink(!addSocialLink)}>
           <View className="rounded-xl mx-10 p-3 border my-5">
