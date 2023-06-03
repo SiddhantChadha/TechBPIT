@@ -10,8 +10,6 @@ const EventItem = ({itemData}) => {
         flexDirection: 'row',
         marginHorizontal: '5%',
         marginVertical: 10,
-        height: 70,
-        flexWrap: 'wrap',
       }}>
       <View
         style={{
@@ -19,7 +17,7 @@ const EventItem = ({itemData}) => {
           flexDirection: 'column',
           borderWidth: 3,
           borderColor: Colors.BLACK,
-          height: '100%',
+          paddingHorizontal: 2,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -33,8 +31,8 @@ const EventItem = ({itemData}) => {
           flex: 2,
           borderWidth: 3,
           borderColor: Colors.BLACK,
-          height: '100%',
           justifyContent: 'center',
+          paddingHorizontal: 2,
           borderLeftWidth: 0,
           borderRightWidth: 0,
           alignItems: 'flex-start',
@@ -71,7 +69,7 @@ const EventItem = ({itemData}) => {
           borderWidth: 3,
           borderColor: Colors.BLACK,
           backgroundColor: Colors.GREEN,
-          height: '100%',
+          paddingHorizontal: 2,
           justifyContent: 'center',
           alignItems: 'center',
         }}>

@@ -1,24 +1,29 @@
 import {View, Text, Image, Dimensions} from 'react-native';
 import React from 'react';
 
-const PeopleMayKnowCard = () => {
-  const screenWidth = Dimensions.get('window').width;
+const PeopleMayKnowCard = ({item}) => {
+  const itemData = item.item;
+  console.log('aa gya items', itemData);
   return (
-    <View className="rounded-lg shadow-lg bg-white w-1/2 p-4  m-2 items-center flex-1 justify-center">
-      <Image
-        source={{
-          uri: 'https://media.licdn.com/dms/image/D4D03AQFceRkjbq5tdA/profile-displayphoto-shrink_400_400/0/1672917303490?e=1690416000&v=beta&t=SU4i3x_dMRcfSZqFf9noZzZwmi3xtih_idqVPD5QPdc',
-        }}
-        className="rounded-full w-12 h-12"
-      />
-      <Text className="text-black text-base mt-2 text-center">
-        Siddhant chadha
-      </Text>
-      <Text className="mt-2 text-center">Passionate programmer</Text>
-      <View>
-        <Text className="bg-white text-blue-500 px-2 py-1 rounded-lg border border-blue-500 text-sm mt-2">
-          Message
+    <View className="w-1/2">
+      <View className="rounded-lg shadow-lg bg-white p-4 m-2 items-center justify-center flex-1">
+        <Image
+          source={{
+            uri: itemData.image,
+          }}
+          className="rounded-full w-12 h-12"
+        />
+        <Text className="text-black text-base mt-2 text-center">
+          {itemData.username}
         </Text>
+        <Text className="mt-2 text-center text-ellipsis" numberOfLines={2}>
+          {itemData.about}
+        </Text>
+        <View>
+          <Text className="bg-white text-blue-500 px-2 py-1 rounded-lg border border-blue-500 text-sm mt-2">
+            Message
+          </Text>
+        </View>
       </View>
     </View>
   );

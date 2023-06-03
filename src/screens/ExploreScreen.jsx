@@ -19,11 +19,14 @@ import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
 import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
 import SearchBar from '../components/SearchBar';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SearchedItem from '../components/SearchedItem';
 
 const ExploreScreen = ({navigation}) => {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [isGroupLoading, setGroupLoading] = useState(true);
+  const [isUserLoading, setUserLoading] = useState(true);
+  const [groupData, setGroupData] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const screenWidth = Dimensions.get('window').width;
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
@@ -31,13 +34,17 @@ const ExploreScreen = ({navigation}) => {
 
   const onResponseReceived = (command, data) => {
     switch (command) {
-      case REST_COMMANDS.REQ_GET_ALL_POSTS:
-        setData(data);
-        setLoading(false);
+      case REST_COMMANDS.REQ_GET_EXPLORE_GROUPS:
+        setGroupData(data);
+        setGroupLoading(false);
         break;
       case REST_COMMANDS.REQ_GET_SEARCH_EXPLORE:
         setSearchedData(data);
         console.log(data);
+        break;
+      case REST_COMMANDS.REQ_GET_EXPLORE_USERS:
+        setUserData(data);
+        setUserLoading(false);
         break;
       default:
         break;
@@ -49,8 +56,14 @@ const ExploreScreen = ({navigation}) => {
 
   useEffect(() => {
     execute(
-      REST_COMMANDS.REQ_GET_ALL_POSTS,
+      REST_COMMANDS.REQ_GET_EXPLORE_GROUPS,
       {},
+      onResponseReceived,
+      onResponseFailed,
+    );
+    execute(
+      REST_COMMANDS.REQ_GET_EXPLORE_USERS,
+      {count: 10},
       onResponseReceived,
       onResponseFailed,
     );
@@ -81,7 +94,7 @@ const ExploreScreen = ({navigation}) => {
   return (
     <View>
       <CustomTopBar navigation={navigation} title={'Explore'} />
-      {isLoading ? (
+      {isGroupLoading || isUserLoading ? (
         <ScrollView>
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -224,7 +237,7 @@ const ExploreScreen = ({navigation}) => {
             <View>
               <FlatList
                 data={searchedData}
-                renderItem={JoinCommunityCard}
+                renderItem={SearchedItem}
                 keyExtractor={item => item._id}
                 className="bg-black"
                 scrollEnabled={false}
@@ -236,41 +249,24 @@ const ExploreScreen = ({navigation}) => {
                 Communities you may want to join
               </Text>
               <Carousel
-                data={data}
-                // ref={isCarousel}
+                data={groupData}
                 sliderWidth={screenWidth}
                 itemWidth={screenWidth - 50}
-                // layoutCardOffset={9}
-                // layout={'tinder'}
-                // onSnapToItem={index => setIndex(index)}
-                // useScrollView={true}
-                renderItem={JoinCommunityCard}
+                renderItem={item => <JoinCommunityCard item={item} />}
               />
-              {/* <Pagination
-            dotsLength={data.length}
-            activeDotIndex={index}
-            carouselRef={isCarousel}
-            dotStyle={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.92)',
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-            tappableDots={true}
-          /> */}
               <Text className="text-black font-semibold text-base mx-4">
                 People you may know{' '}
               </Text>
               <FlatList
-                data={data}
-                renderItem={PeopleMayKnowCard}
+                data={userData}
+                renderItem={item => <PeopleMayKnowCard item={item} />}
                 numColumns={2}
                 keyExtractor={item => item._id}
-                className="p-4"
                 scrollEnabled={false}
+                contentContainerStyle={{
+                  paddingHorizontal: 16,
+                  paddingBottom: 16,
+                }}
               />
             </View>
           )}

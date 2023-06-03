@@ -46,15 +46,46 @@ export async function execute(
         onResponseFailed,
       );
       break;
-      case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
-        await getPersonalChat(command,request,onResponseReceived,onResponseFailed);
+    case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
+      await getPersonalChat(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
-      case REST_COMMANDS.REQ_GET_PERSONAL_RECENT_CHAT:
-          await getPersonalRecentChat(command,request,onResponseReceived,onResponseFailed);
-          break;
-      case REST_COMMANDS.REQ_GET_USER_PROFILE:
-          await getUserProfile(command,request,onResponseReceived,onResponseFailed);
-        break;
+    case REST_COMMANDS.REQ_GET_PERSONAL_RECENT_CHAT:
+      await getPersonalRecentChat(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
+    case REST_COMMANDS.REQ_GET_USER_PROFILE:
+      await getUserProfile(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
+    case REST_COMMANDS.REQ_GET_EXPLORE_GROUPS:
+      await getExploreGropus(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
+    case REST_COMMANDS.REQ_GET_EXPLORE_USERS:
+      await getExploreUsers(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
     default:
       break;
   }
@@ -242,71 +273,129 @@ async function getPersonalChat(
   command,
   request,
   onResponseReceived,
-  onResponseFailed){
-    try {
-      const response = await fetch(`${ROUTES.GET_PERSONAL_CHAT}/${request.id}`, {
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.GET_PERSONAL_CHAT}/${request.id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getPersonalRecentChat(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_PERSONAL_RECENT_CHAT, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getUserProfile(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.GET_USER_PROFILE}/${request.id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getExploreGropus(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_EXPLORE_GROUPS, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    console.log(error);
+    onResponseFailed(command, error);
+  }
+}
+
+async function getExploreUsers(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(
+      ROUTES.GET_EXPLORE_USERS +
+        new URLSearchParams({count: request.count}),
+      {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${await getAccessToken()}`,
         },
-      });
-  
-      basicResponseHandler(
-        command,
-        response,
-        onResponseReceived,
-        onResponseFailed,
-      );
-    } catch (error) {
-      onResponseFailed(command, error);
-    }
-  }
+      },
+    );
 
-  async function getPersonalRecentChat(
-    command,
-    request,
-    onResponseReceived,
-    onResponseFailed){
-      try {
-        const response = await fetch(ROUTES.GET_PERSONAL_RECENT_CHAT, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-          },
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
-
-    async function getUserProfile(
+    basicResponseHandler(
       command,
-      request,
+      response,
       onResponseReceived,
-      onResponseFailed){
-        try {
-          const response = await fetch(`${ROUTES.GET_USER_PROFILE}/${request.id}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${await getAccessToken()}`,
-            },
-          });
-      
-          basicResponseHandler(
-            command,
-            response,
-            onResponseReceived,
-            onResponseFailed,
-          );
-        } catch (error) {
-          onResponseFailed(command, error);
-        }
-      }
-    
+      onResponseFailed,
+    );
+  } catch (error) {
+    console.log(error);
+    onResponseFailed(command, error);
+  }
+}
