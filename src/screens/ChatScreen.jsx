@@ -3,7 +3,7 @@ import {
   Text,
   ScrollView,
   TextInput,
-  ActivityIndicator,
+  Pressable,
   FlatList,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
@@ -26,6 +26,8 @@ import {
 import {getSelfId} from '../EncryptedStorageHelper';
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 
+import ImageBottomSheet from '../components/ImageBottomSheet';
+
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -35,6 +37,7 @@ const ChatScreen = ({navigation, route}) => {
   const receiverTypingTimerRef = useRef(null);
   const {id, image, name} = route.params;
   const selfId = useRef();
+  const bottomSheet = useRef();
   const isGrpchat = false;
 
   const onResponseReceived = (command, data) => {
@@ -44,7 +47,7 @@ const ChatScreen = ({navigation, route}) => {
         setIsLoading(false);
         if (!isGrpchat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
-        
+
         if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
         if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
@@ -59,13 +62,12 @@ const ChatScreen = ({navigation, route}) => {
       selfId.current = await getSelfId();
     })();
 
-     execute(
+    execute(
       REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
       {id},
       onResponseReceived,
       onResponseFailed,
     );
-
   }, []);
 
   const handleTyping = text => {
@@ -101,24 +103,41 @@ const ChatScreen = ({navigation, route}) => {
         if (item.isRead == false) {
           item.isRead = true;
         }
-       
+
         return item;
       });
     });
   };
 
-  const sendMessage = async () => {
-    let msg = {
-      msgType: 'direct-message',
-      message,
-      sender: selfId.current,
-      timestamp: getCurrentTimestamp(),
-      receiver: id,
-      imageUrl: '',
-      isSent: false,
-      isError: false,
-      isRead:false
-    };
+  const sendMessage = async imgUrl => {
+    let msg;
+
+    if (imgUrl) {
+      msg = {
+        msgType: 'direct-message-with-image',
+        message: '',
+        sender: selfId.current,
+        timestamp: getCurrentTimestamp(),
+        receiver: id,
+        imageUrl: imgUrl,
+        isSent: false,
+        isError: false,
+        isRead: false,
+      };
+    } else {
+      msg = {
+        msgType: 'direct-message',
+        message,
+        sender: selfId.current,
+        timestamp: getCurrentTimestamp(),
+        receiver: id,
+        imageUrl: '',
+        isSent: false,
+        isError: false,
+        isRead: false,
+      };
+    }
+
     setData([msg, ...data]);
     await sendPersonalMessage(msg, id, setData);
     setMessage('');
@@ -278,13 +297,23 @@ const ChatScreen = ({navigation, route}) => {
           className="m-2 px-5 rounded-3xl border  border-grey_4a flex-grow"
           placeholder={'Type a message'}
         />
-        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
-          <PhotoIcon color={Colors.WHITE} />
-        </View>
-        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
-          <PaperAirplaneIcon color={Colors.WHITE} onPress={sendMessage} />
-        </View>
+        <Pressable onPress={() => bottomSheet.current.open()}>
+          <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
+            <PhotoIcon color={Colors.WHITE} />
+          </View>
+        </Pressable>
+        <Pressable onPress={sendMessage}>
+          <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
+            <PaperAirplaneIcon color={Colors.WHITE} />
+          </View>
+        </Pressable>
       </View>
+      <ImageBottomSheet
+        ref={bottomSheet}
+        navigation={navigation}
+        action={sendMessage}
+        receiver={{id,image,name}}
+      />
     </View>
   );
 };

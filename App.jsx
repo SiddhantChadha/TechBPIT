@@ -17,6 +17,8 @@ import {StatusBar} from 'react-native';
 import ChatScreen from './src/screens/ChatScreen';
 import {UserContext} from './src/context/UserIdContext';
 import HomeTabs from './src/components/HomeTabs';
+import UplaodImageScreen from './src/screens/UplaodImageScreen';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -51,6 +53,7 @@ const App = () => {
                 component={SetupProfileScreen}
               />
               <Stack.Screen name="Chat" component={ChatScreen} />
+              <Stack.Screen name="UploadImage" component={UplaodImageScreen} />
               <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
             </Stack.Navigator>
           </UserContext.Provider>

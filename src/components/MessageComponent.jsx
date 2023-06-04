@@ -6,7 +6,6 @@ import {convertToLocalTime} from '../Utils/DateTimeUtils';
 import {
   CheckIcon,
   ClockIcon,
-  ExclamationCircleIcon,
   ExclamationTriangleIcon,
 } from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
@@ -63,16 +62,14 @@ export default function MessageComponent({
             <Text className="mx-1 text-xs">
               {convertToLocalTime(item.timestamp)}
             </Text>
-            {item.isSent && item.isSent == false ? (
-              <ClockIcon />
+            {item.isRead ? (
+              <DoubleTick />
             ) : item.isSent ? (
-              item.isRead == true ? (
-                <DoubleTick />
-              ) : (
-                <CheckIcon />
-              )
+              <CheckIcon color={Colors.BLACK} />
+            ) : item.isError ? (
+              <ExclamationTriangleIcon color="red" />
             ) : (
-              <ExclamationCircleIcon />
+              <ClockIcon color={Colors.GREY_4A} />
             )}
           </View>
         </View>
