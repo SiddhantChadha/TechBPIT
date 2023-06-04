@@ -93,6 +93,17 @@ export async function execute(
         onResponseReceived,
         onResponseFailed,
       );
+      break;
+    case REST_COMMANDS.REQ_GET_MANAGEABLE_GROUPS:
+      await getManageableGroups(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
+    case REST_COMMANDS.REQ_GET_ALL_USERS:
+      await getAllUsers(command, request, onResponseReceived, onResponseFailed);
     default:
       break;
   }
@@ -103,7 +114,7 @@ async function basicResponseHandler(
   onResponseReceived,
   onResponseFailed,
 ) {
-  console.log('called');
+  console.log('called', response.status);
   if (response.ok) {
     const data = await response.json();
     console.log(data);
@@ -414,6 +425,57 @@ async function getUsersProjects(
 ) {
   try {
     const response = await fetch(ROUTES.GET_USERS_PROJECTS + request.id, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    console.log(error);
+    onResponseFailed(command, error);
+  }
+}
+
+async function getManageableGroups(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_MANGABLE_GROUPS + request.id, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    console.log(error);
+    onResponseFailed(command, error);
+  }
+}
+async function getAllUsers(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_ALL_USERS, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,

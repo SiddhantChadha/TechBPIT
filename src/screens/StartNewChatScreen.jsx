@@ -1,22 +1,36 @@
-import {View, Text, FlatList, ScrollView} from 'react-native';
+import {View, Text, FlatList, ScrollView, Pressable} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import SearchedItem from '../components/SearchedItem';
 import CustomTopBar from '../components/CustomTopBar';
-import {UserContext} from '../context/UserIdContext';
+import {Colors} from '../colors';
+import {XCircleIcon} from 'react-native-heroicons/outline';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
-import NoAccess from '../assets/images/ic_no_access.svg';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import UserCard from '../components/UserCard';
+import NotFound from '../assets/images/ic_not_found.svg';
+import SearchBar from '../components/SearchBar';
 
-const ModeratorsGroupScreen = ({navigation}) => {
-  const selfId = useContext(UserContext);
+const StartNewChatScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchString, setSearchString] = useState('');
+  const [searchedData, setSearchedData] = useState(data);
+
+  const getSearchedString = text => {
+    setSearchedData(filterData(data, text));
+  };
+
+  const clearData = () => {
+    setSearchString('');
+    setSearchedData(filterData(data, ''));
+  };
+
   const onResponseReceived = (command, data) => {
     switch (command) {
-      case REST_COMMANDS.REQ_GET_MANAGEABLE_GROUPS:
+      case REST_COMMANDS.REQ_GET_ALL_USERS:
         setIsLoading(false);
         setData(data);
+        setSearchedData(filterData(data, searchString));
         break;
       default:
         break;
@@ -25,19 +39,31 @@ const ModeratorsGroupScreen = ({navigation}) => {
   const onResponseFailed = (command, error) => {};
   useEffect(() => {
     execute(
-      REST_COMMANDS.REQ_GET_MANAGEABLE_GROUPS,
-      {id: selfId},
+      REST_COMMANDS.REQ_GET_ALL_USERS,
+      {},
       onResponseReceived,
       onResponseFailed,
     );
   }, []);
+  useEffect(() => {
+    if (searchString.length < 3) {
+      setSearchedData(filterData(data, ''));
+    }
+  }, [searchString]);
   return (
-    <View>
+    <View className="bg-white flex-grow">
       <CustomTopBar
-        title={'Manage Groups'}
-        showBackButton={true}
+        title={'New Chat'}
         navigation={navigation}
+        showBackButton={true}
       />
+      <SearchBar
+        searchString={searchString}
+        setSearchString={setSearchString}
+        getSearchedString={getSearchedString}
+        clearData={clearData}
+      />
+
       {isLoading ? (
         <ScrollView>
           <SkeletonPlaceholder>
@@ -97,22 +123,42 @@ const ModeratorsGroupScreen = ({navigation}) => {
             </View>
           </SkeletonPlaceholder>
         </ScrollView>
-      ) : data.length ? (
-        <View>
+      ) : searchedData.length ? (
+        <View className="mb-4 flex-grow">
           <FlatList
-            data={data}
-            renderItem={item => <SearchedItem item={item} />}
+            data={searchedData}
+            renderItem={({item}) => (
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('Chat', {
+                    id: item._id,
+                    image: item.image,
+                    name: item.username,
+                  })
+                }>
+                <UserCard itemData={item} />
+              </Pressable>
+            )}
             keyExtractor={item => item._id}
           />
         </View>
       ) : (
-        <View className="items-center m-4">
-          <NoAccess />
-          <Text>You don't have acces to manage any groups :/</Text>
+        <View className="items-center m-4 ">
+          <NotFound />
+          <Text className="text-base text-black">No Users Found :/</Text>
         </View>
       )}
     </View>
   );
 };
+const filterData = (data, text) => {
+  if (text === '') {
+    console.log(data);
+    return data;
+  }
+  const filtererdList = data.filter(user => user.username.includes(text));
+  console.log(filtererdList);
+  return filtererdList;
+};
 
-export default ModeratorsGroupScreen;
+export default StartNewChatScreen;

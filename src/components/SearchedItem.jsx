@@ -5,7 +5,7 @@ const SearchedItem = ({item}) => {
   const itemData = item.item;
   console.log('ye h jo h', itemData);
   return (
-    <View className="flex-row items-center shadow-lg m-4 p-4 bg-white rounded-lg">
+    <View className="flex-row items-center shadow-lg mx-4 my-2 p-4 bg-white rounded-lg">
       <Image
         source={{
           uri: itemData.image,
