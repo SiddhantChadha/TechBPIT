@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import CommunityPostItem from '../components/CommunityPostItem';
@@ -20,6 +21,8 @@ import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
 import SearchBar from '../components/SearchBar';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SearchedItem from '../components/SearchedItem';
+import ProjectCard from '../components/ProjectCard';
+import ProjectRequirementItem from '../components/ProjectRequirementItem';
 
 const ExploreScreen = ({navigation}) => {
   const [isGroupLoading, setGroupLoading] = useState(true);
@@ -244,15 +247,42 @@ const ExploreScreen = ({navigation}) => {
             </View>
           ) : (
             <View>
-              <Text className="text-black font-semibold text-base mx-4">
-                Communities you may want to join
-              </Text>
-              <Carousel
-                data={groupData}
-                sliderWidth={screenWidth}
-                itemWidth={screenWidth - 50}
-                renderItem={item => <JoinCommunityCard item={item} />}
-              />
+              {groupData.length ? (
+                <View>
+                  <Text className="text-black font-semibold text-base mx-4">
+                    Communities you may want to join
+                  </Text>
+                  <Carousel
+                    data={groupData}
+                    sliderWidth={screenWidth}
+                    itemWidth={screenWidth - 50}
+                    renderItem={item => <JoinCommunityCard item={item} />}
+                  />
+                </View>
+              ) : (
+                <></>
+              )}
+
+              <View>
+                <Text className="text-black font-semibold text-base mx-4">
+                  Collaborate on Projects
+                </Text>
+                <FlatList
+                  data={['Node', 'Android', 'JavaScript', 'SQL']}
+                  renderItem={({items}) => (
+                    <Pressable
+                      onPress={() => navigation.navigate('RequirementDetails')}>
+                      <ProjectRequirementItem />
+                    </Pressable>
+                  )}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    paddingHorizontal: 16,
+                  }}
+                />
+              </View>
+
               <Text className="text-black font-semibold text-base mx-4">
                 People you may know{' '}
               </Text>

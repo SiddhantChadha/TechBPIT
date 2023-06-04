@@ -12,6 +12,8 @@ module.exports = {
         primary_blue: '#2E3094',
         primary_red: '#f14440',
         grey_f5: '#f7f7f7',
+        purple: '#A684F5',
+        light_purple: '#DEDEF0',
       },
     },
     maxWidth: {'1/2': '50%'},

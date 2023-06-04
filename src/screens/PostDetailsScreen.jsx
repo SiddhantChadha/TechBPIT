@@ -2,7 +2,7 @@ import {ScrollView, View, Text, Image} from 'react-native';
 import React from 'react';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
-import {timestampToAgoFormat} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMM, timestampToAgoFormat} from '../Utils/DateTimeUtils';
 import CustomTopBar from '../components/CustomTopBar';
 const headerTitle = postType => {
   if (postType === 'resourcePost') return 'Resource Details';
@@ -70,7 +70,7 @@ const PostDetailsScreen = ({route, navigation}) => {
           <View className="flex-row items-center">
             <Text className="text-base font-medium text-black">Date: </Text>
             <Text className="text-base font-medium text-black">
-              {item.eventDate}
+              {dateStringToDDMMM(item.eventDate)}
             </Text>
           </View>
         ) : (
@@ -78,7 +78,7 @@ const PostDetailsScreen = ({route, navigation}) => {
         )}
 
         {item.eventTime ? (
-          <View className="flex-row items-center">
+          <View className="flex-row">
             <Text className="text-base font-medium text-black">Time: </Text>
             <Text className="text-base font-medium text-black">
               {item.eventTime}
@@ -88,7 +88,7 @@ const PostDetailsScreen = ({route, navigation}) => {
           <></>
         )}
         {item.venue ? (
-          <View className="flex-row items-center">
+          <View className="flex-row">
             <Text className="text-base font-medium text-black">Venue: </Text>
             <Text className="text-base font-medium text-black">
               {item.venue}
@@ -99,7 +99,7 @@ const PostDetailsScreen = ({route, navigation}) => {
         )}
 
         {item.resourceTime ? (
-          <View className="flex-row items-center">
+          <View className="flex-row ">
             <Text className="text-base font-medium text-black">
               Read Time:{' '}
             </Text>
@@ -112,7 +112,7 @@ const PostDetailsScreen = ({route, navigation}) => {
         )}
 
         {item.link ? (
-          <View className="flex-row items-center">
+          <View className="flex-row">
             <Text className="text-base font-medium text-black">Link: </Text>
             <Text className="text-base font-medium text-blue-500">
               {item.link}
