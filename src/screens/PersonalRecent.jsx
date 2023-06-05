@@ -2,7 +2,6 @@ import {
   SafeAreaView,
   FlatList,
   Pressable,
-  ActivityIndicator,
   ScrollView,
   View,
 } from 'react-native';
@@ -303,6 +302,7 @@ const PersonalRecent = ({navigation}) => {
                   id: item._id,
                   image: item.image,
                   name: item.username,
+                  isGrpChat:false
                 })
               }>
               <ChatThreadCard

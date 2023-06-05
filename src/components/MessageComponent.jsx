@@ -21,7 +21,9 @@ export default function MessageComponent({
       {/* <Text className="self-center px-4 py-2 bg-gray-200 rounded-full text-gray-600">
         Today
       </Text> */}
-      {item.msgType === 'direct-message' && item.receiver == receiver ? (
+      {(item.msgType === 'direct-message' ||
+        item.msgType === 'group-message') &&
+      item.receiver == receiver ? (
         <View className="mb-2">
           <Text className="text-white max-w-1/2 p-4 bg-primary_blue mx-1 rounded-b-lg rounded-tl-lg self-end">
             {item.message}
@@ -44,7 +46,8 @@ export default function MessageComponent({
       ) : (
         <></>
       )}
-      {item.msgType === 'direct-message-with-image' &&
+      {(item.msgType === 'direct-message-with-image' ||
+        item.msgType === 'group-message-with-image') &&
       item.receiver == receiver ? (
         <View className="mb-2">
           <View className="max-w-1/2 p-2  bg-primary_blue mx-1 rounded-b-md rounded-tl-md self-end">
@@ -76,7 +79,9 @@ export default function MessageComponent({
       ) : (
         <></>
       )}
-      {item.msgType === 'direct-message' && item.sender == receiver ? (
+      {(item.msgType === 'direct-message' ||
+        item.msgType === 'group-message') &&
+      item.sender == receiver ? (
         <View className="mb-2">
           <View className="flex-row items-center">
             <Image
@@ -99,7 +104,8 @@ export default function MessageComponent({
       ) : (
         <></>
       )}
-      {item.msgType === 'direct-message-with-image' &&
+      {(item.msgType === 'direct-message-with-image' ||
+        item.msgType === 'group-message-with-image') &&
       item.sender == receiver ? (
         <View className="mb-2">
           <View className="flex-row items-end">

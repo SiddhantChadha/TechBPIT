@@ -35,21 +35,21 @@ const ChatScreen = ({navigation, route}) => {
   const [isTyping, setIsTyping] = useState(false);
   const selfTypingTimerRef = useRef(null);
   const receiverTypingTimerRef = useRef(null);
-  const {id, image, name} = route.params;
+  const {id, image, name,isGrpChat} = route.params;
   const selfId = useRef();
   const bottomSheet = useRef();
-  const isGrpchat = false;
+
 
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
-        if (!isGrpchat) emitAllReadStatus(selfId.current, id);
+        if (!isGrpChat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
 
-        if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
-        if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
+        if (!isGrpChat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
+        if (!isGrpChat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
       default:
         break;
@@ -73,14 +73,14 @@ const ChatScreen = ({navigation, route}) => {
   const handleTyping = text => {
     setMessage(text);
     clearTimeout(selfTypingTimerRef.current);
-    emitIsTyping(selfId.current, id, true, isGrpchat, 'Tushar Jain');
+    emitIsTyping(selfId.current, id, true, isGrpChat, 'Tushar Jain');
     selfTypingTimerRef.current = setTimeout(() => {
-      emitIsTyping(selfId.current, id, false, isGrpchat, 'Tushar Jain');
+      emitIsTyping(selfId.current, id, false, isGrpChat, 'Tushar Jain');
     }, 1000);
   };
 
   const typingListener = (status, senderName) => {
-    if (!isGrpchat) {
+    if (!isGrpChat) {
       setIsTyping(status);
       clearTimeout(receiverTypingTimerRef.current);
       receiverTypingTimerRef.current = setTimeout(() => {
@@ -89,7 +89,7 @@ const ChatScreen = ({navigation, route}) => {
     }
   };
   const onNewMessage = message => {
-    if (!isGrpchat) {
+    if (!isGrpChat) {
       setData(d => {
         return [message, ...d];
       });
@@ -158,6 +158,7 @@ const ChatScreen = ({navigation, route}) => {
         typing={isTyping ? 'typing...' : ''}
         image={image}
         id={id}
+        isGrpChat
       />
 
       {isLoading ? (

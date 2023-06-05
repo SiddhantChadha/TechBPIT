@@ -3,11 +3,17 @@ import React from 'react';
 import {Colors} from '../colors';
 import {ArrowLeftIcon} from 'react-native-heroicons/outline';
 
-const ChatThreadHeader = ({navigation, name, image, typing,id}) => {
+const ChatThreadHeader = ({navigation, name, image, typing, id, isGrpChat}) => {
   return (
     <View className="flex-row items-center bg-primary_blue py-2 px-4 flex-wrap">
       <ArrowLeftIcon color={Colors.WHITE} onPress={() => navigation.goBack()} />
-      <Pressable className="flex flex-row items-center" onPress={()=>navigation.navigate('ViewUserProfile',{id,name})} >
+      <Pressable
+        className="flex flex-row items-center"
+        onPress={() =>
+          isGrpChat
+            ? navigation.navigate()
+            : navigation.navigate('ViewUserProfile', {id, name})
+        }>
         <Image
           source={{
             uri: image,

@@ -1,8 +1,8 @@
 import {View, Text, Image} from 'react-native';
 import React from 'react';
-import { convertToLocalTime } from '../Utils/DateTimeUtils';
+import {convertToLocalTime} from '../Utils/DateTimeUtils';
 
-const ChatThreadCard = ({id,name,image,lastMessage}) => {
+const ChatThreadCard = ({id, name, image, lastMessage}) => {
   return (
     <View className="flex flex-row bg-white p-3">
       <View className="">
@@ -17,27 +17,40 @@ const ChatThreadCard = ({id,name,image,lastMessage}) => {
       <View className="flex-grow mx-3">
         <Text className="text-black text-lg">{name}</Text>
         <View className="flex flex-row">
-          {(lastMessage.msgType==='direct-message' || lastMessage.msgType==='direct-message-with-image')?
-          (id === lastMessage.sender) ? (
-            <Text>{name} : </Text>
+          {lastMessage && lastMessage.msgType === 'direct-message' ? (
+            id === lastMessage.sender ? (
+              <Text>
+                {name} : {lastMessage.message}
+              </Text>
+            ) : (
+              <Text>You : {lastMessage.message}</Text>
+            )
+          ) : lastMessage &&
+            lastMessage.msgType === 'direct-message-with-image' ? (
+            id === lastMessage.sender ? (
+              <Text>{name} : Image</Text>
+            ) : (
+              <Text>You : Image</Text>
+            )
+          ) : lastMessage && lastMessage.msgType === 'group-message' ? (
+            <Text>
+              {lastMessage.sender.username} : {lastMessage.message}
+            </Text>
+          ) : lastMessage &&
+            lastMessage.msgType === 'group-message-with-image' ? (
+            <Text>{lastMessage.sender.username} : Image</Text>
           ) : (
-            <Text>You : </Text>
-          ):<Text>{lastMessage.sender.username} : </Text>}
-          {(lastMessage.msgType === 'direct-message' || lastMessage.msgType==='group-message') ? (
-            <Text>{lastMessage.message}</Text>
-          ) : (
-            <Text>Image</Text>
+            <></>
           )}
         </View>
       </View>
       <View>
         <Text className="text-GRAY_70 text-md flex-1">
-          {convertToLocalTime(lastMessage.timestamp)}
+          {lastMessage && convertToLocalTime(lastMessage.timestamp)}
         </Text>
       </View>
     </View>
   );
 };
-
 
 export default ChatThreadCard;

@@ -1,67 +1,321 @@
-import {SafeAreaView, FlatList} from 'react-native';
-import React from 'react';
+import {
+  SafeAreaView,
+  FlatList,
+  ScrollView,
+  Pressable,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import ChatThreadCard from '../components/ChatThreadCard';
+import {REST_COMMANDS} from '../APIController/RestCommands';
+import {execute} from '../APIController/controller';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-const DATA = {
-  _id: '645354875812e555c537c071',
-  email: 'tusharjain@gmail.com',
-  username: 'Tushar Jain',
-  image:
-    'https://toppng.com/public/uploads/preview/circled-user-icon-user-pro-icon-11553397069rpnu1bqqup.png',
-  groupsJoined: [
-    {
-      _id: '63add2285086f6fca8576f0c',
-      groupName: 'NodeJs',
-      image: 'https://www.javatpoint.com/js/nodejs/images/node-js-tutorial.png',
-      lastMessage: {
-        msgType: 'group-message-with-image',
-        sender: {
-          _id: '63add1dc5086f6fca8576f01',
-          username: 'Tushar Jain',
-        },
-        receiver: '63add2285086f6fca8576f0c',
-        message: '',
-        timestamp: '1673688639749',
-        imageUrl:
-          'http://res.cloudinary.com/dmigta0dz/image/upload/v1673688639/qwdr7w9bb7nnxtir6gfl.jpg',
-        readAt: null,
-      },
-    },
-    {
-      _id: '63c5f871aea9c742cbe465f4',
-      groupName: 'Machine Learning',
-      image:
-        'https://builtin.com/sites/www.builtin.com/files/styles/og/public/2021-12/machine-learning-examples-applications.png',
-      lastMessage: {
-        msgType: 'group-message',
-        sender: {
-          _id: '645354875812e555c537c071',
-          username: 'Tushar Jain',
-        },
-        receiver: '63c5f871aea9c742cbe465f4',
-        message: 'fggh',
-        timestamp: '1685199233226',
-        imageUrl: '',
-        readAt: null,
-      },
-    },
-  ],
-};
+const GroupRecent = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-const GroupRecent = () => {
+  const onResponseReceived = (command, data) => {
+    switch (command) {
+      case REST_COMMANDS.REQ_GET_GROUP_RECENT_CHAT:
+        setData(data);
+        setIsLoading(false);
+        break;
+      default:
+        break;
+    }
+  };
+  const onResponseFailed = (command, error) => {};
+
+  useEffect(() => {
+    execute(
+      REST_COMMANDS.REQ_GET_GROUP_RECENT_CHAT,
+      {},
+      onResponseReceived,
+      onResponseFailed,
+    );
+    console.log('grp recent', data.groupsJoined);
+  }, []);
+
   return (
     <SafeAreaView>
-      <FlatList
-        className="h-full bg-white"
-        data={DATA.groupsJoined}
-        renderItem={({item}) => (
-          <ChatThreadCard
-            image={item.image}
-            name={item.groupName}
-            lastMessage={item.lastMessage}
-          />
-        )}
-      />
+      {isLoading ? (
+        <ScrollView className="bg-white h-full">
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  marginHorizontal: '5%',
+                  marginTop: '5%',
+                }}
+              />
+              <View style={{flexGrow: 1}}>
+                <View
+                  style={{
+                    width: '60%',
+                    height: 25,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    height: 15,
+                    borderRadius: 5,
+                    marginHorizontal: '5%',
+                    marginTop: '5%',
+                  }}
+                />
+              </View>
+            </View>
+          </SkeletonPlaceholder>
+        </ScrollView>
+      ) : (
+        <FlatList
+          className="h-full bg-white"
+          data={data.groupsJoined}
+          renderItem={({item}) => (
+            <Pressable
+              onPress={() =>
+                navigation.navigate('Chat', {
+                  id: item._id,
+                  image: item.image,
+                  name: item.groupName,
+                  isGrpChat: true,
+                })
+              }>
+              <ChatThreadCard
+                image={item.image}
+                name={item.groupName}
+                lastMessage={item.lastMessage}
+                id={item._id}
+              />
+            </Pressable>
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };
