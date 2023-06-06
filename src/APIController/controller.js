@@ -104,11 +104,15 @@ export async function execute(
       break;
     case REST_COMMANDS.REQ_GET_ALL_USERS:
       await getAllUsers(command, request, onResponseReceived, onResponseFailed);
+      break;
         case REST_COMMANDS.REQ_GET_GROUP_RECENT_CHAT:
           await getGroupRecentChat(command,request,onResponseReceived,onResponseFailed);
           break;
       case REST_COMMANDS.REQ_GET_GROUP_DETAILS:
         await getGroupDetails(command,request,onResponseReceived,onResponseFailed);
+        break;
+      case REST_COMMANDS.REQ_PATCH_LEAVE_GROUP:
+        await leaveGroup();
         break;
     default:
       break;
@@ -496,4 +500,73 @@ async function getPersonalRecentChat(
           onResponseFailed(command, error);
         }
       }
+      async function getGroupDetails(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed){
+          try {
+            const response = await fetch(`${ROUTES.GET_GROUP_DETAILS}/${request.id}`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${await getAccessToken()}`,
+              },
+            });
+        
+            basicResponseHandler(
+              command,
+              response,
+              onResponseReceived,
+              onResponseFailed,
+            );
+          } catch (error) {
+            onResponseFailed(command, error);
+          }
+        }
+        async function getGroupRecentChat(
+          command,
+          request,
+          onResponseReceived,
+          onResponseFailed){
+            try {
+              const response = await fetch(ROUTES.GET_GROUP_RECENT_CHAT, {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${await getAccessToken()}`,
+                },
+              });
+          
+              basicResponseHandler(
+                command,
+                response,
+                onResponseReceived,
+                onResponseFailed,
+              );
+            } catch (error) {
+              onResponseFailed(command, error);
+            }
+          }
+
+          async function leaveGroup(command,
+            request,
+            onResponseReceived,
+            onResponseFaile){
+              try {
+                const response = await fetch(`${ROUTES.PATCH_LEAVE_GROUP}/${request.id}`, {
+                  method: 'PATCH',
+                  headers: {
+                    Authorization: `Bearer ${await getAccessToken()}`,
+                  },
+                });
+            
+                basicResponseHandler(
+                  command,
+                  response,
+                  onResponseReceived,
+                  onResponseFailed,
+                );
+              } catch (error) {
+                onResponseFailed(command, error);
+              }
+          }
       

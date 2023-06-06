@@ -15,5 +15,6 @@ export const ROUTES = {
   GET_USERS_PROJECTS: `${BASE_URL}/project/all/`,
   GET_MANGABLE_GROUPS: `${BASE_URL}/group/`,
   GET_ALL_USERS: `${BASE_URL}/user/all`,
-  GET_GROUP_DETAILS:`${BASE_URL}/group/get`
+  GET_GROUP_DETAILS:`${BASE_URL}/group/get`,
+  PATCH_LEAVE_GROUP:`${BASE_URL}/group/leave`
 };

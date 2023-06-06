@@ -9,6 +9,7 @@ import {execute} from '../APIController/controller';
 import HorizontalLine from '../components/HorizontalLine';
 import ResourceItem from '../components/ResourceItem';
 import {UserContext} from '../context/UserIdContext';
+import HomeScreen from './HomeScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,6 +24,9 @@ const CommunityDetailScreen = ({navigation, route}) => {
       case REST_COMMANDS.REQ_GET_GROUP_DETAILS:
         setData(data);
         setIsLoading(false);
+        break;
+      case REST_COMMANDS.REQ_PATCH_LEAVE_GROUP:
+        
         break;
       default:
         break;
@@ -39,8 +43,17 @@ const CommunityDetailScreen = ({navigation, route}) => {
     );
   }, []);
 
+  const leaveGroup = () => {
+    execute(
+      REST_COMMANDS.REQ_PATCH_LEAVE_GROUP,
+      {id},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  };
+
   return (
-    <View>
+    <>
       <CustomTopBar
         navigation={navigation}
         showBackButton={true}
@@ -109,7 +122,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : (
-        <>
+        <View className="">
           <View className="flex flex-row items-center my-3">
             <Image
               source={{
@@ -122,20 +135,31 @@ const CommunityDetailScreen = ({navigation, route}) => {
                 {data.groupName}
               </Text>
               <View className="flex flex-row gap-x-2">
-                {data.moderators.includes(selfId) ||
-                data.usersJoined.includes(selfId) ? (
-                  <Pressable className="bg-primary_blue rounded-lg px-2 py-1">
-                    <Text className="text-white text-xs">FOLLOW</Text>
-                  </Pressable>
-                ) : (
+                {data.moderators.some(e => e._id === selfId) ||
+                data.usersJoined.some(e => e._id === selfId) ? (
                   <>
-                    <Pressable className="border-red-500 border bg-white rounded-lg px-2 py-1">
+                    <Pressable
+                      className="border-red-500 border bg-white rounded-lg px-2 py-1"
+                      onPress={leaveGroup}>
                       <Text className="text-red-500 text-xs">UNFOLLOW</Text>
                     </Pressable>
-                    <Pressable className="bg-primary_blue rounded-lg px-2 py-1">
+                    <Pressable
+                      className="bg-primary_blue rounded-lg px-2 py-1"
+                      onPress={() =>
+                        navigation.navigate('Chat', {
+                          id: data._id,
+                          image: data.image,
+                          name: data.groupName,
+                          isGrpChat: true,
+                        })
+                      }>
                       <Text className="text-white text-xs">MESSAGE</Text>
                     </Pressable>
                   </>
+                ) : (
+                  <Pressable className="bg-primary_blue rounded-lg px-2 py-1">
+                    <Text className="text-white text-xs">FOLLOW</Text>
+                  </Pressable>
                 )}
               </View>
             </View>
@@ -146,16 +170,44 @@ const CommunityDetailScreen = ({navigation, route}) => {
               {data.description}
             </Text>
           </View>
-          <UserList heading="Mentors" data={data.moderators} />
-          <UserList heading="Participants" data={data.usersJoined} />
-          <Tab.Navigator className="mt-1">
-            <Tab.Screen name="Posts" component={ResourceItem} />
-            <Tab.Screen name="Events" component={ResourceItem} />
-            {/* <Tab.Screen name="Events" component={Posts} /> */}
-            {/* <Tab.Screen name="Resources" component={Posts} /> */}
-          </Tab.Navigator>
-        </>
+          <UserList
+            heading="Mentors"
+            data={data.moderators}
+            navigation={navigation}
+          />
+
+          <UserList
+            heading="Participants"
+            data={data.usersJoined}
+            navigation={navigation}
+          />
+
+          {/* <Tab.Navigator className="mt-1">
+              <Tab.Screen name="Posts" component={HomeScreen} />
+              <Tab.Screen name="Events" component={example} />
+              
+            </Tab.Navigator> */}
+        </View>
       )}
+    </>
+  );
+};
+
+const example = () => {
+  return (
+    <View className="">
+      <View>
+        <Text>Hi</Text>
+      </View>
+      <View>
+        <Text>Hi</Text>
+      </View>
+      <View>
+        <Text>Hi</Text>
+      </View>
+      <View>
+        <Text>Hi</Text>
+      </View>
     </View>
   );
 };
