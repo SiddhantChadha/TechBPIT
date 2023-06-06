@@ -11,7 +11,7 @@ const ChatThreadHeader = ({navigation, name, image, typing, id, isGrpChat}) => {
         className="flex flex-row items-center"
         onPress={() =>
           isGrpChat
-            ? navigation.navigate()
+            ? navigation.navigate('CommunityDetail',{id,name})
             : navigation.navigate('ViewUserProfile', {id, name})
         }>
         <Image

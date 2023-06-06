@@ -6,7 +6,7 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect,useContext} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
 import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
@@ -25,7 +25,7 @@ import {
 } from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
-
+import {UserContext} from '../context/UserIdContext';
 import ImageBottomSheet from '../components/ImageBottomSheet';
 
 const ChatScreen = ({navigation, route}) => {
@@ -36,7 +36,7 @@ const ChatScreen = ({navigation, route}) => {
   const selfTypingTimerRef = useRef(null);
   const receiverTypingTimerRef = useRef(null);
   const {id, image, name,isGrpChat} = route.params;
-  const selfId = useRef();
+  const selfId = useContext(UserContext);
   const bottomSheet = useRef();
 
 

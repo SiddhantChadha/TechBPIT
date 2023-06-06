@@ -58,6 +58,9 @@ export async function execute(
         case REST_COMMANDS.REQ_GET_GROUP_RECENT_CHAT:
           await getGroupRecentChat(command,request,onResponseReceived,onResponseFailed);
           break;
+      case REST_COMMANDS.REQ_GET_GROUP_DETAILS:
+        await getGroupDetails(command,request,onResponseReceived,onResponseFailed);
+        break;
     default:
       break;
   }
@@ -335,4 +338,28 @@ async function getPersonalChat(
           onResponseFailed(command, error);
         }
       }
+
+      async function getGroupDetails(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed){
+          try {
+            const response = await fetch(`${ROUTES.GET_GROUP_DETAILS}/${request.id}`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${await getAccessToken()}`,
+              },
+            });
+        
+            basicResponseHandler(
+              command,
+              response,
+              onResponseReceived,
+              onResponseFailed,
+            );
+          } catch (error) {
+            onResponseFailed(command, error);
+          }
+        }
     

@@ -18,6 +18,7 @@ import ChatScreen from './src/screens/ChatScreen';
 import {UserContext} from './src/context/UserIdContext';
 import HomeTabs from './src/components/HomeTabs';
 import UplaodImageScreen from './src/screens/UplaodImageScreen';
+import CommunityDetailScreen from './src/screens/CommunityDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,10 @@ const App = () => {
               <Stack.Screen name="Chat" component={ChatScreen} />
               <Stack.Screen name="UploadImage" component={UplaodImageScreen} />
               <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
+              <Stack.Screen
+                name="CommunityDetail"
+                component={CommunityDetailScreen}
+              />
             </Stack.Navigator>
           </UserContext.Provider>
         ) : (

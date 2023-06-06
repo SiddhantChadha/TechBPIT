@@ -10,4 +10,5 @@ export const ROUTES = {
   GET_PERSONAL_RECENT_CHAT:`${BASE_URL}/chat/recent/personal`,
   GET_GROUP_RECENT_CHAT:`${BASE_URL}/chat/recent/group`,
   GET_USER_PROFILE:`${BASE_URL}/user`,
+  GET_GROUP_DETAILS:`${BASE_URL}/group/get`
 };
