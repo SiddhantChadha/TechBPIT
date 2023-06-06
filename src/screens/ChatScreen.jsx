@@ -3,11 +3,11 @@ import {
   Text,
   ScrollView,
   TextInput,
-  ActivityIndicator,
+  Pressable,
   FlatList,
   VirtualizedList,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import ChatThreadHeader from '../components/ChatThreadHeader';
 import MessageComponent from '../components/MessageComponent';
 import {PaperAirplaneIcon, PhotoIcon} from 'react-native-heroicons/outline';
@@ -26,6 +26,8 @@ import {
 } from '../Utils/socket';
 import {getSelfId} from '../EncryptedStorageHelper';
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
+import {UserContext} from '../context/UserIdContext';
+import ImageBottomSheet from '../components/ImageBottomSheet';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,19 +36,20 @@ const ChatScreen = ({navigation, route}) => {
   const [isTyping, setIsTyping] = useState(false);
   const selfTypingTimerRef = useRef(null);
   const receiverTypingTimerRef = useRef(null);
-  const {id, image, name} = route.params;
-  const selfId = useRef();
-  const isGrpchat = false;
+  const {id, image, name, isGrpChat} = route.params;
+  const selfId = useContext(UserContext);
+  const bottomSheet = useRef();
 
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
-        if (!isGrpchat) emitAllReadStatus(selfId.current, id);
+        if (!isGrpChat) emitAllReadStatus(selfId.current, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
-        if (!isGrpchat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
-        if (!isGrpchat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
+
+        if (!isGrpChat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
+        if (!isGrpChat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
         break;
       default:
         break;
@@ -70,14 +73,14 @@ const ChatScreen = ({navigation, route}) => {
   const handleTyping = text => {
     setMessage(text);
     clearTimeout(selfTypingTimerRef.current);
-    emitIsTyping(selfId.current, id, true, isGrpchat, 'Tushar Jain');
+    emitIsTyping(selfId.current, id, true, isGrpChat, 'Tushar Jain');
     selfTypingTimerRef.current = setTimeout(() => {
-      emitIsTyping(selfId.current, id, false, isGrpchat, 'Tushar Jain');
+      emitIsTyping(selfId.current, id, false, isGrpChat, 'Tushar Jain');
     }, 1000);
   };
 
   const typingListener = (status, senderName) => {
-    if (!isGrpchat) {
+    if (!isGrpChat) {
       setIsTyping(status);
       clearTimeout(receiverTypingTimerRef.current);
       receiverTypingTimerRef.current = setTimeout(() => {
@@ -86,39 +89,57 @@ const ChatScreen = ({navigation, route}) => {
     }
   };
   const onNewMessage = message => {
-    if (!isGrpchat) {
-      setData([message, ...data]);
+    if (!isGrpChat) {
+      setData(d => {
+        return [message, ...d];
+      });
     }
   };
 
   const onTempMessageRead = () => {
-    //todo: mark all sent message read
-    let newData = [...data];
-    newData.every(obj => {
-      if (obj.isRead == true) {
-        return false;
-      }
+    //mark all sent message read
+    setData(d => {
+      return d.map(item => {
+        if (item.isRead == false) {
+          item.isRead = true;
+        }
 
-      obj.isRead = true;
-      return true;
+        return item;
+      });
     });
-
-    setData(newData);
   };
 
-  const sendMessage = async () => {
-    let msg = {
-      msgType: 'direct-message',
-      message,
-      sender: selfId.current,
-      timestamp: getCurrentTimestamp(),
-      receiver: id,
-      imageUrl: '',
-      isSent: false,
-      isError: false,
-    };
+  const sendMessage = async imgUrl => {
+    let msg;
+
+    if (imgUrl) {
+      msg = {
+        msgType: 'direct-message-with-image',
+        message: '',
+        sender: selfId.current,
+        timestamp: getCurrentTimestamp(),
+        receiver: id,
+        imageUrl: imgUrl,
+        isSent: false,
+        isError: false,
+        isRead: false,
+      };
+    } else {
+      msg = {
+        msgType: 'direct-message',
+        message,
+        sender: selfId.current,
+        timestamp: getCurrentTimestamp(),
+        receiver: id,
+        imageUrl: '',
+        isSent: false,
+        isError: false,
+        isRead: false,
+      };
+    }
+
     setData([msg, ...data]);
-    await sendPersonalMessage(msg, id, setIsLoading);
+    await sendPersonalMessage(msg, id, setData);
     setMessage('');
   };
 
@@ -137,6 +158,7 @@ const ChatScreen = ({navigation, route}) => {
         typing={isTyping ? 'typing...' : ''}
         image={image}
         id={id}
+        isGrpChat
       />
 
       {isLoading ? (
@@ -280,13 +302,23 @@ const ChatScreen = ({navigation, route}) => {
           className="m-2 px-5 rounded-3xl border  border-grey_4a flex-grow"
           placeholder={'Type a message'}
         />
-        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
-          <PhotoIcon color={Colors.WHITE} />
-        </View>
-        <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
-          <PaperAirplaneIcon color={Colors.WHITE} onPress={sendMessage} />
-        </View>
+        <Pressable onPress={() => bottomSheet.current.open()}>
+          <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
+            <PhotoIcon color={Colors.WHITE} />
+          </View>
+        </Pressable>
+        <Pressable onPress={sendMessage}>
+          <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
+            <PaperAirplaneIcon color={Colors.WHITE} />
+          </View>
+        </Pressable>
       </View>
+      <ImageBottomSheet
+        ref={bottomSheet}
+        navigation={navigation}
+        action={sendMessage}
+        receiver={{id, image, name}}
+      />
     </View>
   );
 };

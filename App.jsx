@@ -17,10 +17,13 @@ import {StatusBar} from 'react-native';
 import ChatScreen from './src/screens/ChatScreen';
 import {UserContext} from './src/context/UserIdContext';
 import HomeTabs from './src/components/HomeTabs';
+import UplaodImageScreen from './src/screens/UplaodImageScreen';
+import CommunityDetailScreen from './src/screens/CommunityDetailScreen';
 import PostDetailsScreen from './src/screens/PostDetailsScreen';
 import ModeratorsGroupScreen from './src/screens/ModeratorsGroupScreen';
 import StartNewChatScreen from './src/screens/StartNewChatScreen';
 import RequirementDetailScreen from './src/screens/RequirementDetailScreen';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -55,7 +58,12 @@ const App = () => {
                 component={SetupProfileScreen}
               />
               <Stack.Screen name="Chat" component={ChatScreen} />
+              <Stack.Screen name="UploadImage" component={UplaodImageScreen} />
               <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
+              <Stack.Screen
+                name="CommunityDetail"
+                component={CommunityDetailScreen}
+              />
               <Stack.Screen name="PostDetails" component={PostDetailsScreen} />
               <Stack.Screen
                 name="RequirementDetails"

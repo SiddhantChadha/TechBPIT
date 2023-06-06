@@ -25,11 +25,13 @@ export const instantiateSocket = async () => {
 export const sendPersonalMessage = async (
   messageObj,
   receiver,
-  setIsLoading,
+  setData,
 ) => {
   let socket = await getSocket();
+  let msgToBeEmitted = {msgType:messageObj.msgType,sender:messageObj.sender,receiver:messageObj.receiver,
+  timestamp:messageObj.timestamp,imageUrl:messageObj.imageUrl,message:messageObj.message}
 
-  socket.emit('msg', messageObj, receiver, response => {
+  socket.emit('msg', msgToBeEmitted, receiver, response => {
     console.log(response);
     messageObj.id = response.id;
     if (response.isSuccessful) {
@@ -37,10 +39,11 @@ export const sendPersonalMessage = async (
     } else {
       messageObj.isError = true;
     }
-    //need find method to render UI whenever data mutate this is not a feasible solution as discussed with siddhant
-    //Please solve this asap
-    setIsLoading(true);
-    setIsLoading(false);
+    
+    setData((d)=>{
+      return [messageObj,...d.slice(2)]
+    })
+
   });
 };
 
@@ -69,7 +72,8 @@ export const emitAllReadStatus = async (selfId, receiverId) => {
 
 export const listenNewMessageEvent = async (event, onNewMessage) => {
   let socket = await getSocket();
-  socket.on(event, arg => {
+  socket.on(event, (arg)=> {
+    console.log(arg)
     onNewMessage(arg);
   });
 };

@@ -104,6 +104,12 @@ export async function execute(
       break;
     case REST_COMMANDS.REQ_GET_ALL_USERS:
       await getAllUsers(command, request, onResponseReceived, onResponseFailed);
+        case REST_COMMANDS.REQ_GET_GROUP_RECENT_CHAT:
+          await getGroupRecentChat(command,request,onResponseReceived,onResponseFailed);
+          break;
+      case REST_COMMANDS.REQ_GET_GROUP_DETAILS:
+        await getGroupDetails(command,request,onResponseReceived,onResponseFailed);
+        break;
     default:
       break;
   }
@@ -117,7 +123,6 @@ async function basicResponseHandler(
   console.log('called', response.status);
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     onResponseReceived(command, data);
   } else if (response.status === 401) {
     await postRefreshToken(
@@ -337,159 +342,158 @@ async function getPersonalRecentChat(
   }
 }
 
-async function getUserProfile(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(`${ROUTES.GET_USER_PROFILE}/${request.id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-
-    basicResponseHandler(
+    async function getUserProfile(
       command,
-      response,
+      request,
       onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    onResponseFailed(command, error);
-  }
-}
-
-async function getExploreGropus(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(ROUTES.GET_EXPLORE_GROUPS, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-
-    basicResponseHandler(
-      command,
-      response,
-      onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    console.log(error);
-    onResponseFailed(command, error);
-  }
-}
-
-async function getExploreUsers(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(
-      ROUTES.GET_EXPLORE_USERS + new URLSearchParams({count: request.count}),
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${await getAccessToken()}`,
-        },
-      },
-    );
-
-    basicResponseHandler(
-      command,
-      response,
-      onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    console.log(error);
-    onResponseFailed(command, error);
-  }
-}
-
-async function getUsersProjects(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(ROUTES.GET_USERS_PROJECTS + request.id, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-
-    basicResponseHandler(
-      command,
-      response,
-      onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    console.log(error);
-    onResponseFailed(command, error);
-  }
-}
-
-async function getManageableGroups(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(ROUTES.GET_MANGABLE_GROUPS + request.id, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-
-    basicResponseHandler(
-      command,
-      response,
-      onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    console.log(error);
-    onResponseFailed(command, error);
-  }
-}
-async function getAllUsers(
-  command,
-  request,
-  onResponseReceived,
-  onResponseFailed,
-) {
-  try {
-    const response = await fetch(ROUTES.GET_ALL_USERS, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-    });
-
-    basicResponseHandler(
-      command,
-      response,
-      onResponseReceived,
-      onResponseFailed,
-    );
-  } catch (error) {
-    console.log(error);
-    onResponseFailed(command, error);
-  }
-}
+      onResponseFailed ){
+        try {
+          const response = await fetch(`${ROUTES.GET_USER_PROFILE}/${request.id}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          onResponseFailed(command, error);
+        }
+      }
+      async function getExploreGropus(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const response = await fetch(ROUTES.GET_EXPLORE_GROUPS, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          console.log(error);
+          onResponseFailed(command, error);
+        }
+      }
+      
+      async function getExploreUsers(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const response = await fetch(
+            ROUTES.GET_EXPLORE_USERS + new URLSearchParams({count: request.count}),
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${await getAccessToken()}`,
+              },
+            },
+          );
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          console.log(error);
+          onResponseFailed(command, error);
+        }
+      }
+      
+      async function getUsersProjects(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const response = await fetch(ROUTES.GET_USERS_PROJECTS + request.id, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          console.log(error);
+          onResponseFailed(command, error);
+        }
+      }
+      
+      async function getManageableGroups(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const response = await fetch(ROUTES.GET_MANGABLE_GROUPS + request.id, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          console.log(error);
+          onResponseFailed(command, error);
+        }
+      }
+      async function getAllUsers(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const response = await fetch(ROUTES.GET_ALL_USERS, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          console.log(error);
+          onResponseFailed(command, error);
+        }
+      }
+      

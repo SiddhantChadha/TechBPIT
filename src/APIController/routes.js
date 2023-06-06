@@ -8,10 +8,12 @@ export const ROUTES = {
   GET_ALL_EVENTS: `${BASE_URL}/post/all/event`,
   GET_PERSONAL_CHAT: `${BASE_URL}/chat/personal`,
   GET_PERSONAL_RECENT_CHAT: `${BASE_URL}/chat/recent/personal`,
+  GET_GROUP_RECENT_CHAT:`${BASE_URL}/chat/recent/group`,
   GET_USER_PROFILE: `${BASE_URL}/user`,
   GET_EXPLORE_GROUPS: `${BASE_URL}/explore/group`,
   GET_EXPLORE_USERS: `${BASE_URL}/explore/user?`,
   GET_USERS_PROJECTS: `${BASE_URL}/project/all/`,
   GET_MANGABLE_GROUPS: `${BASE_URL}/group/`,
   GET_ALL_USERS: `${BASE_URL}/user/all`,
+  GET_GROUP_DETAILS:`${BASE_URL}/group/get`
 };
