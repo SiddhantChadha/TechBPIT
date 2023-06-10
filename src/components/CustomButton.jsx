@@ -1,33 +1,20 @@
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, Text} from 'react-native';
 import React from 'react';
-import {Colors} from '../colors';
 
 const CustomButton = props => {
   return (
-    <Pressable style={styles.button} onPress={props.onPress}>
-      <Text style={styles.text}>{props.title}</Text>
+    <Pressable
+      style={{elevation: 3}}
+      onPress={props.onPress}
+      className="flex flex-row items-center justify-center py-4 px-8 mx-[10%] my-[5%] bg-primary_blue rounded-lg">
+      {props.icon}
+      <Text
+        className="text-lg font-semibold text-white"
+        style={{letterSpacing: 0.25}}>
+        {props.title}
+      </Text>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    marginHorizontal: '10%',
-    borderRadius: 8,
-    elevation: 3,
-    backgroundColor: Colors.PRIMARY_BLUE,
-    marginVertical: '5%',
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 500,
-    letterSpacing: 0.25,
-    color: Colors.WHITE,
-  },
-});
 
 export default CustomButton;

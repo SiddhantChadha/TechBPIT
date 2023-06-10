@@ -1,7 +1,7 @@
 import {TextInput} from 'react-native';
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
 
-const InputBox = forwardRef((props, ref) => {
+const DateInputBox = forwardRef((props, ref) => {
   const [data, setData] = useState(props.data);
 
   useImperativeHandle(
@@ -19,16 +19,17 @@ const InputBox = forwardRef((props, ref) => {
       value={data}
       onChangeText={setData}
       style={{
-        marginHorizontal: '10%',
+        marginLeft:props.marginLeft,
+        marginRight:props.marginRight,
         marginVertical: '3%',
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: '4%',
+        width:150
       }}
       placeholder={props.placeholder}
-      secureTextEntry={props.secureTextEntry}
     />
   );
 });
 
-export default InputBox;
+export default DateInputBox;

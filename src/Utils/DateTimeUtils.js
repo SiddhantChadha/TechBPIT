@@ -29,6 +29,19 @@ export const dateStringToDDMMM = dateString => {
   return formattedDate;
 };
 
+export const dateStringToTime = dateString => {
+  const date = new Date(dateString);
+
+  const options = {
+  
+  hour:'2-digit',
+  minute:'2-digit', 
+  hour12: true};
+  const formattedDate = date.toLocaleTimeString('en-IN', options);
+
+  return formattedDate;
+}
+
 export const convertToLocalTime = timestamp => {
   const d = new Date(Number(timestamp));
   let result = '';
