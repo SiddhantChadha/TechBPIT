@@ -1,13 +1,49 @@
 import {ScrollView, Text, View} from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import React, {useState} from 'react';
 import {Colors} from '../colors';
 import CustomButton from '../components/CustomButton';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
+import React, {useRef, useContext, useState} from 'react';
+import {LoggedInContext} from '../context/LoggedInContext';
+import {setAuthTokens, setSelfId} from '../EncryptedStorageHelper';
+import {REST_COMMANDS} from '../APIController/RestCommands';
+import {execute} from '../APIController/controller';
+import {roundToNearestPixel} from 'nativewind';
 
-const OTPScreen = ({navigation}) => {
+const OTPScreen = ({navigation, route}) => {
   const [code, setCode] = useState('');
+  const setIsLoggedIn = useContext(LoggedInContext);
+  const [isApiCalling, setIsApiCalling] = useState(false);
+  const {email} = route.params;
 
+  const onResponseReceived = (command, data) => {
+    switch (command) {
+      case REST_COMMANDS.REQ_POST_VERIFY_OTP:
+        setAuthTokens(data.access_token, data.refresh_token);
+        setSelfId(data._id);
+        setIsLoggedIn(true);
+        setIsApiCalling(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onResponseFailed = (command, error) => {
+    setIsApiCalling(false);
+  };
+  const verifyOTP = () => {
+    setIsApiCalling(true);
+    execute(
+      REST_COMMANDS.REQ_POST_VERIFY_OTP,
+      {
+        email: email,
+        otp: code,
+      },
+      onResponseReceived,
+      onResponseFailed,
+    );
+  };
   return (
     <ScrollView>
       <View style={{flex: 1, justifyContent: 'center', marginVertical: 24}}>
@@ -56,7 +92,11 @@ const OTPScreen = ({navigation}) => {
         }}
       />
 
-      <CustomButton title="VERIFY CODE" />
+      {isApiCalling ? (
+        <CustomButton title="Verifying user ..." />
+      ) : (
+        <CustomButton title="VERIFY OTP" onPress={() => verifyOTP()} />
+      )}
     </ScrollView>
   );
 };

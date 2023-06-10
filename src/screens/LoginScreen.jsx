@@ -15,12 +15,12 @@ const LoginScreen = ({navigation}) => {
   const setIsLoggedIn = useContext(LoggedInContext);
   const [isApiCalling, setIsApiCalling] = useState(false);
 
-  const onResponseReceived = (command, data) => {
+  const onResponseReceived = async (command, data) => {
     console.log('oasjdnf');
     switch (command) {
       case REST_COMMANDS.REQ_POST_LOGIN:
         setAuthTokens(data.access_token, data.refresh_token);
-        setSelfId(data._id);
+        await setSelfId(data._id);
         setIsLoggedIn(true);
         setIsApiCalling(false);
         break;

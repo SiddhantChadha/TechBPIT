@@ -17,15 +17,15 @@ export async function setRefreshToken(refreshToken) {
   } catch (error) {}
 }
 
-export async function setSelfId(userId){
-  try{
-    await EncryptedStorage.setItem('self_id',userId);
-  }catch(err){
-
+export async function setSelfId(userId) {
+  try {
+    await EncryptedStorage.setItem('self_id', userId);
+  } catch (err) {
+    console.log(err);
   }
 }
 
-export async function getSelfId(){
+export async function getSelfId() {
   try {
     const selfId = await EncryptedStorage.getItem('self_id');
 

@@ -38,7 +38,7 @@ const App = () => {
   loggedInStateSetter(setIsLoggedIn);
   useEffect(() => {
     checkIfLoggedIn();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
@@ -48,7 +48,7 @@ const App = () => {
         backgroundColor={Colors.PRIMARY_BLUE}
       />
       <NavigationContainer>
-        {isLoggedIn ? (
+        {selfId ? (
           <UserContext.Provider value={selfId}>
             <Stack.Navigator screenOptions={{headerShown: false}}>
               <Stack.Screen name="HomeTabs" component={HomeTabs} />
