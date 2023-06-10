@@ -29,6 +29,15 @@ export const dateStringToDDMMM = dateString => {
   return formattedDate;
 };
 
+export const dateStringToWeekDayDDMMM = dateString =>{
+  const date = new Date(dateString);
+
+  const options = { weekday:'short',day: 'numeric', month: 'short'};
+  const formattedDate = date.toLocaleDateString('en-IN', options);
+
+  return formattedDate;
+}
+
 export const dateStringToTime = dateString => {
   const date = new Date(dateString);
 
