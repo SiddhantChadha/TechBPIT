@@ -16,5 +16,6 @@ export const ROUTES = {
   GET_MANGABLE_GROUPS: `${BASE_URL}/group/`,
   GET_ALL_USERS: `${BASE_URL}/user/all`,
   GET_GROUP_DETAILS:`${BASE_URL}/group/get`,
-  PATCH_LEAVE_GROUP:`${BASE_URL}/group/leave`
+  PATCH_LEAVE_GROUP:`${BASE_URL}/group/leave`,
+  POST_JOIN_GROUP:`${BASE_URL}/group/join`
 };

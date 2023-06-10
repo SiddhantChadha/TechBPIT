@@ -7,15 +7,18 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import HorizontalLine from '../components/HorizontalLine';
-import ResourceItem from '../components/ResourceItem';
 import {UserContext} from '../context/UserIdContext';
-import HomeScreen from './HomeScreen';
+import PostList from '../components/PostList';
+import { SquaresPlusIcon } from 'react-native-heroicons/outline';
+import { Colors } from '../colors';
 
 const Tab = createMaterialTopTabNavigator();
 
 const CommunityDetailScreen = ({navigation, route}) => {
   const [data, setData] = useState();
+  const [isModerator, setIsModerator] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [dataChange, setDataChange] = useState(false);
   const {id, name} = route.params;
   const selfId = useContext(UserContext);
 
@@ -23,16 +26,23 @@ const CommunityDetailScreen = ({navigation, route}) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_GROUP_DETAILS:
         setData(data);
+        setIsModerator(data.canEdit);
         setIsLoading(false);
+
         break;
       case REST_COMMANDS.REQ_PATCH_LEAVE_GROUP:
-        
+        setDataChange(!dataChange);
+        break;
+      case REST_COMMANDS.REQ_POST_JOIN_GROUP:
+        setDataChange(!dataChange);
         break;
       default:
         break;
     }
   };
-  const onResponseFailed = (command, error) => {};
+  const onResponseFailed = (command, error) => {
+    console.log(error);
+  };
 
   useEffect(() => {
     execute(
@@ -41,7 +51,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
       onResponseReceived,
       onResponseFailed,
     );
-  }, []);
+  }, [dataChange]);
 
   const leaveGroup = () => {
     execute(
@@ -52,12 +62,36 @@ const CommunityDetailScreen = ({navigation, route}) => {
     );
   };
 
-  return (
+  const joinGroup = () => {
+    execute(
+      REST_COMMANDS.REQ_POST_JOIN_GROUP,
+      {id},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  };
+
+  const rightHeaderComponent = (
     <>
+      {isModerator ? (
+        <SquaresPlusIcon
+          color={Colors.BLACK}
+          style={{position: 'absolute', alignSelf: 'flex-end'}}
+          onPress={() => navigation.navigate('ModeratorGroups')}
+        />
+      ) : (
+        <></>
+      )}
+    </>
+  );
+
+  return (
+    <View style={{flex: 1}}>
       <CustomTopBar
         navigation={navigation}
         showBackButton={true}
         title={`${name} Community`}
+        rightComponent={rightHeaderComponent}
       />
       {isLoading ? (
         <ScrollView>
@@ -122,7 +156,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : (
-        <View className="">
+        <ScrollView contentContainerStyle={{flexGrow: 1}} >
           <View className="flex flex-row items-center my-3">
             <Image
               source={{
@@ -157,7 +191,9 @@ const CommunityDetailScreen = ({navigation, route}) => {
                     </Pressable>
                   </>
                 ) : (
-                  <Pressable className="bg-primary_blue rounded-lg px-2 py-1">
+                  <Pressable
+                    className="bg-primary_blue rounded-lg px-2 py-1"
+                    onPress={joinGroup}>
                     <Text className="text-white text-xs">FOLLOW</Text>
                   </Pressable>
                 )}
@@ -182,32 +218,40 @@ const CommunityDetailScreen = ({navigation, route}) => {
             navigation={navigation}
           />
 
-          {/* <Tab.Navigator className="mt-1">
-              <Tab.Screen name="Posts" component={HomeScreen} />
-              <Tab.Screen name="Events" component={example} />
-              
-            </Tab.Navigator> */}
-        </View>
+          <Tab.Navigator className="mt-1">
+            <Tab.Screen
+              name="Posts"
+              children={() => (
+                <PostList
+                  navigation={navigation}
+                  filterType={'communityPost'}
+                  id={id}
+                />
+              )}
+            />
+            <Tab.Screen
+              name="Events"
+              children={() => (
+                <PostList
+                  navigation={navigation}
+                  filterType={'eventPost'}
+                  id={id}
+                />
+              )}
+            />
+            <Tab.Screen
+              name="Resources"
+              children={() => (
+                <PostList
+                  navigation={navigation}
+                  filterType={'resourcePost'}
+                  id={id}
+                />
+              )}
+            />
+          </Tab.Navigator>
+        </ScrollView>
       )}
-    </>
-  );
-};
-
-const example = () => {
-  return (
-    <View className="">
-      <View>
-        <Text>Hi</Text>
-      </View>
-      <View>
-        <Text>Hi</Text>
-      </View>
-      <View>
-        <Text>Hi</Text>
-      </View>
-      <View>
-        <Text>Hi</Text>
-      </View>
     </View>
   );
 };

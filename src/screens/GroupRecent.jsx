@@ -34,7 +34,6 @@ const GroupRecent = ({navigation}) => {
       onResponseReceived,
       onResponseFailed,
     );
-    console.log('grp recent', data.groupsJoined);
   }, []);
 
   return (

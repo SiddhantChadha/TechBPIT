@@ -1,8 +1,9 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import React from 'react';
 
-const JoinCommunityCard = ({item}) => {
+const JoinCommunityCard = ({item, navigation}) => {
   const itemData = item.item;
+
   return (
     <View className="p-4 rounded-lg shadow-lg my-4 mx-6 bg-white w-11/12">
       <View className="flex-row justify-between">
@@ -23,12 +24,20 @@ const JoinCommunityCard = ({item}) => {
           </Text>
         </View>
       </View>
-      <Text className="self-center mt-2 text-sm" numberOfLines={2}>
-        {itemData.description}
-      </Text>
-      <Text className="self-center mt-2 font-semibold">
-        Joined by: {itemData.totalUsers} student(s)
-      </Text>
+      <Pressable
+        onPress={() =>
+          navigation.navigate('CommunityDetail', {
+            name: itemData.groupName,
+            id: itemData._id,
+          })
+        }>
+        <Text className="self-center mt-2 text-sm" numberOfLines={2}>
+          {itemData.description}
+        </Text>
+        <Text className="self-center mt-2 font-semibold">
+          Joined by: {itemData.totalUsers} student(s)
+        </Text>
+      </Pressable>
     </View>
   );
 };

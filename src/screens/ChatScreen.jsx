@@ -158,7 +158,7 @@ const ChatScreen = ({navigation, route}) => {
         typing={isTyping ? 'typing...' : ''}
         image={image}
         id={id}
-        isGrpChat
+        isGrpChat={isGrpChat}
       />
 
       {isLoading ? (

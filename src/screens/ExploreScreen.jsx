@@ -256,7 +256,7 @@ const ExploreScreen = ({navigation}) => {
                     data={groupData}
                     sliderWidth={screenWidth}
                     itemWidth={screenWidth - 50}
-                    renderItem={item => <JoinCommunityCard item={item} />}
+                    renderItem={item => <JoinCommunityCard item={item} navigation={navigation}/>}
                   />
                 </View>
               ) : (

@@ -112,7 +112,11 @@ export async function execute(
         await getGroupDetails(command,request,onResponseReceived,onResponseFailed);
         break;
       case REST_COMMANDS.REQ_PATCH_LEAVE_GROUP:
-        await leaveGroup();
+        await leaveGroup(command,request,onResponseReceived,onResponseFailed);
+        break;
+      
+      case REST_COMMANDS.REQ_POST_JOIN_GROUP:
+        await joinGroup(command,request,onResponseReceived,onResponseFailed);
         break;
     default:
       break;
@@ -550,7 +554,7 @@ async function getPersonalRecentChat(
           async function leaveGroup(command,
             request,
             onResponseReceived,
-            onResponseFaile){
+            onResponseFailed){
               try {
                 const response = await fetch(`${ROUTES.PATCH_LEAVE_GROUP}/${request.id}`, {
                   method: 'PATCH',
@@ -569,4 +573,33 @@ async function getPersonalRecentChat(
                 onResponseFailed(command, error);
               }
           }
+
+          async function joinGroup(
+            command,
+            request,
+            onResponseReceived,
+            onResponseFailed){
+              
+              try {
+                const response = await fetch(ROUTES.POST_JOIN_GROUP, {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${await getAccessToken()}`,
+                    'Content-Type': 'application/json',
+                  },
+                  
+                  body: JSON.stringify({groupId:request.id})});
+                
+                basicResponseHandler(
+                  command,
+                  response,
+                  onResponseReceived,
+                  onResponseFailed,
+                );
+              } catch (error) {
+                
+                onResponseFailed(command, error);
+              }
+            }
+  
       
