@@ -1,5 +1,5 @@
 import {View, Text, Image, Pressable, ScrollView} from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import UserList from '../components/UserList';
@@ -9,8 +9,9 @@ import {execute} from '../APIController/controller';
 import HorizontalLine from '../components/HorizontalLine';
 import {UserContext} from '../context/UserIdContext';
 import PostList from '../components/PostList';
-import { SquaresPlusIcon } from 'react-native-heroicons/outline';
-import { Colors } from '../colors';
+import {SquaresPlusIcon} from 'react-native-heroicons/outline';
+import {Colors} from '../colors';
+import PostBottomSheet from '../components/PostBottomSheet';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,6 +22,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
   const [dataChange, setDataChange] = useState(false);
   const {id, name} = route.params;
   const selfId = useContext(UserContext);
+  const bottomSheet = useRef();
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -77,7 +79,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
         <SquaresPlusIcon
           color={Colors.BLACK}
           style={{position: 'absolute', alignSelf: 'flex-end'}}
-          onPress={() => navigation.navigate('ModeratorGroups')}
+          onPress={() => bottomSheet.current.open()}
         />
       ) : (
         <></>
@@ -156,7 +158,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : (
-        <ScrollView contentContainerStyle={{flexGrow: 1}} >
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View className="flex flex-row items-center my-3">
             <Image
               source={{
@@ -252,6 +254,8 @@ const CommunityDetailScreen = ({navigation, route}) => {
           </Tab.Navigator>
         </ScrollView>
       )}
+
+      <PostBottomSheet navigation={navigation} ref={bottomSheet} />
     </View>
   );
 };
