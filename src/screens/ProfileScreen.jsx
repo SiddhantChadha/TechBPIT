@@ -1,6 +1,6 @@
 import {View, Text, Image, Dimensions, ScrollView} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
-import {PencilIcon, PlusIcon} from 'react-native-heroicons/outline';
+import {Cog6ToothIcon, PencilIcon, PlusIcon} from 'react-native-heroicons/outline';
 import CustomTopBar from '../components/CustomTopBar';
 import {Colors} from '../colors';
 import HorizontalLine from '../components/HorizontalLine';
@@ -51,16 +51,14 @@ const ProfileScreen = ({navigation, route}) => {
     );
   }, []);
 
-  const editProfileButton =
-    id === selfId ? (
-      <PencilIcon
-        color={Colors.BLACK}
-        style={{position: 'absolute', alignSelf: 'flex-end'}}
-        onPress={() => navigation.navigate('SetupProfile')}
-      />
-    ) : (
-      <></>
-    );
+  const settingsButton = id === selfId && (
+    <Cog6ToothIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-end'}}
+      onPress={() => navigation.navigate('SetupProfile')}
+    />
+  );
+ 
 
   const screenWidth = Dimensions.get('window').width;
 
@@ -70,7 +68,7 @@ const ProfileScreen = ({navigation, route}) => {
         navigation={navigation}
         title={selfId == id ? 'PROFILE' : `${name}'s Profile`}
         showBackButton={!(selfId === id)}
-        rightComponent={editProfileButton}
+        rightComponent={settingsButton}
       />
       {isProfileLoading || isProjectsLoading ? (
         <ScrollView>
@@ -404,6 +402,7 @@ const ProfileScreen = ({navigation, route}) => {
           )}
         </ScrollView>
       )}
+      
     </View>
   );
 };
