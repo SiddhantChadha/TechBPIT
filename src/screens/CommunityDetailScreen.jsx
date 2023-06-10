@@ -9,8 +9,8 @@ import {execute} from '../APIController/controller';
 import HorizontalLine from '../components/HorizontalLine';
 import {UserContext} from '../context/UserIdContext';
 import PostList from '../components/PostList';
-import { SquaresPlusIcon } from 'react-native-heroicons/outline';
-import { Colors } from '../colors';
+import {SquaresPlusIcon} from 'react-native-heroicons/outline';
+import {Colors} from '../colors';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -156,7 +156,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </ScrollView>
       ) : (
-        <ScrollView contentContainerStyle={{flexGrow: 1}} >
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View className="flex flex-row items-center my-3">
             <Image
               source={{
@@ -218,35 +218,41 @@ const CommunityDetailScreen = ({navigation, route}) => {
             navigation={navigation}
           />
 
-          <Tab.Navigator className="mt-1">
+          <Tab.Navigator className="mt-1 fixed">
             <Tab.Screen
               name="Posts"
               children={() => (
-                <PostList
-                  navigation={navigation}
-                  filterType={'communityPost'}
-                  id={id}
-                />
+                <ScrollView>
+                  <PostList
+                    navigation={navigation}
+                    filterType={'communityPost'}
+                    id={id}
+                  />
+                </ScrollView>
               )}
             />
             <Tab.Screen
               name="Events"
               children={() => (
-                <PostList
-                  navigation={navigation}
-                  filterType={'eventPost'}
-                  id={id}
-                />
+                <ScrollView>
+                  <PostList
+                    navigation={navigation}
+                    filterType={'eventPost'}
+                    id={id}
+                  />
+                </ScrollView>
               )}
             />
             <Tab.Screen
               name="Resources"
               children={() => (
-                <PostList
-                  navigation={navigation}
-                  filterType={'resourcePost'}
-                  id={id}
-                />
+                <ScrollView>
+                  <PostList
+                    navigation={navigation}
+                    filterType={'resourcePost'}
+                    id={id}
+                  />
+                </ScrollView>
               )}
             />
           </Tab.Navigator>
