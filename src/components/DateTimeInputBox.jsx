@@ -47,6 +47,8 @@ const DateTimeInputBox = forwardRef((props, ref) => {
         </View>
       </Pressable>
       <DateTimePickerModal
+        minimumDate={props.minimumDate}
+        maximumDate={props.maximumDate}
         isVisible={isDatePickerVisible}
         mode={props.mode}
         onConfirm={date => {

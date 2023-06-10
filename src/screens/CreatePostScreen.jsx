@@ -62,6 +62,7 @@ const CreatePostScreen = ({navigation, route}) => {
               <DateTimeInputBox
                 mode="date"
                 marginLeft={'10%'}
+                minimumDate={new Date(Date.now())}
                 placeholder={`Date: ${dateStringToWeekDayDDMMM(Date.now())}`}
                 ref={dateRef}
               />

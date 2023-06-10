@@ -24,6 +24,7 @@ import ModeratorsGroupScreen from './src/screens/ModeratorsGroupScreen';
 import StartNewChatScreen from './src/screens/StartNewChatScreen';
 import RequirementDetailScreen from './src/screens/RequirementDetailScreen';
 import CreatePostScreen from './src/screens/CreatePostScreen';
+import AddProjectScreen from './src/screens/AddProjectScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,7 @@ const App = () => {
                 component={StartNewChatScreen}
               />
               <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+              <Stack.Screen name="AddProject" component={AddProjectScreen} />
             </Stack.Navigator>
           </UserContext.Provider>
         ) : (

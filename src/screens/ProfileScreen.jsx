@@ -1,6 +1,10 @@
 import {View, Text, Image, Dimensions, ScrollView} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
-import {Cog6ToothIcon, PencilIcon, PlusIcon} from 'react-native-heroicons/outline';
+import {
+  Cog6ToothIcon,
+  PencilIcon,
+  PlusIcon,
+} from 'react-native-heroicons/outline';
 import CustomTopBar from '../components/CustomTopBar';
 import {Colors} from '../colors';
 import HorizontalLine from '../components/HorizontalLine';
@@ -58,7 +62,6 @@ const ProfileScreen = ({navigation, route}) => {
       onPress={() => navigation.navigate('SetupProfile')}
     />
   );
- 
 
   const screenWidth = Dimensions.get('window').width;
 
@@ -354,7 +357,7 @@ const ProfileScreen = ({navigation, route}) => {
                   <Text className="text-base text-black font-medium">
                     Projects
                   </Text>
-                  <PlusIcon color={Colors.BLACK} className="" />
+                  <PlusIcon color={Colors.BLACK} onPress={()=>navigation.navigate('AddProject')} />
                 </View>
                 <Carousel
                   data={projectData}
@@ -372,7 +375,7 @@ const ProfileScreen = ({navigation, route}) => {
                   <Text className="text-base text-black font-medium">
                     Projects
                   </Text>
-                  <PlusIcon color={Colors.BLACK} className="" />
+                  <PlusIcon color={Colors.BLACK} />
                 </View>
                 <ProjectSVG style={{alignSelf: 'center', margin: 10}} />
                 <Text className="text-base text-grey_4a font-medium self-center mb-10">
@@ -402,7 +405,6 @@ const ProfileScreen = ({navigation, route}) => {
           )}
         </ScrollView>
       )}
-      
     </View>
   );
 };
