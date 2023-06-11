@@ -16,14 +16,34 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {UserContext} from '../context/UserIdContext';
+import OptionsMenu from 'react-native-options-menu';
 import ProjectSVG from '../assets/images/ic_add_projects.svg';
+import {setAuthTokens, setSelfId} from '../EncryptedStorageHelper';
+import {LoggedInContext} from '../context/LoggedInContext';
 const ProfileScreen = ({navigation, route}) => {
   const [isProfileLoading, setIsProfileLoading] = useState(true);
   const [isProjectsLoading, setIsProjectsLoading] = useState(true);
   const [profileData, setProfileData] = useState({});
   const [projectData, setProjectData] = useState([]);
   const selfId = useContext(UserContext);
+  const setIsLoggedIn = useContext(LoggedInContext);
   const {id, name} = route.params;
+  const settingIcon = (
+    <Cog6ToothIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-end'}}
+      // onPress={() => navigation.navigate('SetupProfile')}
+    />
+  );
+  const navigateToEdit = () => {
+    navigation.navigate('SetupProfile');
+  };
+
+  const logout = async () => {
+    setAuthTokens(null, null);
+    setSelfId(null);
+    setIsLoggedIn(false);
+  };
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -56,11 +76,13 @@ const ProfileScreen = ({navigation, route}) => {
   }, []);
 
   const settingsButton = id === selfId && (
-    <Cog6ToothIcon
-      color={Colors.BLACK}
-      style={{position: 'absolute', alignSelf: 'flex-end'}}
-      onPress={() => navigation.navigate('SetupProfile')}
-    />
+    <View style={{alignItems: 'flex-end'}}>
+      <OptionsMenu
+        customButton={settingIcon}
+        options={['Edit profile', 'Logout']}
+        actions={[navigateToEdit, logout]}
+      />
+    </View>
   );
 
   const screenWidth = Dimensions.get('window').width;

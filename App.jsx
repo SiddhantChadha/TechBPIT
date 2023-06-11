@@ -33,8 +33,8 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selfId, setSelfId] = useState(null);
   const checkIfLoggedIn = async () => {
+    setSelfId(await getSelfId());
     if ((await getAccessToken()) != null) {
-      setSelfId(await getSelfId());
       setIsLoggedIn(true);
     }
   };
