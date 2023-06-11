@@ -50,6 +50,7 @@ const DateTimeInputBox = forwardRef((props, ref) => {
         minimumDate={props.minimumDate}
         maximumDate={props.maximumDate}
         isVisible={isDatePickerVisible}
+        value={data}
         mode={props.mode}
         onConfirm={date => {
           if (props.mode === 'date') {
@@ -57,6 +58,7 @@ const DateTimeInputBox = forwardRef((props, ref) => {
           } else {
             setData(dateStringToTime(date));
           }
+          setDatePickerVisibility(false);
         }}
         onCancel={() => setDatePickerVisibility(false)}
       />

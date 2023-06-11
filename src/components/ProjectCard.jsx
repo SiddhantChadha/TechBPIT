@@ -1,11 +1,13 @@
-import {View, Text, Image} from 'react-native';
+import {Pressable, Text, Image} from 'react-native';
 import React from 'react';
 
-const ProjectCard = ({item}) => {
-  console.log('data aa gya', item);
+const ProjectCard = ({navigation, item}) => {
   const itemData = item.item;
+
   return (
-    <View className="mx-1 my-4 rounded-xl shadow-xl bg-white">
+    <Pressable
+      className="mx-1 my-4 rounded-xl shadow-xl bg-white"
+      onPress={() => navigation.navigate('ProjectDetails',{itemData})}>
       <Image
         source={{
           uri: itemData.image
@@ -18,7 +20,7 @@ const ProjectCard = ({item}) => {
       <Text className="text-base text-gray-500 mx-4 mb-3">
         {itemData.duration}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 

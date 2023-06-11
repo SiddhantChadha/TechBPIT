@@ -357,13 +357,18 @@ const ProfileScreen = ({navigation, route}) => {
                   <Text className="text-base text-black font-medium">
                     Projects
                   </Text>
-                  <PlusIcon color={Colors.BLACK} onPress={()=>navigation.navigate('AddProject')} />
+                  <PlusIcon
+                    color={Colors.BLACK}
+                    onPress={() => navigation.navigate('AddProject')}
+                  />
                 </View>
                 <Carousel
                   data={projectData}
                   sliderWidth={screenWidth}
                   itemWidth={screenWidth - 80}
-                  renderItem={item => <ProjectCard item={item} />}
+                  renderItem={item => (
+                    <ProjectCard item={item} navigation={navigation} />
+                  )}
                   keyExtractor={item => item._id}
                   layout="stack"
                   autoplay={true}
@@ -394,7 +399,9 @@ const ProfileScreen = ({navigation, route}) => {
                 data={projectData}
                 sliderWidth={screenWidth}
                 itemWidth={screenWidth - 80}
-                renderItem={item => <ProjectCard item={item} />}
+                renderItem={item => (
+                  <ProjectCard item={item} navigation={navigation} />
+                )}
                 layout="stack"
                 keyExtractor={item => item._id}
                 autoplay={true}
