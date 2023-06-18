@@ -1,47 +1,237 @@
-import {View, Text, Image, ScrollView} from 'react-native';
-import React from 'react';
+import {View, Text, Image, ScrollView, Pressable, Alert} from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 import {UserGroupIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import CustomButton from '../components/CustomButton';
+import {REST_COMMANDS} from '../APIController/RestCommands';
+import {execute} from '../APIController/controller';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {UserContext} from '../context/UserIdContext';
+import {PencilSquareIcon} from 'react-native-heroicons/outline';
 
-const RequirementDetailScreen = ({navigation}) => {
-  const data = [
-    'Node',
-    'Android',
-    'JavaScript',
-    'SQL',
-    'AWS',
-    'DevOps',
-    'React',
-    'REdux',
-  ];
+const RequirementDetailScreen = ({navigation, route}) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const {id} = route.params;
+  const selfId = useContext(UserContext);
+
+  const onResponseReceived = async (command, data) => {
+    switch (command) {
+      case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECT:
+        setData(data);
+        setIsLoading(false);
+        break;
+      case REST_COMMANDS.REQ_DELETE_COLLABORATION_PROJECT:
+        navigation.goBack();
+      default:
+        break;
+    }
+  };
+
+  const onResponseFailed = (command, error) => {
+    console.log(error);
+  };
+
+  useEffect(() => {
+    execute(
+      REST_COMMANDS.REQ_GET_COLLABORATION_PROJECT,
+      {id},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  }, []);
+
+  const deleteProject = () => {
+    execute(
+      REST_COMMANDS.REQ_DELETE_COLLABORATION_PROJECT,
+      {id},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  };
+
+  const editButton = data && data.createdBy._id === selfId && (
+    <PencilSquareIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-end'}}
+      onPress={() =>
+        navigation.navigate('AddCollaborationProject', {
+          id,
+          title: data.title,
+          description: data.description,
+          teamSize: data.teamSize,
+          skillsRequired:data.skillsRequired.join()
+        })
+      }
+    />
+  );
+
+  const deleteAlert = () =>
+    Alert.alert('', 'Are you sure you want to delete this project?', [
+      {
+        text: 'Cancel',
+      },
+      {text: 'OK', onPress: deleteProject},
+    ]);
 
   return (
-    <View className="bg-white flex-grow">
+    <ScrollView className="bg-white">
       <CustomTopBar
         title={'Requirement Details'}
         navigation={navigation}
         showBackButton={true}
+        rightComponent={editButton}
       />
-      <ScrollView>
-        <View className="items-center ">
+      {isLoading ? (
+        <SkeletonPlaceholder>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                width: 20,
+                height: 40,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              width: '50%',
+              height: 20,
+              borderRadius: 5,
+              marginHorizontal: '5%',
+              marginTop: '5%',
+            }}
+          />
+          <View
+            style={{
+              width: '70%',
+              height: 150,
+              borderRadius: 5,
+              marginHorizontal: '5%',
+              marginTop: '5%',
+              alignSelf: 'center',
+            }}
+          />
+
+          <View
+            style={{
+              width: '50%',
+              height: 20,
+              borderRadius: 5,
+              marginHorizontal: '5%',
+              marginTop: '5%',
+            }}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+            <View
+              style={{
+                width: 2,
+                height: 150,
+                borderRadius: 5,
+                marginHorizontal: '5%',
+                marginTop: '5%',
+                flexGrow: 1,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              width: '50%',
+              height: 20,
+              borderRadius: 5,
+              marginHorizontal: '5%',
+              marginTop: '5%',
+            }}
+          />
+          <View
+            style={{
+              width: '75%',
+              borderRadius: 5,
+              marginHorizontal: '5%',
+              marginTop: '5%',
+              alignSelf: 'center',
+              aspectRatio: '3/4',
+            }}
+          />
+        </SkeletonPlaceholder>
+      ) : (
+        <View className="items-center mx-[10%]">
           <Image
             source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA1nkRAnQd11TU_uwpvfyM9mvkcw_FsgsvQ&usqp=CAU',
+              uri: data.image,
             }}
-            className="rounded-md w-36 h-36 bg-white shadow-xl"
+            className="rounded-md bg-white shadow-xl aspect-video w-full"
           />
-          <Text className="text-2xl text-black font-medium">Deiotr Mettri</Text>
+          <Text className="text-2xl text-black font-medium">{data.title}</Text>
           <View className="flex-row items-center my-2 mx-1">
             <UserGroupIcon color={Colors.GREY_4A} />
-            <Text className="mx-1 text-grey_4a">{'5'} Members</Text>
-            <Text className="mx-1 text-grey_4a">| Posted by: Tushar Jain</Text>
+            <Text className="mx-1 text-grey_4a">{data.teamSize} Members</Text>
+            <Text className="mx-1 text-grey_4a">
+              | Posted by: {data.createdBy.username}
+            </Text>
           </View>
-          <View className="self-start mx-2 ">
+          <View className="self-start mx-2 my-1">
             <Text className="text-black text-lg font-medium">Skills</Text>
             <View className="flex-row flex-wrap">
-              {data.map(item => (
+              {data.skillsRequired.map(item => (
                 <Text className="bg-light_purple p-2 mx-2 my-1 rounded-lg text-purple text-base font-medium">
                   {item}
                 </Text>
@@ -52,18 +242,23 @@ const RequirementDetailScreen = ({navigation}) => {
             Project description
           </Text>
           <Text className="self-start mx-4 text-grey_4a text-base">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-            similique impedit dignissimos culpa eos officiis libero corporis
-            omnis, laboriosam vel tenetur ratione debitis laudantium veniam
-            atque incidunt molestiae! Nulla, maiores!
+            {data.description}
           </Text>
-          <CustomButton
-            title="Show Interest"
-            onPress={() => console.log('clicked')}
-          />
+          {selfId === data.createdBy._id ? (
+            <Pressable onPress={deleteAlert}>
+              <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6 my-4">
+                DELETE
+              </Text>
+            </Pressable>
+          ) : (
+            <CustomButton
+              title="Show Interest"
+              onPress={() => console.log('clicked')}
+            />
+          )}
         </View>
-      </ScrollView>
-    </View>
+      )}
+    </ScrollView>
   );
 };
 

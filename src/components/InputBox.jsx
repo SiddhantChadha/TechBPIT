@@ -26,7 +26,9 @@ const InputBox = forwardRef((props, ref) => {
         paddingHorizontal: '4%',
       }}
       placeholder={props.placeholder}
+      keyboardType={props.keyboardType}
       secureTextEntry={props.secureTextEntry}
+      editable={props.editable}
     />
   );
 });

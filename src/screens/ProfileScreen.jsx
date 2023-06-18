@@ -35,6 +35,20 @@ const ProfileScreen = ({navigation, route}) => {
       // onPress={() => navigation.navigate('SetupProfile')}
     />
   );
+
+  const plusIcon = <PlusIcon color={Colors.BLACK} />;
+
+  const addProject = () => {
+    navigation.navigate('AddProject', {
+      image: profileData.image,
+      username: profileData.username,
+    });
+  };
+
+  const addCollaborationProject = ()=>{
+    navigation.navigate('AddCollaborationProject');
+  }
+
   const navigateToEdit = () => {
     navigation.navigate('SetupProfile');
   };
@@ -379,10 +393,13 @@ const ProfileScreen = ({navigation, route}) => {
                   <Text className="text-base text-black font-medium">
                     Projects
                   </Text>
-                  <PlusIcon
-                    color={Colors.BLACK}
-                    onPress={() => navigation.navigate('AddProject')}
-                  />
+                  <View style={{alignItems: 'flex-end'}}>
+                    <OptionsMenu
+                      customButton={plusIcon}
+                      options={['Add Project', 'Add Collaboration Project']}
+                      actions={[addProject, addCollaborationProject]}
+                    />
+                  </View>
                 </View>
                 <Carousel
                   data={projectData}

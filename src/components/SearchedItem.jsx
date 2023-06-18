@@ -3,7 +3,7 @@ import React from 'react';
 
 const SearchedItem = ({item}) => {
   const itemData = item.item;
-  console.log('ye h jo h', itemData);
+
   return (
     <View className="flex-row items-center shadow-lg mx-4 my-2 p-4 bg-white rounded-lg">
       <Image

@@ -1,4 +1,4 @@
-import {View, Text, FlatList, ScrollView} from 'react-native';
+import {View, Text, FlatList, ScrollView, Pressable} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 import SearchedItem from '../components/SearchedItem';
 import CustomTopBar from '../components/CustomTopBar';
@@ -101,7 +101,17 @@ const ModeratorsGroupScreen = ({navigation}) => {
         <View>
           <FlatList
             data={data}
-            renderItem={item => <SearchedItem item={item} />}
+            renderItem={item => (
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('CommunityDetail', {
+                    id: item.item._id,
+                    name: item.item.groupName,
+                  })
+                }>
+                <SearchedItem item={item} />
+              </Pressable>
+            )}
             keyExtractor={item => item._id}
           />
         </View>

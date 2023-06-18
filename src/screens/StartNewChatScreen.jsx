@@ -1,8 +1,6 @@
 import {View, Text, FlatList, ScrollView, Pressable} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
-import {Colors} from '../colors';
-import {XCircleIcon} from 'react-native-heroicons/outline';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';

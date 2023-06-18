@@ -26,6 +26,7 @@ import RequirementDetailScreen from './src/screens/RequirementDetailScreen';
 import CreatePostScreen from './src/screens/CreatePostScreen';
 import AddProjectScreen from './src/screens/AddProjectScreen';
 import ProjectDetailScreen from './src/screens/ProjectDetailsScreen';
+import AddCollaborationProjectScreen from './src/screens/AddCollaborationProjectScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,6 +86,10 @@ const App = () => {
               <Stack.Screen
                 name="ProjectDetails"
                 component={ProjectDetailScreen}
+              />
+              <Stack.Screen
+                name="AddCollaborationProject"
+                component={AddCollaborationProjectScreen}
               />
             </Stack.Navigator>
           </UserContext.Provider>

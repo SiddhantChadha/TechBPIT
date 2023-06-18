@@ -20,4 +20,12 @@ export const ROUTES = {
   POST_JOIN_GROUP: `${BASE_URL}/group/join`,
   POST_SIGNUP: `${BASE_URL}/auth/signup`,
   POST_VERIFY_OTP: `${BASE_URL}/auth/verify`,
+  POST_CREATE_COLLABORATION_PROJECT:`${BASE_URL}/ad/create`,
+  GET_COLLABORATION_PROJECTS:`${BASE_URL}/explore/ad`,
+  GET_COLLABORATION_PROJECT:`${BASE_URL}/ad`,
+  DELETE_COLLABORATION_PROJECT:`${BASE_URL}/ad/delete`,
+  PATCH_COLLABORATION_PROJECT:`${BASE_URL}/ad/update`,
+  DELETE_POST:`${BASE_URL}/post/delete`,
+  DELETE_PROJECT:`${BASE_URL}/project/delete`,
+  POST_CREATE_PROJECT:`${BASE_URL}/project/create`
 };

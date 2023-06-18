@@ -2,20 +2,25 @@ import {TextInput, Pressable, View} from 'react-native';
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
+  dateStringToDDMMMYY,
   dateStringToTime,
   dateStringToWeekDayDDMMM,
 } from '../Utils/DateTimeUtils';
 import {Colors} from '../colors';
 
 const DateTimeInputBox = forwardRef((props, ref) => {
-  const [data, setData] = useState(props.data);
+  const [data, setData] = useState(new Date(props.data));
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useImperativeHandle(
     ref,
     () => ({
       getData: () => {
-        return data;
+        if (props.mode === 'date') {
+          return dateStringToDDMMMYY(data);
+        } else {
+          return dateStringToTime(data);
+        }
       },
     }),
     [data],
@@ -24,7 +29,9 @@ const DateTimeInputBox = forwardRef((props, ref) => {
   return (
     <>
       <Pressable
-        onPress={() => setDatePickerVisibility(true)}
+        onPress={() => {
+          if (props.editable) setDatePickerVisibility(true);
+        }}
         style={{
           marginLeft: props.marginLeft,
           marginRight: props.marginRight,
@@ -32,7 +39,11 @@ const DateTimeInputBox = forwardRef((props, ref) => {
         }}>
         <View pointerEvents="none">
           <TextInput
-            value={data}
+            value={
+              props.mode === 'date'
+                ? dateStringToWeekDayDDMMM(data)
+                : dateStringToTime(data)
+            }
             onChangeText={setData}
             style={{
               borderWidth: 1,
@@ -50,15 +61,11 @@ const DateTimeInputBox = forwardRef((props, ref) => {
         minimumDate={props.minimumDate}
         maximumDate={props.maximumDate}
         isVisible={isDatePickerVisible}
-        value={data}
+        date={data}
         mode={props.mode}
         onConfirm={date => {
-          if (props.mode === 'date') {
-            setData(dateStringToWeekDayDDMMM(date));
-          } else {
-            setData(dateStringToTime(date));
-          }
           setDatePickerVisibility(false);
+          setData(date);
         }}
         onCancel={() => setDatePickerVisibility(false)}
       />

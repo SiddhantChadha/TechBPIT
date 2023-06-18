@@ -7,12 +7,10 @@ const ProjectCard = ({navigation, item}) => {
   return (
     <Pressable
       className="mx-1 my-4 rounded-xl shadow-xl bg-white"
-      onPress={() => navigation.navigate('ProjectDetails',{itemData})}>
+      onPress={() => navigation.navigate('ProjectDetails', {itemData})}>
       <Image
         source={{
-          uri: itemData.image
-            ? itemData.image
-            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA1nkRAnQd11TU_uwpvfyM9mvkcw_FsgsvQ&usqp=CAU',
+          uri: itemData.image,
         }}
         className="w-full aspect-video rounded-t-xl"
       />

@@ -1,35 +1,35 @@
 import {
-  ActivityIndicator,
   FlatList,
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   Dimensions,
   Pressable,
 } from 'react-native';
 import React, {useEffect, useState, useContext, useRef} from 'react';
-import CommunityPostItem from '../components/CommunityPostItem';
+
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
-import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
-import {Colors} from '../colors';
+
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import JoinCommunityCard from '../components/JoinCommunityCard';
 import Carousel, {Pagination} from 'react-native-snap-carousel-v4';
-import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
+
 import SearchBar from '../components/SearchBar';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SearchedItem from '../components/SearchedItem';
-import ProjectCard from '../components/ProjectCard';
 import ProjectRequirementItem from '../components/ProjectRequirementItem';
+import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
 
 const ExploreScreen = ({navigation}) => {
   const [isGroupLoading, setGroupLoading] = useState(true);
   const [isUserLoading, setUserLoading] = useState(true);
+  const [isCollaborationProjectLoading, setIsCollaborationProjectLoading] =
+    useState(true);
   const [groupData, setGroupData] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [collaborationProjectData, setCollaborationProjectData] = useState([]);
   const screenWidth = Dimensions.get('window').width;
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
@@ -49,6 +49,9 @@ const ExploreScreen = ({navigation}) => {
         setUserData(data);
         setUserLoading(false);
         break;
+      case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECTS:
+        setCollaborationProjectData(data);
+        setIsCollaborationProjectLoading(false);
       default:
         break;
     }
@@ -67,6 +70,13 @@ const ExploreScreen = ({navigation}) => {
     execute(
       REST_COMMANDS.REQ_GET_EXPLORE_USERS,
       {count: 10},
+      onResponseReceived,
+      onResponseFailed,
+    );
+
+    execute(
+      REST_COMMANDS.REQ_GET_COLLABORATION_PROJECTS,
+      {},
       onResponseReceived,
       onResponseFailed,
     );
@@ -97,7 +107,7 @@ const ExploreScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <CustomTopBar navigation={navigation} title={'Explore'} />
-      {isGroupLoading || isUserLoading ? (
+      {isGroupLoading || isUserLoading || isCollaborationProjectLoading ? (
         <ScrollView>
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -256,7 +266,9 @@ const ExploreScreen = ({navigation}) => {
                     data={groupData}
                     sliderWidth={screenWidth}
                     itemWidth={screenWidth - 50}
-                    renderItem={item => <JoinCommunityCard item={item} navigation={navigation}/>}
+                    renderItem={item => (
+                      <JoinCommunityCard item={item} navigation={navigation} />
+                    )}
                   />
                 </View>
               ) : (
@@ -268,11 +280,16 @@ const ExploreScreen = ({navigation}) => {
                   Collaborate on Projects
                 </Text>
                 <FlatList
-                  data={['Node', 'Android', 'JavaScript', 'SQL']}
-                  renderItem={({items}) => (
+                  className="flex-grow"
+                  data={collaborationProjectData}
+                  renderItem={({item}) => (
                     <Pressable
-                      onPress={() => navigation.navigate('RequirementDetails')}>
-                      <ProjectRequirementItem />
+                      onPress={() =>
+                        navigation.navigate('RequirementDetails', {
+                          id: item._id,
+                        })
+                      }>
+                      <ProjectRequirementItem data={item} />
                     </Pressable>
                   )}
                   horizontal={true}

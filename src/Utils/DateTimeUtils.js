@@ -23,7 +23,24 @@ export const timestampToAgoFormat = timestamp => {
 export const dateStringToDDMMM = dateString => {
   const date = new Date(dateString);
 
+  if(isNaN(date)){
+    return null;
+  }
+
   const options = {day: 'numeric', month: 'short'};
+  const formattedDate = date.toLocaleDateString('en-IN', options);
+
+  return formattedDate;
+};
+
+export const dateStringToDDMMMYY = dateString => {
+  const date = new Date(dateString);
+
+  if(isNaN(date)){
+    return null;
+  }
+
+  const options = {day: 'numeric', month: 'short',year:'numeric'};
   const formattedDate = date.toLocaleDateString('en-IN', options);
 
   return formattedDate;
@@ -31,6 +48,10 @@ export const dateStringToDDMMM = dateString => {
 
 export const dateStringToWeekDayDDMMM = dateString =>{
   const date = new Date(dateString);
+
+  if(isNaN(date)){
+    return null;
+  }
 
   const options = { weekday:'short',day: 'numeric', month: 'short'};
   const formattedDate = date.toLocaleDateString('en-IN', options);
@@ -40,6 +61,10 @@ export const dateStringToWeekDayDDMMM = dateString =>{
 
 export const dateStringToTime = dateString => {
   const date = new Date(dateString);
+
+  if(isNaN(date)){
+    return null;
+  }
 
   const options = {
   

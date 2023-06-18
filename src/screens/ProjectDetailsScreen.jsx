@@ -1,11 +1,23 @@
-import {View, Text, Image, FlatList, ScrollView, Pressable} from 'react-native';
-import React, {useContext} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  Pressable,
+  Alert,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 import {PencilSquareIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 import {UserContext} from '../context/UserIdContext';
+import {execute} from '../APIController/controller';
+import {REST_COMMANDS} from '../APIController/RestCommands';
+import {dateStringToWeekDayDDMMM} from '../Utils/DateTimeUtils';
 
 const ProjectDetailScreen = ({navigation, route}) => {
+  const [isApiCalling, setIsApiCalling] = useState(false);
   const {itemData} = route.params;
   const data = [
     {
@@ -17,11 +29,22 @@ const ProjectDetailScreen = ({navigation, route}) => {
   ];
   const selfId = useContext(UserContext);
 
-  const editButton = itemData.createdBy._id === selfId && (
+  const editButton = itemData.createdBy._id === selfId && !isApiCalling && (
     <PencilSquareIcon
       color={Colors.BLACK}
       style={{position: 'absolute', alignSelf: 'flex-end'}}
-      onPress={() => navigation.navigate('')}
+      onPress={() =>
+        navigation.navigate('AddProject', {
+          image: itemData.createdBy.image,
+          username: itemData.createdBy.username,
+          title: itemData.title,
+          description: itemData.description,
+          gitLink: itemData.gitLink,
+          hostedLink: itemData.hostedLink,
+          startDate: itemData.duration.split(' - ')[0],
+          endDate: itemData.duration.split(' - ')[1],
+        })
+      }
     />
   );
 
@@ -34,8 +57,38 @@ const ProjectDetailScreen = ({navigation, route}) => {
     );
   };
 
+  const deleteAlert = () =>
+    Alert.alert('', 'Are you sure you want to delete this project?', [
+      {
+        text: 'Cancel',
+      },
+      {text: 'OK', onPress: deleteProject},
+    ]);
+
+  const onResponseReceived = async (command, data) => {
+    switch (command) {
+      case REST_COMMANDS.REQ_DELETE_PROJECT:
+        setIsApiCalling(false);
+        navigation.goBack();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const onResponseFailed = (command, error) => {
+    setIsApiCalling(false);
+  };
+
   const deleteProject = () => {
-    
+    setIsApiCalling(true);
+    execute(
+      REST_COMMANDS.REQ_DELETE_PROJECT,
+      {id: itemData._id},
+      onResponseReceived,
+      onResponseFailed,
+    );
   };
 
   return (
@@ -96,11 +149,17 @@ const ProjectDetailScreen = ({navigation, route}) => {
         )}
 
         <View className="flex items-center justify-center my-5">
-          <Pressable onPress={deleteProject}>
+          {isApiCalling ? (
             <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6">
-              DELETE
+              DELETING...
             </Text>
-          </Pressable>
+          ) : (
+            <Pressable onPress={deleteAlert}>
+              <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6">
+                DELETE
+              </Text>
+            </Pressable>
+          )}
         </View>
       </ScrollView>
     </View>
