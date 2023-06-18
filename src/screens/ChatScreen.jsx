@@ -24,7 +24,7 @@ import {
   listenTempMessageRead,
   sendPersonalMessage,
 } from '../Utils/socket';
-import {getSelfId} from '../EncryptedStorageHelper';
+
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 import {UserContext} from '../context/UserIdContext';
 import ImageBottomSheet from '../components/ImageBottomSheet';
@@ -40,12 +40,13 @@ const ChatScreen = ({navigation, route}) => {
   const selfId = useContext(UserContext);
   const bottomSheet = useRef();
 
+
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
-        if (!isGrpChat) emitAllReadStatus(selfId.current, id);
+        if (!isGrpChat) emitAllReadStatus(selfId, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
 
         if (!isGrpChat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
@@ -58,10 +59,6 @@ const ChatScreen = ({navigation, route}) => {
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
-    (async () => {
-      selfId.current = await getSelfId();
-    })();
-
     execute(
       REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
       {id},
@@ -73,9 +70,9 @@ const ChatScreen = ({navigation, route}) => {
   const handleTyping = text => {
     setMessage(text);
     clearTimeout(selfTypingTimerRef.current);
-    emitIsTyping(selfId.current, id, true, isGrpChat, 'Tushar Jain');
+    emitIsTyping(selfId, id, true, isGrpChat, 'Tushar Jain');
     selfTypingTimerRef.current = setTimeout(() => {
-      emitIsTyping(selfId.current, id, false, isGrpChat, 'Tushar Jain');
+      emitIsTyping(selfId, id, false, isGrpChat, 'Tushar Jain');
     }, 1000);
   };
 
@@ -116,7 +113,7 @@ const ChatScreen = ({navigation, route}) => {
       msg = {
         msgType: 'direct-message-with-image',
         message: '',
-        sender: selfId.current,
+        sender: selfId,
         timestamp: getCurrentTimestamp(),
         receiver: id,
         imageUrl: imgUrl,
@@ -128,7 +125,7 @@ const ChatScreen = ({navigation, route}) => {
       msg = {
         msgType: 'direct-message',
         message,
-        sender: selfId.current,
+        sender: selfId,
         timestamp: getCurrentTimestamp(),
         receiver: id,
         imageUrl: '',
@@ -307,7 +304,7 @@ const ChatScreen = ({navigation, route}) => {
             <PhotoIcon color={Colors.WHITE} />
           </View>
         </Pressable>
-        <Pressable onPress={sendMessage}>
+        <Pressable onPress={()=>sendMessage()}>
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
             <PaperAirplaneIcon color={Colors.WHITE} />
           </View>

@@ -17,6 +17,7 @@ const labelData = [{label: 'Offline'}, {label: 'Online'}];
 
 const CreatePostScreen = ({navigation, route}) => {
   const [eventMode, setEventMode] = useState(labelData[0].label);
+  const [isApiCalling, setIsApiCalling] = useState(false);
   const titleRef = useRef();
   const descriptionRef = useRef();
   const organizerRef = useRef();
@@ -45,18 +46,42 @@ const CreatePostScreen = ({navigation, route}) => {
             <PhotoIcon color={Colors.PRIMARY_BLUE} size={72} />
           </View>
         )}
-        <InputBox placeholder="Add Title" ref={titleRef} />
-        <InputBox placeholder="Add Description" ref={descriptionRef} />
+        <InputBox
+          placeholder="Add Title"
+          ref={titleRef}
+          editable={!isApiCalling}
+        />
+        <InputBox
+          placeholder="Add Description"
+          ref={descriptionRef}
+          editable={!isApiCalling}
+        />
         {type === 'Community' ? (
-          <InputBox placeholder="Add Tags" ref={tagsRef} />
+          <InputBox
+            placeholder="Add Tags"
+            ref={tagsRef}
+            editable={!isApiCalling}
+          />
         ) : type === 'Resource' ? (
           <>
-            <InputBox placeholder="Add Resource Link" ref={resourceLinkRef} />
-            <InputBox placeholder="Add Read Time" ref={readTimeRef} />
+            <InputBox
+              placeholder="Add Resource Link"
+              ref={resourceLinkRef}
+              editable={!isApiCalling}
+            />
+            <InputBox
+              placeholder="Add Read Time"
+              ref={readTimeRef}
+              editable={!isApiCalling}
+            />
           </>
         ) : (
           <>
-            <InputBox placeholder="Add Organizer Name" ref={organizerRef} />
+            <InputBox
+              placeholder="Add Organizer Name"
+              ref={organizerRef}
+              editable={!isApiCalling}
+            />
 
             <View className="flex flex-row justify-between ">
               <DateTimeInputBox
@@ -64,12 +89,14 @@ const CreatePostScreen = ({navigation, route}) => {
                 marginLeft={'10%'}
                 minimumDate={new Date(Date.now())}
                 placeholder={`Date: ${dateStringToWeekDayDDMMM(Date.now())}`}
+                editable={!isApiCalling}
                 ref={dateRef}
               />
               <DateTimeInputBox
                 mode="time"
                 marginRight={'10%'}
                 placeholder={`Time: ${dateStringToTime(Date.now())}`}
+                editable={!isApiCalling}
                 ref={timeRef}
               />
             </View>

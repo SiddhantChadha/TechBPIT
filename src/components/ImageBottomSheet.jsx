@@ -8,13 +8,14 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const ImageBottomSheet = forwardRef((props, ref) => {
   const onCameraPress = useCallback(async () => {
+    ref.current.close();
     const options = {
       saveToPhotos: true,
       mediaType: 'photo',
       includeBase64: false,
     };
     const result = await launchCamera(options);
-    ref.current.close();
+
     const file = {
       uri: result.assets[0].uri,
       type: result.assets[0].type,
@@ -24,6 +25,7 @@ const ImageBottomSheet = forwardRef((props, ref) => {
   }, []);
 
   const onImageLibraryPress = useCallback(async () => {
+    ref.current.close();
     const options = {
       selectionLimit: 1,
       mediaType: 'photo',
@@ -31,7 +33,6 @@ const ImageBottomSheet = forwardRef((props, ref) => {
     };
     const result = await launchImageLibrary(options);
 
-    ref.current.close();
     const file = {
       uri: result.assets[0].uri,
       type: result.assets[0].type,
@@ -41,9 +42,6 @@ const ImageBottomSheet = forwardRef((props, ref) => {
     props.navigation.navigate('UploadImage', {
       file,
       action: props.action,
-      id: props.receiver.id,
-      image: props.receiver.image,
-      name: props.receiver.name,
     });
   }, []);
 

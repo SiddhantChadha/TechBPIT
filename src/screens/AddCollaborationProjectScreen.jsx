@@ -1,4 +1,4 @@
-import {View, Pressable, ScrollView} from 'react-native';
+import {View, Pressable, ScrollView, Image} from 'react-native';
 import React, {useState, useRef} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 import CustomButton from '../components/CustomButton';
@@ -12,6 +12,7 @@ import {ActivityIndicator} from 'react-native-paper';
 
 const AddCollaborationProjectScreen = ({navigation, route}) => {
   const titleRef = useRef();
+  const [image, setImage] = useState(route.params?route.params.image:undefined);
   const descriptionRef = useRef();
   const teamSizeRef = useRef();
   const skillsRef = useRef();
@@ -58,6 +59,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
           description: descriptionRef.current.getData(),
           teamSize: teamSizeRef.current.getData(),
           skillsRequired: skillsRef.current.getData().split(','),
+          image,
         },
         onResponseReceived,
         onResponseFailed,
@@ -70,6 +72,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
           description: descriptionRef.current.getData(),
           teamSize: teamSizeRef.current.getData(),
           skillsRequired: skillsRef.current.getData().split(','),
+          image,
         },
         onResponseReceived,
         onResponseFailed,
@@ -94,9 +97,16 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <Pressable onPress={() => bottomSheetRef.current.open()}>
-          <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">
-            <PhotoIcon color={Colors.PRIMARY_BLUE} size={72} />
-          </View>
+          {image ? (
+            <Image
+              source={{uri: image}}
+              className="mx-[10%] aspect-video  my-[5%]"
+            />
+          ) : (
+            <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">
+              <PhotoIcon color={Colors.PRIMARY_BLUE} size={72} />
+            </View>
+          )}
         </Pressable>
 
         <InputBox
@@ -134,7 +144,11 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
           />
         )}
 
-        <ImageBottomSheet ref={bottomSheetRef} />
+        <ImageBottomSheet
+          ref={bottomSheetRef}
+          action={setImage}
+          navigation={navigation}
+        />
       </ScrollView>
     </View>
   );

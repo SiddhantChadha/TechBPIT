@@ -40,14 +40,14 @@ const ProfileScreen = ({navigation, route}) => {
 
   const addProject = () => {
     navigation.navigate('AddProject', {
-      image: profileData.image,
+      selfImage: profileData.image,
       username: profileData.username,
     });
   };
 
-  const addCollaborationProject = ()=>{
+  const addCollaborationProject = () => {
     navigation.navigate('AddCollaborationProject');
-  }
+  };
 
   const navigateToEdit = () => {
     navigation.navigate('SetupProfile');
@@ -419,7 +419,13 @@ const ProfileScreen = ({navigation, route}) => {
                   <Text className="text-base text-black font-medium">
                     Projects
                   </Text>
-                  <PlusIcon color={Colors.BLACK} />
+                  <View style={{alignItems: 'flex-end'}}>
+                    <OptionsMenu
+                      customButton={plusIcon}
+                      options={['Add Project', 'Add Collaboration Project']}
+                      actions={[addProject, addCollaborationProject]}
+                    />
+                  </View>
                 </View>
                 <ProjectSVG style={{alignSelf: 'center', margin: 10}} />
                 <Text className="text-base text-grey_4a font-medium self-center mb-10">

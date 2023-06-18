@@ -41,7 +41,7 @@ export const sendPersonalMessage = async (
     }
     
     setData((d)=>{
-      return [messageObj,...d.slice(2)]
+      return [messageObj,...d.slice(1)]
     })
 
   });

@@ -2,25 +2,20 @@ import {TextInput, Pressable, View} from 'react-native';
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
-  dateStringToDDMMMYY,
   dateStringToTime,
   dateStringToWeekDayDDMMM,
 } from '../Utils/DateTimeUtils';
 import {Colors} from '../colors';
 
 const DateTimeInputBox = forwardRef((props, ref) => {
-  const [data, setData] = useState(new Date(props.data));
+  const [data, setData] = useState(props.data);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useImperativeHandle(
     ref,
     () => ({
       getData: () => {
-        if (props.mode === 'date') {
-          return dateStringToDDMMMYY(data);
-        } else {
-          return dateStringToTime(data);
-        }
+        return data;
       },
     }),
     [data],
@@ -30,7 +25,9 @@ const DateTimeInputBox = forwardRef((props, ref) => {
     <>
       <Pressable
         onPress={() => {
-          if (props.editable) setDatePickerVisibility(true);
+          if (props.editable) {
+            setDatePickerVisibility(true);
+          }
         }}
         style={{
           marginLeft: props.marginLeft,

@@ -1,5 +1,6 @@
 import {Pressable, Text, Image} from 'react-native';
 import React from 'react';
+import { dateStringToDDMMMYY } from '../Utils/DateTimeUtils';
 
 const ProjectCard = ({navigation, item}) => {
   const itemData = item.item;
@@ -16,7 +17,7 @@ const ProjectCard = ({navigation, item}) => {
       />
       <Text className="text-lg text-black mx-4 my-1">{itemData.title}</Text>
       <Text className="text-base text-gray-500 mx-4 mb-3">
-        {itemData.duration}
+        {`${dateStringToDDMMMYY(itemData.duration.split(' - ')[0])} - ${dateStringToDDMMMYY(itemData.duration.split(' - ')[1])}`}
       </Text>
     </Pressable>
   );

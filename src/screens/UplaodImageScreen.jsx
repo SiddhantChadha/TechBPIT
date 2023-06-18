@@ -39,22 +39,16 @@ const UplaodImageScreen = ({navigation, route}) => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size={64} color={Colors.PRIMARY_BLUE} />
+        <ActivityIndicator size={64} color={Colors.PRIMARY_BLUE} className="relative" />
       ) : (
         <View className="flex flex-row justify-evenly">
-          <Pressable>
+          <Pressable onPress={()=>navigation.goBack()}>
             <Text className="text-white text-lg font-medium">Cancel</Text>
           </Pressable>
           <Pressable
             onPress={() => {
               route.params.action(image);
-              
-              navigation.navigate('Chat', {
-                id: route.params.id,
-                image: route.params.image,
-                name: route.params.name,
-              });
-              
+              navigation.goBack();
             }}>
             <Text className="text-white text-lg font-medium">OK</Text>
           </Pressable>

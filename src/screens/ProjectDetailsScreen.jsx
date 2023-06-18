@@ -14,7 +14,7 @@ import {Colors} from '../colors';
 import {UserContext} from '../context/UserIdContext';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
-import {dateStringToWeekDayDDMMM} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMMYY, dateStringToWeekDayDDMMM} from '../Utils/DateTimeUtils';
 
 const ProjectDetailScreen = ({navigation, route}) => {
   const [isApiCalling, setIsApiCalling] = useState(false);
@@ -35,7 +35,7 @@ const ProjectDetailScreen = ({navigation, route}) => {
       style={{position: 'absolute', alignSelf: 'flex-end'}}
       onPress={() =>
         navigation.navigate('AddProject', {
-          image: itemData.createdBy.image,
+          selfImage: itemData.createdBy.image,
           username: itemData.createdBy.username,
           title: itemData.title,
           description: itemData.description,
@@ -43,6 +43,7 @@ const ProjectDetailScreen = ({navigation, route}) => {
           hostedLink: itemData.hostedLink,
           startDate: itemData.duration.split(' - ')[0],
           endDate: itemData.duration.split(' - ')[1],
+          image:itemData.image
         })
       }
     />
@@ -117,7 +118,7 @@ const ProjectDetailScreen = ({navigation, route}) => {
 
         <View className="my-2">
           <Text className="text-black font-medium text-lg">Duration</Text>
-          <Text>{itemData.duration}</Text>
+          <Text> {`${dateStringToDDMMMYY(itemData.duration.split(' - ')[0])} - ${dateStringToDDMMMYY(itemData.duration.split(' - ')[1])}`}</Text>
         </View>
         <View>
           <Text className="text-black font-medium text-lg">Team Members</Text>

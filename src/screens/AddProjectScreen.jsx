@@ -15,6 +15,7 @@ import AddTeamMemberBottomSheet from '../components/AddTeamMemberBottomSheet';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {ActivityIndicator} from 'react-native-paper';
+import ImageBottomSheet from '../components/ImageBottomSheet';
 
 const AddProjectScreen = ({navigation, route}) => {
   const titleRef = useRef();
@@ -24,8 +25,12 @@ const AddProjectScreen = ({navigation, route}) => {
   const startDateRef = useRef();
   const endDateRef = useRef();
   const selfId = useContext(UserContext);
+  const bottomSheetRef = useRef(false);
+  const [image, setImage] = useState(
+    route.params ? route.params.image : undefined,
+  );
   const {
-    image,
+    selfImage,
     username,
     title,
     description,
@@ -35,11 +40,10 @@ const AddProjectScreen = ({navigation, route}) => {
     endDate,
   } = route.params;
   const bottomSheet = useRef();
-  const [memberList, setMemberList] = useState([{id: selfId, image, username}]);
+  const [memberList, setMemberList] = useState([
+    {id: selfId, image: selfImage, username},
+  ]);
   const [isApiCalling, setIsApiCalling] = useState(false);
-
-  let d = new Date(Date.parse(startDate.toString()));
-  console.log(startDate);
 
   const UserCard = ({id, image, username}) => {
     return (
@@ -96,10 +100,18 @@ const AddProjectScreen = ({navigation, route}) => {
         title="Add Project"
       />
       <ScrollView>
-        <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">
-          <PhotoIcon color={Colors.PRIMARY_BLUE} size={72} />
-        </View>
-
+        <Pressable onPress={() => bottomSheetRef.current.open()}>
+          {image ? (
+            <Image
+              source={{uri: image}}
+              className="mx-[10%] aspect-video  my-[5%]"
+            />
+          ) : (
+            <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">
+              <PhotoIcon color={Colors.PRIMARY_BLUE} size={72} />
+            </View>
+          )}
+        </Pressable>
         <InputBox
           placeholder="Title"
           ref={titleRef}
@@ -131,19 +143,19 @@ const AddProjectScreen = ({navigation, route}) => {
             <DateTimeInputBox
               mode="date"
               ref={startDateRef}
-              data={startDate}
-              editable={!isApiCalling}
               maximumDate={new Date(Date.now())}
+              data={startDate ? new Date(startDate) : undefined}
+              editable={!isApiCalling}
             />
           </View>
           <View className="mr-[10%]">
             <Text className="text-grey_4a my-2">End Date</Text>
             <DateTimeInputBox
               mode="date"
-              data={endDate}
               ref={endDateRef}
-              editable={!isApiCalling}
+              data={endDate ? new Date(endDate) : undefined}
               maximumDate={new Date(Date.now())}
+              editable={!isApiCalling}
             />
           </View>
         </View>
@@ -182,6 +194,11 @@ const AddProjectScreen = ({navigation, route}) => {
         )}
 
         <AddTeamMemberBottomSheet ref={bottomSheet} />
+        <ImageBottomSheet
+          ref={bottomSheetRef}
+          action={setImage}
+          navigation={navigation}
+        />
       </ScrollView>
     </View>
   );

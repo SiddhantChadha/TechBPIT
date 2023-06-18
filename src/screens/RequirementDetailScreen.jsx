@@ -61,7 +61,8 @@ const RequirementDetailScreen = ({navigation, route}) => {
           title: data.title,
           description: data.description,
           teamSize: data.teamSize,
-          skillsRequired:data.skillsRequired.join()
+          skillsRequired:data.skillsRequired.join(),
+          image:data.image
         })
       }
     />
