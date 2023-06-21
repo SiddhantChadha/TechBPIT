@@ -27,5 +27,6 @@ export const ROUTES = {
   PATCH_COLLABORATION_PROJECT:`${BASE_URL}/ad/update`,
   DELETE_POST:`${BASE_URL}/post/delete`,
   DELETE_PROJECT:`${BASE_URL}/project/delete`,
-  POST_CREATE_PROJECT:`${BASE_URL}/project/create`
+  POST_CREATE_PROJECT:`${BASE_URL}/project/create`,
+  POST_CREATE_POST:`${BASE_URL}/post/create`
 };

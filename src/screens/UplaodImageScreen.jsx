@@ -5,7 +5,7 @@ import {Colors} from '../colors';
 
 const UplaodImageScreen = ({navigation, route}) => {
   const [image, setImage] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(route.params.edit ? true : false);
 
   useEffect(() => {
     const handleUpload = async uploadFile => {
@@ -21,7 +21,9 @@ const UplaodImageScreen = ({navigation, route}) => {
       setImage(data.secure_url);
     };
 
-    handleUpload(route.params.file);
+    if (route.params.edit) {
+      handleUpload(route.params.file);
+    }
   }, []);
 
   return (
@@ -39,10 +41,15 @@ const UplaodImageScreen = ({navigation, route}) => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size={64} color={Colors.PRIMARY_BLUE} className="relative" />
+        <ActivityIndicator
+          size={64}
+          color={Colors.PRIMARY_BLUE}
+          className="relative"
+        />
       ) : (
+        route.params.edit &&
         <View className="flex flex-row justify-evenly">
-          <Pressable onPress={()=>navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <Text className="text-white text-lg font-medium">Cancel</Text>
           </Pressable>
           <Pressable

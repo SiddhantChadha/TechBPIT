@@ -171,6 +171,10 @@ export async function execute(
     case REST_COMMANDS.REQ_POST_CREATE_PROJECT:
       await createProject(command, request, onResponseReceived, onResponseFailed);
       break;
+
+    case REST_COMMANDS.REQ_POST_CREATE_POST:
+      await createPost(command, request, onResponseReceived, onResponseFailed);
+      break;
     default:
       break;
   }
@@ -894,6 +898,34 @@ async function getCollaborationProjects(command,
           headers: {
             Authorization: `Bearer ${await getAccessToken()}`,
           },
+        });
+    
+        basicResponseHandler(
+          command,
+          response,
+          onResponseReceived,
+          onResponseFailed,
+        );
+      } catch (error) {
+        onResponseFailed(command, error);
+      }
+    }
+
+    async function createPost(
+      command,
+      request,
+      onResponseReceived,
+      onResponseFailed,
+    ) {
+      try {
+        const response = await fetch(ROUTES.POST_CREATE_POST, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${await getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+    
+          body: JSON.stringify({post:request}),
         });
     
         basicResponseHandler(

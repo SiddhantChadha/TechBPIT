@@ -1,4 +1,11 @@
-import {View, Text, Image, Dimensions, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {
   Cog6ToothIcon,
@@ -50,7 +57,15 @@ const ProfileScreen = ({navigation, route}) => {
   };
 
   const navigateToEdit = () => {
-    navigation.navigate('SetupProfile');
+    navigation.navigate('SetupProfile', {
+      image: profileData.image,
+      name: profileData.username,
+      state: profileData.state,
+      city: profileData.city,
+      about: profileData.about,
+      skills: profileData.skills.join(','),
+      yearOfStudy:profileData.yearOfStudy
+    });
   };
 
   const logout = async () => {
@@ -320,12 +335,20 @@ const ProfileScreen = ({navigation, route}) => {
       ) : (
         <ScrollView className="bg-gray-100">
           <View className="flex-row items-center m-4">
-            <Image
-              source={{
-                uri: profileData.image,
-              }}
-              className="rounded-full w-20 h-20"
-            />
+            <Pressable
+              onPress={() =>
+                navigation.navigate('UploadImage', {
+                  edit: false,
+                  file: {uri: profileData.image},
+                })
+              }>
+              <Image
+                source={{
+                  uri: profileData.image,
+                }}
+                className="rounded-full w-20 h-20"
+              />
+            </Pressable>
             <View className="m-4">
               <Text className="text-xl text-black font-medium">
                 {profileData.username}

@@ -40,6 +40,7 @@ const ImageBottomSheet = forwardRef((props, ref) => {
     };
 
     props.navigation.navigate('UploadImage', {
+      edit:true,
       file,
       action: props.action,
     });

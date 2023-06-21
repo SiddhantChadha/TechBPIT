@@ -17,7 +17,7 @@ const PostBottomSheet = forwardRef((props, ref) => {
             <Pressable
               onPress={() => {
                 ref.current.close();
-                props.navigation.navigate('CreatePost',{type:item});
+                props.navigation.navigate('CreatePost',{type:`${item.toLowerCase()}Post`,groupId:props.groupId});
               }}
               className="border-b-[1px] border-grey_4a w-full h-1/3 flex justify-center"
               key={idx}>

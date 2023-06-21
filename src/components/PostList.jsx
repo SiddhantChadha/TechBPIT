@@ -3,6 +3,7 @@ import {
   ScrollView,
   VirtualizedList,
   TouchableOpacity,
+  RefreshControl
 } from 'react-native';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
@@ -41,6 +42,17 @@ const PostList = ({navigation, filterType, id}) => {
       onResponseFailed,
     );
   }, []);
+
+  const onRefresh = ()=>{
+    setLoading(true);
+    execute(
+      REST_COMMANDS.REQ_GET_ALL_POSTS,
+      {},
+      onResponseReceived,
+      onResponseFailed,
+    );
+    
+  }
 
   return (
     <>
@@ -255,6 +267,7 @@ const PostList = ({navigation, filterType, id}) => {
       ) : (
         <VirtualizedList
           scrollEnabled={false}
+          refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
           data={data}
           renderItem={({item}) => (
             <TouchableOpacity

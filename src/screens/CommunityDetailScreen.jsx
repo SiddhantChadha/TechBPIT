@@ -261,7 +261,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
         </ScrollView>
       )}
 
-      <PostBottomSheet navigation={navigation} ref={bottomSheet} />
+      <PostBottomSheet navigation={navigation} ref={bottomSheet} groupId={id} />
     </View>
   );
 };

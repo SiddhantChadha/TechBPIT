@@ -8,7 +8,7 @@ import {Colors} from '../colors';
 import ImageBottomSheet from '../components/ImageBottomSheet';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
-import {ActivityIndicator} from 'react-native-paper';
+import { ActivityIndicator } from 'react-native';
 
 const AddCollaborationProjectScreen = ({navigation, route}) => {
   const titleRef = useRef();
@@ -100,7 +100,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
           {image ? (
             <Image
               source={{uri: image}}
-              className="mx-[10%] aspect-video  my-[5%]"
+              className="mx-[10%] w-4/5 aspect-video my-[5%]"
             />
           ) : (
             <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">

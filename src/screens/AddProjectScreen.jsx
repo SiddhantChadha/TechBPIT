@@ -104,7 +104,7 @@ const AddProjectScreen = ({navigation, route}) => {
           {image ? (
             <Image
               source={{uri: image}}
-              className="mx-[10%] aspect-video  my-[5%]"
+              className="mx-[10%] w-4/5 aspect-video my-[5%]"
             />
           ) : (
             <View className="mx-[10%] h-36 bg-gray-300 flex items-center justify-center my-[5%]">

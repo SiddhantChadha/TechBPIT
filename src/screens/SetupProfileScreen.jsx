@@ -1,5 +1,12 @@
-import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import CustomTopBar from '../components/CustomTopBar';
 import InputBox from '../components/InputBox';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -7,24 +14,27 @@ import CustomButton from '../components/CustomButton';
 import AddSkillsInput from '../components/AddSkillInput';
 import {MinusIcon, PlusIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
+import ImageBottomSheet from '../components/ImageBottomSheet';
 
-const SetupProfileScreen = ({navigation, data}) => {
-  const labelData = [
-    {label: '1st year'},
-    {label: '2nd year'},
-    {label: '3rd year'},
-    {label: '4th year'},
-  ];
+const labelData = [
+  {label: '1st year'},
+  {label: '2nd year'},
+  {label: '3rd year'},
+  {label: '4th year'},
+];
 
-  const [value, setValue] = useState(null);
+const SetupProfileScreen = ({navigation, route}) => {
+  const [year, setYear] = useState(route.params.yearOfStudy);
   const [addSocialLink, setAddSocialLink] = useState(false);
-  const renderItem = item => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.selectedTextStyle}>{'lool'}</Text>
-      </View>
-    );
-  };
+  const [image, setImage] = useState(route.params.image);
+  const nameRef = useRef();
+  const stateRef = useRef();
+  const cityRef = useRef();
+  const aboutRef = useRef();
+  const skillRef = useRef();
+  const bottomSheetref = useRef(false);
+
+  const {name, state, city, about, skills} = route.params;
 
   return (
     <ScrollView className="bg-white">
@@ -36,24 +46,25 @@ const SetupProfileScreen = ({navigation, data}) => {
       <Text className="mx-10 my-2 text-center text-base font-medium">
         Hey! we need few details to setup your profile section
       </Text>
-      <Image
-        source={{
-          uri: 'https://media.licdn.com/dms/image/C5103AQHExyLqyBIe8w/profile-displayphoto-shrink_800_800/0/1567182680271?e=1690416000&v=beta&t=x1EOjDxYtqSemAf6E3DUvLpiLQZOgzD1G_X6N8Ij3NY',
-        }}
-        className="rounded-full w-24 h-24 self-center"
-      />
-
-      <InputBox placeholder="Full Name" />
-      <InputBox placeholder="State" />
-      <InputBox placeholder="City" />
-      <InputBox placeholder="About" />
+      <Pressable onPress={() => bottomSheetref.current.open()}>
+        <Image
+          source={{
+            uri: image,
+          }}
+          className="rounded-full w-24 h-24 self-center"
+        />
+      </Pressable>
+      <InputBox placeholder="Full Name" ref={nameRef} data={name} />
+      <InputBox placeholder="State" ref={stateRef} data={state} />
+      <InputBox placeholder="City" ref={cityRef} data={city} />
+      <InputBox placeholder="About" ref={aboutRef} data={about} />
 
       <Dropdown
         data={labelData}
         placeholder="Select year of study"
         labelField="label"
         valueField="label"
-        value={value}
+        value={year}
         style={{
           marginHorizontal: '10%',
           marginVertical: '5%',
@@ -63,10 +74,14 @@ const SetupProfileScreen = ({navigation, data}) => {
           paddingVertical: '2%',
         }}
         onChange={item => {
-          setValue(item.label);
+          setYear(item.label);
         }}
       />
-      <InputBox placeholder="Add Skills (Eg. Android, Node, Sql)" />
+      <InputBox
+        placeholder="Add Skills (Eg. Android, Node, Sql)"
+        ref={skillRef}
+        data={skills}
+      />
       {addSocialLink ? (
         <TouchableOpacity onPress={() => setAddSocialLink(!addSocialLink)}>
           <View className="rounded-xl mx-10 p-3 border my-5">
@@ -110,6 +125,11 @@ const SetupProfileScreen = ({navigation, data}) => {
       )}
 
       <CustomButton title="Get Set Go" />
+      <ImageBottomSheet
+        ref={bottomSheetref}
+        navigation={navigation}
+        action={setImage}
+      />
     </ScrollView>
   );
 };
