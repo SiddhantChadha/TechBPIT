@@ -21,7 +21,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
   const skillsRef = useRef();
   const bottomSheetRef = useRef(false);
   const [isApiCalling, setIsApiCalling] = useState(false);
-  const {id, title, description, teamSize, skillsRequired, action} =
+  const {id, title, description, teamSize, skillsRequired, action, edit} =
     route.params;
   const selfId = useContext(UserContext);
 
@@ -49,7 +49,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
   const createOrUpdateCollaborationProject = () => {
     setIsApiCalling(true);
 
-    if (route.params) {
+    if (edit) {
       execute(
         REST_COMMANDS.REQ_PATCH_COLLABORATION_PROJECT,
         {

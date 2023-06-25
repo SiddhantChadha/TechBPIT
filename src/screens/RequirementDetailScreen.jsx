@@ -58,13 +58,14 @@ const RequirementDetailScreen = ({navigation, route}) => {
       style={{position: 'absolute', alignSelf: 'flex-end'}}
       onPress={() =>
         navigation.navigate('AddCollaborationProject', {
+          edit: true,
           id,
           title: data.title,
           description: data.description,
           teamSize: data.teamSize,
           skillsRequired: data.skillsRequired.join(),
           image: data.image,
-          action
+          action,
         })
       }
     />

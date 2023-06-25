@@ -66,6 +66,7 @@ const ProfileScreen = ({navigation, route}) => {
 
   const addCollaborationProject = () => {
     navigation.navigate('AddCollaborationProject', {
+      edit:false,
       action: setRefreshCollaborationProjects,
     });
   };
@@ -436,12 +437,16 @@ const ProfileScreen = ({navigation, route}) => {
               </Text>
               <View className="mx-4">
                 {profileData.socialLinks &&
-                  profileData.socialLinks.map(link => (
-                    <SocialLinks
-                      image={link.platformImg}
-                      link={link.platformLink}
-                    />
-                  ))}
+                  profileData.socialLinks.map(link => {
+                      if(link.platformLink){
+                        return <SocialLinks
+                        image={link.platformImg}
+                        link={link.platformLink}
+                      />
+                      }
+                  }
+                    
+                  )}
               </View>
               <HorizontalLine />
             </View>
