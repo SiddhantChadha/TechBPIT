@@ -6,6 +6,7 @@ import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
+  setSelfId,
 } from '../EncryptedStorageHelper';
 let setIsLoggedIn = null;
 export function loggedInStateSetter(setIsLoggedIna) {
@@ -145,31 +146,66 @@ export async function execute(
       break;
 
     case REST_COMMANDS.REQ_POST_CREATE_COLLABORATION_PROJECT:
-      await createCollaborationProject(command, request, onResponseReceived, onResponseFailed);
+      await createCollaborationProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
 
     case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECTS:
-      await getCollaborationProjects(command, request, onResponseReceived, onResponseFailed);
+      await getCollaborationProjects(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
-    
+
     case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECT:
-      await getCollaborationProject(command, request, onResponseReceived, onResponseFailed);
-        break;
+      await getCollaborationProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
 
     case REST_COMMANDS.REQ_DELETE_COLLABORATION_PROJECT:
-      await deleteCollaborationProject(command, request, onResponseReceived, onResponseFailed);
+      await deleteCollaborationProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
     case REST_COMMANDS.REQ_PATCH_COLLABORATION_PROJECT:
-      await updateCollaborationProject(command, request, onResponseReceived, onResponseFailed);
+      await updateCollaborationProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
-    
+
     case REST_COMMANDS.REQ_DELETE_POST:
       await deletePost(command, request, onResponseReceived, onResponseFailed);
-        break;
+      break;
     case REST_COMMANDS.REQ_DELETE_PROJECT:
-      await deleteProject(command, request, onResponseReceived, onResponseFailed);
+      await deleteProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
     case REST_COMMANDS.REQ_POST_CREATE_PROJECT:
-      await createProject(command, request, onResponseReceived, onResponseFailed);
+      await createProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
 
     case REST_COMMANDS.REQ_POST_CREATE_POST:
@@ -177,17 +213,32 @@ export async function execute(
       break;
 
     case REST_COMMANDS.REQ_GET_ALL_COLLABORATION_PROJECTS:
-      await getAllCollaborationProjects(command, request, onResponseReceived, onResponseFailed);
+      await getAllCollaborationProjects(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
 
     case REST_COMMANDS.REQ_PATCH_UPDATE_POST:
       await updatePost(command, request, onResponseReceived, onResponseFailed);
       break;
     case REST_COMMANDS.REQ_PATCH_UPDATE_PROFILE:
-      await updateProfile(command, request, onResponseReceived, onResponseFailed);
+      await updateProfile(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
     case REST_COMMANDS.REQ_PATCH_UPDATE_PROJECT:
-      await updateProject(command, request, onResponseReceived, onResponseFailed);
+      await updateProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
       break;
     default:
       break;
@@ -256,8 +307,9 @@ async function postRefreshToken(
       execute(command, responseData.body, onResponseReceived, onResponseFailed);
     }
     if (response.status === 401) {
-      setIsLoggedIn(false);
       await setAuthTokens(null, null);
+      await setSelfId(null);
+      setIsLoggedIn(false);
     }
     refreshTokenPromise = Promise.resolve();
   } catch (error) {
@@ -733,7 +785,6 @@ async function joinGroup(
   }
 }
 
-
 async function createCollaborationProject(
   command,
   request,
@@ -762,304 +813,336 @@ async function createCollaborationProject(
   }
 }
 
-async function getCollaborationProjects(command,
+async function getCollaborationProjects(
+  command,
   request,
   onResponseReceived,
-  onResponseFailed){
-    try {
-      const response = await fetch(ROUTES.GET_COLLABORATION_PROJECTS, {
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.GET_COLLABORATION_PROJECTS, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getCollaborationProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(
+      `${ROUTES.GET_COLLABORATION_PROJECT}/${request.id}`,
+      {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${await getAccessToken()}`,
         },
-      });
-  
-      basicResponseHandler(
-        command,
-        response,
-        onResponseReceived,
-        onResponseFailed,
-      );
-    } catch (error) {
-      onResponseFailed(command, error);
-    }
+      },
+    );
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
   }
+}
 
-  async function getCollaborationProject(command,
-    request,
-    onResponseReceived,
-    onResponseFailed){
-      try {
-        const response = await fetch(`${ROUTES.GET_COLLABORATION_PROJECT}/${request.id}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-          },
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+async function deleteCollaborationProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(
+      `${ROUTES.DELETE_COLLABORATION_PROJECT}/${request.id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+        },
+      },
+    );
 
-    async function deleteCollaborationProject(command, request, onResponseReceived, onResponseFailed){
-      try {
-        const response = await fetch(`${ROUTES.DELETE_COLLABORATION_PROJECT}/${request.id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-          },
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
-
-    async function updateCollaborationProject(
+    basicResponseHandler(
       command,
-      request,
+      response,
       onResponseReceived,
       onResponseFailed,
-    ) {
-      try {
-        const {id,...body} = request;
-        const response = await fetch(`${ROUTES.PATCH_COLLABORATION_PROJECT}/${id}`, {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-            'Content-Type': 'application/json',
-          },
-    
-          body: JSON.stringify(body),
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
 
-    async function deletePost(command, request, onResponseReceived, onResponseFailed){
-      try {
-        const response = await fetch(`${ROUTES.DELETE_POST}/${request.id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-          },
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+async function updateCollaborationProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const {id, ...body} = request;
+    const response = await fetch(
+      `${ROUTES.PATCH_COLLABORATION_PROJECT}/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
 
-    async function createProject(
+        body: JSON.stringify(body),
+      },
+    );
+
+    basicResponseHandler(
       command,
-      request,
+      response,
       onResponseReceived,
       onResponseFailed,
-    ) {
-      try {
-        const response = await fetch(ROUTES.POST_CREATE_PROJECT, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-            'Content-Type': 'application/json',
-          },
-    
-          body: JSON.stringify(request),
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
 
-    async function deleteProject(command, request, onResponseReceived, onResponseFailed){
-      try {
-        const response = await fetch(`${ROUTES.DELETE_PROJECT}/${request.id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-          },
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+async function deletePost(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.DELETE_POST}/${request.id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
 
-    async function createPost(
+    basicResponseHandler(
       command,
-      request,
+      response,
       onResponseReceived,
       onResponseFailed,
-    ) {
-      try {
-        const response = await fetch(ROUTES.POST_CREATE_POST, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${await getAccessToken()}`,
-            'Content-Type': 'application/json',
-          },
-    
-          body: JSON.stringify({post:request}),
-        });
-    
-        basicResponseHandler(
-          command,
-          response,
-          onResponseReceived,
-          onResponseFailed,
-        );
-      } catch (error) {
-        onResponseFailed(command, error);
-      }
-    }
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
 
-    async function getAllCollaborationProjects(command,
-      request,
+async function createProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.POST_CREATE_PROJECT, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify(request),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
       onResponseReceived,
-      onResponseFailed){
-        try {
-          const response = await fetch(`${ROUTES.GET_ALL_COLLABORATION_PROJECTS}/${request.id}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${await getAccessToken()}`,
-            },
-          });
-      
-          basicResponseHandler(
-            command,
-            response,
-            onResponseReceived,
-            onResponseFailed,
-          );
-        } catch (error) {
-          onResponseFailed(command, error);
-        }
-      }
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
 
-      async function updatePost(
-        command,
-        request,
-        onResponseReceived,
-        onResponseFailed,
-      ) {
-        try {
-          const {id,...body} = request;
-         
-          const response = await fetch(`${ROUTES.PATCH_UPDATE_POST}/${id}`, {
-            method: 'PATCH',
-            headers: {
-              Authorization: `Bearer ${await getAccessToken()}`,
-              'Content-Type': 'application/json',
-            },
-      
-            body: JSON.stringify({post:body}),
-          });
-      
-          basicResponseHandler(
-            command,
-            response,
-            onResponseReceived,
-            onResponseFailed,
-          );
-        } catch (error) {
-          onResponseFailed(command, error);
-        }
-      }
+async function deleteProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.DELETE_PROJECT}/${request.id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
 
-      async function updateProfile(
-        command,
-        request,
-        onResponseReceived,
-        onResponseFailed,
-      ) {
-        try {
-          
-          const response = await fetch(`${ROUTES.PATCH_UPDATE_PROFILE}`, {
-            method: 'PATCH',
-            headers: {
-              Authorization: `Bearer ${await getAccessToken()}`,
-              'Content-Type': 'application/json',
-            },
-      
-            body: JSON.stringify({item:request}),
-          });
-      
-          basicResponseHandler(
-            command,
-            response,
-            onResponseReceived,
-            onResponseFailed,
-          );
-        } catch (error) {
-          onResponseFailed(command, error);
-        }
-      }
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
 
-      async function updateProject(
-        command,
-        request,
-        onResponseReceived,
-        onResponseFailed,
-      ) {
-        try {
-          const {id,...body} = request;
-          const response = await fetch(`${ROUTES.PATCH_UPDATE_PROJECT}/${id}`, {
-            method: 'PATCH',
-            headers: {
-              Authorization: `Bearer ${await getAccessToken()}`,
-              'Content-Type': 'application/json',
-            },
-      
-            body: JSON.stringify(body),
-          });
-      
-          basicResponseHandler(
-            command,
-            response,
-            onResponseReceived,
-            onResponseFailed,
-          );
-        } catch (error) {
-          onResponseFailed(command, error);
-        }
-      }
+async function createPost(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(ROUTES.POST_CREATE_POST, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({post: request}),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getAllCollaborationProjects(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(
+      `${ROUTES.GET_ALL_COLLABORATION_PROJECTS}/${request.id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+        },
+      },
+    );
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function updatePost(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const {id, ...body} = request;
+
+    const response = await fetch(`${ROUTES.PATCH_UPDATE_POST}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({post: body}),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function updateProfile(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.PATCH_UPDATE_PROFILE}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({item: request}),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function updateProject(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const {id, ...body} = request;
+    const response = await fetch(`${ROUTES.PATCH_UPDATE_PROJECT}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify(body),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}

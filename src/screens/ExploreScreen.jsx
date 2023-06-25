@@ -20,6 +20,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SearchedItem from '../components/SearchedItem';
 import ProjectRequirementItem from '../components/ProjectRequirementItem';
 import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
+import AddSkillSvg from '../assets/images/ic_add_skills.svg';
 
 const ExploreScreen = ({navigation}) => {
   const [isGroupLoading, setGroupLoading] = useState(true);
@@ -279,25 +280,34 @@ const ExploreScreen = ({navigation}) => {
                 <Text className="text-black font-semibold text-base mx-4">
                   Collaborate on Projects
                 </Text>
-                <FlatList
-                  className="flex-grow"
-                  data={collaborationProjectData}
-                  renderItem={({item}) => (
-                    <Pressable
-                      onPress={() =>
-                        navigation.navigate('RequirementDetails', {
-                          id: item._id,
-                        })
-                      }>
-                      <ProjectRequirementItem data={item} />
-                    </Pressable>
-                  )}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{
-                    paddingHorizontal: 16,
-                  }}
-                />
+                {collaborationProjectData?.length ? (
+                  <FlatList
+                    className="flex-grow"
+                    data={collaborationProjectData}
+                    renderItem={({item}) => (
+                      <Pressable
+                        onPress={() =>
+                          navigation.navigate('RequirementDetails', {
+                            id: item._id,
+                          })
+                        }>
+                        <ProjectRequirementItem data={item} />
+                      </Pressable>
+                    )}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{
+                      paddingHorizontal: 16,
+                    }}
+                  />
+                ) : (
+                  <View className="items-center m-2">
+                    <AddSkillSvg />
+                    <Text className="p-2 text-black mx-4">
+                      Add skills in profile section to collaborate on projects
+                    </Text>
+                  </View>
+                )}
               </View>
 
               <Text className="text-black font-semibold text-base mx-4">

@@ -28,7 +28,6 @@ import AddProjectScreen from './src/screens/AddProjectScreen';
 import ProjectDetailScreen from './src/screens/ProjectDetailsScreen';
 import AddCollaborationProjectScreen from './src/screens/AddCollaborationProjectScreen';
 
-
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -38,6 +37,8 @@ const App = () => {
     setSelfId(await getSelfId());
     if ((await getAccessToken()) != null) {
       setIsLoggedIn(true);
+    } else {
+      setSelfId(null);
     }
   };
   loggedInStateSetter(setIsLoggedIn);
@@ -92,7 +93,6 @@ const App = () => {
                 name="AddCollaborationProject"
                 component={AddCollaborationProjectScreen}
               />
-              
             </Stack.Navigator>
           </UserContext.Provider>
         ) : (

@@ -1,4 +1,4 @@
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import React from 'react';
 
 import CustomTopBar from '../components/CustomTopBar';
@@ -27,7 +27,7 @@ const HomeScreen = ({navigation}) => {
   );
 
   return (
-    <ScrollView >
+    <View className="h-full">
       <CustomTopBar
         navigation={navigation}
         title={'Home Feed'}
@@ -36,7 +36,7 @@ const HomeScreen = ({navigation}) => {
         leftComponent={leftHeaderComponent}
       />
       <PostList navigation={navigation} />
-    </ScrollView>
+    </View>
   );
 };
 
