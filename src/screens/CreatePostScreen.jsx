@@ -27,7 +27,7 @@ const CreatePostScreen = ({navigation, route}) => {
   );
   const [isApiCalling, setIsApiCalling] = useState(false);
   const [image, setImage] = useState(
-    route.params.image ? route.params.image : undefined
+    route.params.image ? route.params.image : undefined,
   );
 
   const bottomSheetRef = useRef(false);
@@ -92,11 +92,18 @@ const CreatePostScreen = ({navigation, route}) => {
             type === 'eventPost' ? organizerRef.current.getData() : undefined,
           topic: titleRef.current.getData(),
           description: descriptionRef.current.getData(),
-          venue: type === 'eventPost' ? venueRef.current.getData() : undefined,
+          venue:
+            type === 'eventPost' && eventMode === 'Offline'
+              ? venueRef.current.getData()
+              : undefined,
           link:
             type === 'resourcePost'
               ? resourceLinkRef.current.getData()
+              : type === 'eventPost' && eventMode === 'Online'
+              ? venueRef.current.getData()
               : undefined,
+          resourceTime:
+            type === 'resourcePost' ? readTimeRef.current.getData() : undefined,
           resourceTime:
             type === 'resourcePost' ? readTimeRef.current.getData() : undefined,
         },
@@ -120,9 +127,12 @@ const CreatePostScreen = ({navigation, route}) => {
           topic: titleRef.current.getData(),
           description: descriptionRef.current.getData(),
           venue: type === 'eventPost' ? venueRef.current.getData() : undefined,
+
           link:
             type === 'resourcePost'
               ? resourceLinkRef.current.getData()
+              : type === 'eventPost'
+              ? venueRef.current.getData()
               : undefined,
           resourceTime:
             type === 'resourcePost' ? readTimeRef.current.getData() : undefined,

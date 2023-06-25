@@ -83,7 +83,7 @@ const EventPostItem = ({itemData}) => {
         </Text>
         <View>
           <Text style={{color: Colors.BLACK, fontSize: 16, fontWeight: '600'}}>
-            {itemData.mode === 'online' ? 'Online Meeting' : itemData.venue}
+            {itemData.mode === 'Online' ? 'Online Meeting' : itemData.venue}
           </Text>
           <Text>{dateStringToTime(itemData.eventTime)} Onwards</Text>
         </View>
