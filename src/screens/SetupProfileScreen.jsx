@@ -89,27 +89,27 @@ const SetupProfileScreen = ({navigation, route}) => {
         socialLinks: [
           {
             platformImg: socialLinksIcons[0],
-            platformLink: linkedInRef.current.getData(),
+            platformLink: linkedInRef.current?.getData(),
           },
           {
             platformImg: socialLinksIcons[1],
-            platformLink: githubRef.current.getData(),
+            platformLink: githubRef.current?.getData(),
           },
           {
             platformImg: socialLinksIcons[2],
-            platformLink: leetcodeRef.current.getData(),
+            platformLink: leetcodeRef.current?.getData(),
           },
           {
             platformImg: socialLinksIcons[3],
-            platformLink: codeforcesRef.current.getData(),
+            platformLink: codeforcesRef.current?.getData(),
           },
           {
             platformImg: socialLinksIcons[4],
-            platformLink: codechefRef.current.getData(),
+            platformLink: codechefRef.current?.getData(),
           },
           {
             platformImg: socialLinksIcons[5],
-            platformLink: portfolioRef.current.getData(),
+            platformLink: portfolioRef.current?.getData(),
           },
         ],
       },
