@@ -393,7 +393,7 @@ const ProfileScreen = ({navigation, route}) => {
                 {profileData.username}
               </Text>
               <Text className="text-base text-gray-500 font-medium">
-                {profileData.city}, {profileData.state}
+                {profileData.city} {profileData.state}
               </Text>
             </View>
           </View>
@@ -532,7 +532,7 @@ const ProfileScreen = ({navigation, route}) => {
           ) : (
             <View></View>
           )}
-          {collaborationProjectData.length && (
+          {collaborationProjectData?.length > 0 && (
             <View className="px-4">
               <Text className="text-base text-black font-medium">
                 Collaborations
