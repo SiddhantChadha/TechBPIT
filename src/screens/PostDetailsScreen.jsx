@@ -1,10 +1,11 @@
 import {ScrollView, View, Text, Image, Pressable, Alert} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
-import {dateStringToDDMMM, timestampToAgoFormat} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMM, dateStringToTime, timestampToAgoFormat} from '../Utils/DateTimeUtils';
 import CustomTopBar from '../components/CustomTopBar';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
+import {PencilIcon} from 'react-native-heroicons/outline';
 
 const headerTitle = postType => {
   if (postType === 'resourcePost') return 'Resource Details';
@@ -13,6 +14,8 @@ const headerTitle = postType => {
 };
 const PostDetailsScreen = ({route, navigation}) => {
   const item = route.params.itemData;
+  console.log(item)
+  const {action} = route.params;
 
   const deleteAlert = () =>
     Alert.alert('', 'Are you sure you want to delete this post?', [
@@ -25,7 +28,8 @@ const PostDetailsScreen = ({route, navigation}) => {
   const onResponseReceived = async (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_DELETE_POST:
-        navigation.goBack();
+        action(d => !d);
+        navigation.navigate('Home');
         break;
       default:
         break;
@@ -45,12 +49,38 @@ const PostDetailsScreen = ({route, navigation}) => {
     );
   };
 
+  const editButton = item.canEdit && (
+    <PencilIcon
+      color={Colors.BLACK}
+      style={{position: 'absolute', alignSelf: 'flex-end'}}
+      onPress={() =>
+        navigation.navigate('CreatePost', {
+          edit:true,
+          id:item._id,
+          type: item.postType,
+          groupId: item.groupId._id,
+          title: item.topic,
+          description: item.description,
+          resourceLink: item.link,
+          readTime: item.resourceTime,
+          image:item.imageUrl,
+          eventDate:item.eventDate,
+          eventTime:item.eventTime,
+          organizer:item.organizer,
+          venue:item.venue,
+          mode:item.mode
+        })
+      }
+    />
+  );
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <CustomTopBar
         showBackButton={true}
         navigation={navigation}
         title={headerTitle(item.postType)}
+        rightComponent={editButton}
       />
       <View style={{marginHorizontal: '10%'}}>
         {item.imageUrl ? (
@@ -113,7 +143,7 @@ const PostDetailsScreen = ({route, navigation}) => {
           <View className="flex-row">
             <Text className="text-base font-medium text-black">Time: </Text>
             <Text className="text-base font-medium text-black">
-              {item.eventTime}
+              {dateStringToTime(item.eventTime)}
             </Text>
           </View>
         ) : (
@@ -205,9 +235,13 @@ const PostDetailsScreen = ({route, navigation}) => {
           </View>
         </View>
 
-        <Text style={{marginVertical: 10}}>
-          {timestampToAgoFormat(item.timestamp)}
-        </Text>
+        <View className="flex flex-row">
+          <Text style={{marginVertical: 10}}>
+            {timestampToAgoFormat(item.timestamp)}
+          </Text>
+
+          {item.edited && <Text style={{marginVertical: 10}}> (Edited)</Text>}
+        </View>
 
         {item.canEdit && (
           <Pressable

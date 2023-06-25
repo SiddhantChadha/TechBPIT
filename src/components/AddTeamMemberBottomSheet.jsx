@@ -20,7 +20,7 @@ import {Colors} from '../colors';
 
 const AddTeamMemberBottomSheet = forwardRef((props, ref) => {
   const [data, setData] = useState([]);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(props.data.slice(1));
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState('');
   const [searchedData, setSearchedData] = useState(data);
@@ -93,7 +93,15 @@ const AddTeamMemberBottomSheet = forwardRef((props, ref) => {
   };
 
   return (
-    <RBSheet ref={ref} closeOnDragDown={true} height={height * 0.7}>
+    <RBSheet
+      ref={ref}
+      closeOnDragDown={true}
+      height={height * 0.7}
+      onClose={() =>
+        props.setList(d => {
+          return [d[0], ...list];
+        })
+      }>
       <View className="bg-white h-full">
         <SearchBar
           searchString={searchString}

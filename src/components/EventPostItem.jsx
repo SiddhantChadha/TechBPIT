@@ -1,7 +1,7 @@
 import {View, Text, Image} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
-import {dateStringToDDMMM} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMM, dateStringToTime} from '../Utils/DateTimeUtils';
 
 const EventPostItem = ({itemData}) => {
   return (
@@ -85,7 +85,7 @@ const EventPostItem = ({itemData}) => {
           <Text style={{color: Colors.BLACK, fontSize: 16, fontWeight: '600'}}>
             {itemData.mode === 'online' ? 'Online Meeting' : itemData.venue}
           </Text>
-          <Text>{itemData.eventTime} Onwards</Text>
+          <Text>{dateStringToTime(itemData.eventTime)} Onwards</Text>
         </View>
       </View>
     </View>

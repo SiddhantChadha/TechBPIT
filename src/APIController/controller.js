@@ -175,6 +175,20 @@ export async function execute(
     case REST_COMMANDS.REQ_POST_CREATE_POST:
       await createPost(command, request, onResponseReceived, onResponseFailed);
       break;
+
+    case REST_COMMANDS.REQ_GET_ALL_COLLABORATION_PROJECTS:
+      await getAllCollaborationProjects(command, request, onResponseReceived, onResponseFailed);
+      break;
+
+    case REST_COMMANDS.REQ_PATCH_UPDATE_POST:
+      await updatePost(command, request, onResponseReceived, onResponseFailed);
+      break;
+    case REST_COMMANDS.REQ_PATCH_UPDATE_PROFILE:
+      await updateProfile(command, request, onResponseReceived, onResponseFailed);
+      break;
+    case REST_COMMANDS.REQ_PATCH_UPDATE_PROJECT:
+      await updateProject(command, request, onResponseReceived, onResponseFailed);
+      break;
     default:
       break;
   }
@@ -821,15 +835,15 @@ async function getCollaborationProjects(command,
       onResponseFailed,
     ) {
       try {
-        const response = await fetch(`${ROUTES.PATCH_COLLABORATION_PROJECT}/${request.id}`, {
+        const {id,...body} = request;
+        const response = await fetch(`${ROUTES.PATCH_COLLABORATION_PROJECT}/${id}`, {
           method: 'PATCH',
           headers: {
             Authorization: `Bearer ${await getAccessToken()}`,
             'Content-Type': 'application/json',
           },
     
-          body: JSON.stringify({title:request.title,description:request.description,
-            teamSize:request.teamSize,skillsRequired:request.skillsRequired}),
+          body: JSON.stringify(body),
         });
     
         basicResponseHandler(
@@ -938,3 +952,114 @@ async function getCollaborationProjects(command,
         onResponseFailed(command, error);
       }
     }
+
+    async function getAllCollaborationProjects(command,
+      request,
+      onResponseReceived,
+      onResponseFailed){
+        try {
+          const response = await fetch(`${ROUTES.GET_ALL_COLLABORATION_PROJECTS}/${request.id}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+            },
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          onResponseFailed(command, error);
+        }
+      }
+
+      async function updatePost(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const {id,...body} = request;
+         
+          const response = await fetch(`${ROUTES.PATCH_UPDATE_POST}/${id}`, {
+            method: 'PATCH',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+              'Content-Type': 'application/json',
+            },
+      
+            body: JSON.stringify({post:body}),
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          onResponseFailed(command, error);
+        }
+      }
+
+      async function updateProfile(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          
+          const response = await fetch(`${ROUTES.PATCH_UPDATE_PROFILE}`, {
+            method: 'PATCH',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+              'Content-Type': 'application/json',
+            },
+      
+            body: JSON.stringify({item:request}),
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          onResponseFailed(command, error);
+        }
+      }
+
+      async function updateProject(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      ) {
+        try {
+          const {id,...body} = request;
+          const response = await fetch(`${ROUTES.PATCH_UPDATE_PROJECT}/${id}`, {
+            method: 'PATCH',
+            headers: {
+              Authorization: `Bearer ${await getAccessToken()}`,
+              'Content-Type': 'application/json',
+            },
+      
+            body: JSON.stringify(body),
+          });
+      
+          basicResponseHandler(
+            command,
+            response,
+            onResponseReceived,
+            onResponseFailed,
+          );
+        } catch (error) {
+          onResponseFailed(command, error);
+        }
+      }

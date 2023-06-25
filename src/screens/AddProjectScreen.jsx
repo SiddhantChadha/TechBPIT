@@ -30,6 +30,8 @@ const AddProjectScreen = ({navigation, route}) => {
     route.params ? route.params.image : undefined,
   );
   const {
+    action,
+    id,
     selfImage,
     username,
     title,
@@ -38,11 +40,14 @@ const AddProjectScreen = ({navigation, route}) => {
     hostedLink,
     startDate,
     endDate,
+    edit,
   } = route.params;
   const bottomSheet = useRef();
-  const [memberList, setMemberList] = useState([
-    {id: selfId, image: selfImage, username},
-  ]);
+  const [memberList, setMemberList] = useState(
+    route.params.teamMembers
+      ? route.params.teamMembers
+      : [{id: selfId, image: selfImage, username}],
+  );
   const [isApiCalling, setIsApiCalling] = useState(false);
 
   const UserCard = ({id, image, username}) => {
@@ -63,10 +68,13 @@ const AddProjectScreen = ({navigation, route}) => {
     switch (command) {
       case REST_COMMANDS.REQ_POST_CREATE_PROJECT:
         setIsApiCalling(false);
+        action(d => !d);
         navigation.goBack();
         break;
       case REST_COMMANDS.REQ_PATCH_UPDATE_PROJECT:
-
+        setIsApiCalling(false);
+        action(d => !d);
+        navigation.navigate('Profile', {id: selfId});
       default:
         break;
     }
@@ -78,18 +86,39 @@ const AddProjectScreen = ({navigation, route}) => {
 
   const saveOrUpdateProject = () => {
     setIsApiCalling(true);
-    execute(
-      REST_COMMANDS.REQ_POST_CREATE_PROJECT,
-      {
-        title: titleRef.current.getData(),
-        description: descriptionRef.current.getData(),
-        gitLink: gitLinkRef.current.getData(),
-        hostedLink: projectLinkRef.current.getData(),
-        duration: `${startDateRef.current.getData()} - ${endDateRef.current.getData()}`,
-      },
-      onResponseReceived,
-      onResponseFailed,
-    );
+
+    if (edit) {
+      execute(
+        REST_COMMANDS.REQ_PATCH_UPDATE_PROJECT,
+        {
+          id,
+          title: titleRef.current.getData(),
+          description: descriptionRef.current.getData(),
+          gitLink: gitLinkRef.current.getData(),
+          hostedLink: projectLinkRef.current.getData(),
+          duration: `${startDateRef.current.getData()} - ${endDateRef.current.getData()}`,
+          image,
+          teamMembers: memberList.slice(1).map(member => member.id),
+        },
+        onResponseReceived,
+        onResponseFailed,
+      );
+    } else {
+      execute(
+        REST_COMMANDS.REQ_POST_CREATE_PROJECT,
+        {
+          title: titleRef.current.getData(),
+          description: descriptionRef.current.getData(),
+          gitLink: gitLinkRef.current.getData(),
+          hostedLink: projectLinkRef.current.getData(),
+          duration: `${startDateRef.current.getData()} - ${endDateRef.current.getData()}`,
+          image,
+          teamMembers: memberList.slice(1).map(member => member.id),
+        },
+        onResponseReceived,
+        onResponseFailed,
+      );
+    }
   };
 
   return (
@@ -97,7 +126,7 @@ const AddProjectScreen = ({navigation, route}) => {
       <CustomTopBar
         showBackButton={true}
         navigation={navigation}
-        title="Add Project"
+        title={edit ? 'Update Project' : 'Add Project'}
       />
       <ScrollView>
         <Pressable onPress={() => bottomSheetRef.current.open()}>
@@ -193,7 +222,7 @@ const AddProjectScreen = ({navigation, route}) => {
           />
         )}
 
-        <AddTeamMemberBottomSheet ref={bottomSheet} />
+        <AddTeamMemberBottomSheet ref={bottomSheet} data={memberList} setList={setMemberList} />
         <ImageBottomSheet
           ref={bottomSheetRef}
           action={setImage}

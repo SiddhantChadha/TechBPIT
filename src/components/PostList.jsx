@@ -16,6 +16,7 @@ import CommunityPostItem from '../components/CommunityPostItem';
 const PostList = ({navigation, filterType, id}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [refresh,setRefresh] = useState(false);
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -35,13 +36,14 @@ const PostList = ({navigation, filterType, id}) => {
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
+    setLoading(true);
     execute(
       REST_COMMANDS.REQ_GET_ALL_POSTS,
       {},
       onResponseReceived,
       onResponseFailed,
     );
-  }, []);
+  }, [refresh]);
 
   const onRefresh = ()=>{
     setLoading(true);
@@ -272,7 +274,7 @@ const PostList = ({navigation, filterType, id}) => {
           renderItem={({item}) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PostDetails', {itemData: item})
+                navigation.navigate('PostDetails', {itemData: item,action:setRefresh})
               }>
               {getPostType(item)}
             </TouchableOpacity>

@@ -5,6 +5,7 @@ import {
   Dimensions,
   ScrollView,
   Pressable,
+  FlatList,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {
@@ -27,19 +28,28 @@ import OptionsMenu from 'react-native-options-menu';
 import ProjectSVG from '../assets/images/ic_add_projects.svg';
 import {setAuthTokens, setSelfId} from '../EncryptedStorageHelper';
 import {LoggedInContext} from '../context/LoggedInContext';
+import ProjectRequirementItem from '../components/ProjectRequirementItem';
+
 const ProfileScreen = ({navigation, route}) => {
   const [isProfileLoading, setIsProfileLoading] = useState(true);
   const [isProjectsLoading, setIsProjectsLoading] = useState(true);
+  const [isCollaborationProjectsLoading, setIsCollaborationProjectsLoading] =
+    useState(true);
   const [profileData, setProfileData] = useState({});
   const [projectData, setProjectData] = useState([]);
+  const [collaborationProjectData, setCollaborationProjectData] = useState([]);
   const selfId = useContext(UserContext);
   const setIsLoggedIn = useContext(LoggedInContext);
   const {id, name} = route.params;
+  const [refreshProjects, setRefreshProjects] = useState(false);
+  const [refreshProfile, setRefreshProfile] = useState(false);
+  const [refreshCollaborationProjects, setRefreshCollaborationProjects] =
+    useState(false);
+
   const settingIcon = (
     <Cog6ToothIcon
       color={Colors.BLACK}
       style={{position: 'absolute', alignSelf: 'flex-end'}}
-      // onPress={() => navigation.navigate('SetupProfile')}
     />
   );
 
@@ -49,11 +59,13 @@ const ProfileScreen = ({navigation, route}) => {
     navigation.navigate('AddProject', {
       selfImage: profileData.image,
       username: profileData.username,
+      edit:false,
+      action: setRefreshProjects,
     });
   };
 
   const addCollaborationProject = () => {
-    navigation.navigate('AddCollaborationProject');
+    navigation.navigate('AddCollaborationProject',{action:setRefreshCollaborationProjects});
   };
 
   const navigateToEdit = () => {
@@ -64,7 +76,9 @@ const ProfileScreen = ({navigation, route}) => {
       city: profileData.city,
       about: profileData.about,
       skills: profileData.skills.join(','),
-      yearOfStudy:profileData.yearOfStudy
+      yearOfStudy: profileData.yearOfStudy,
+      links:profileData.socialLinks,
+      action:setRefreshProfile
     });
   };
 
@@ -81,8 +95,13 @@ const ProfileScreen = ({navigation, route}) => {
         setIsProfileLoading(false);
         break;
       case REST_COMMANDS.REQ_GET_USERS_PROJECT:
-        setIsProjectsLoading(false);
         setProjectData(data);
+        setIsProjectsLoading(false);
+        break;
+      case REST_COMMANDS.REQ_GET_ALL_COLLABORATION_PROJECTS:
+        setCollaborationProjectData(data);
+        setIsCollaborationProjectsLoading(false);
+        break;
       default:
         break;
     }
@@ -90,19 +109,36 @@ const ProfileScreen = ({navigation, route}) => {
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
+    setIsProfileLoading(true);
     execute(
       REST_COMMANDS.REQ_GET_USER_PROFILE,
       {id},
       onResponseReceived,
       onResponseFailed,
     );
+  }, [refreshProfile]);
+
+  useEffect(() => {
+    setIsProjectsLoading(true);
+
     execute(
       REST_COMMANDS.REQ_GET_USERS_PROJECT,
       {id},
       onResponseReceived,
       onResponseFailed,
     );
-  }, []);
+  }, [refreshProjects]);
+
+  useEffect(() => {
+    setIsCollaborationProjectsLoading(true);
+
+    execute(
+      REST_COMMANDS.REQ_GET_ALL_COLLABORATION_PROJECTS,
+      {id},
+      onResponseReceived,
+      onResponseFailed,
+    );
+  }, [refreshCollaborationProjects]);
 
   const settingsButton = id === selfId && (
     <View style={{alignItems: 'flex-end'}}>
@@ -124,7 +160,9 @@ const ProfileScreen = ({navigation, route}) => {
         showBackButton={!(selfId === id)}
         rightComponent={settingsButton}
       />
-      {isProfileLoading || isProjectsLoading ? (
+      {isProfileLoading ||
+      isProjectsLoading ||
+      isCollaborationProjectsLoading ? (
         <ScrollView>
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -429,7 +467,15 @@ const ProfileScreen = ({navigation, route}) => {
                   sliderWidth={screenWidth}
                   itemWidth={screenWidth - 80}
                   renderItem={item => (
-                    <ProjectCard item={item} navigation={navigation} />
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('ProjectDetails', {
+                          itemData: item.item,
+                          action: setRefreshProjects,
+                        })
+                      }>
+                      <ProjectCard item={item} navigation={navigation} />
+                    </Pressable>
                   )}
                   keyExtractor={item => item._id}
                   layout="stack"
@@ -468,7 +514,14 @@ const ProfileScreen = ({navigation, route}) => {
                 sliderWidth={screenWidth}
                 itemWidth={screenWidth - 80}
                 renderItem={item => (
-                  <ProjectCard item={item} navigation={navigation} />
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('ProjectDetails', {
+                        itemData: item.item,
+                      })
+                    }>
+                    <ProjectCard item={item} navigation={navigation} />
+                  </Pressable>
                 )}
                 layout="stack"
                 keyExtractor={item => item._id}
@@ -477,6 +530,34 @@ const ProfileScreen = ({navigation, route}) => {
             </View>
           ) : (
             <View></View>
+          )}
+          {collaborationProjectData.length && (
+            <View className="px-4">
+              <Text className="text-base text-black font-medium">
+                Collaborations
+              </Text>
+
+              <FlatList
+                className="flex-grow"
+                data={collaborationProjectData}
+                renderItem={({item}) => (
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('RequirementDetails', {
+                        id: item._id,
+                        action:setRefreshCollaborationProjects
+                      })
+                    }>
+                    <ProjectRequirementItem data={item} />
+                  </Pressable>
+                )}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  paddingHorizontal: 16,
+                }}
+              />
+            </View>
           )}
         </ScrollView>
       )}

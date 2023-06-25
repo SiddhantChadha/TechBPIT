@@ -13,7 +13,7 @@ import {PencilSquareIcon} from 'react-native-heroicons/outline';
 const RequirementDetailScreen = ({navigation, route}) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const {id} = route.params;
+  const {id, action} = route.params;
   const selfId = useContext(UserContext);
 
   const onResponseReceived = async (command, data) => {
@@ -23,6 +23,7 @@ const RequirementDetailScreen = ({navigation, route}) => {
         setIsLoading(false);
         break;
       case REST_COMMANDS.REQ_DELETE_COLLABORATION_PROJECT:
+        action(d => !d);
         navigation.goBack();
       default:
         break;
@@ -61,8 +62,9 @@ const RequirementDetailScreen = ({navigation, route}) => {
           title: data.title,
           description: data.description,
           teamSize: data.teamSize,
-          skillsRequired:data.skillsRequired.join(),
-          image:data.image
+          skillsRequired: data.skillsRequired.join(),
+          image: data.image,
+          action
         })
       }
     />

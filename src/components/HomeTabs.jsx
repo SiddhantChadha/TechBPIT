@@ -59,7 +59,7 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        initialParams={{id: selfId, test: 'test'}}
+        initialParams={{id: selfId}}
         component={ProfileScreen}
         options={{
           tabBarIcon: ({color}) => {

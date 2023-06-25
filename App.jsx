@@ -28,6 +28,7 @@ import AddProjectScreen from './src/screens/AddProjectScreen';
 import ProjectDetailScreen from './src/screens/ProjectDetailsScreen';
 import AddCollaborationProjectScreen from './src/screens/AddCollaborationProjectScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -91,6 +92,7 @@ const App = () => {
                 name="AddCollaborationProject"
                 component={AddCollaborationProjectScreen}
               />
+              
             </Stack.Navigator>
           </UserContext.Provider>
         ) : (

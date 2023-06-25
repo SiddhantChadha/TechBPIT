@@ -14,16 +14,17 @@ import {Colors} from '../colors';
 import {UserContext} from '../context/UserIdContext';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
-import {dateStringToDDMMMYY, dateStringToWeekDayDDMMM} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMMYY} from '../Utils/DateTimeUtils';
 
 const ProjectDetailScreen = ({navigation, route}) => {
   const [isApiCalling, setIsApiCalling] = useState(false);
-  const {itemData} = route.params;
+  const {itemData, action} = route.params;
+  
   const data = [
     {
       image: itemData.createdBy.image,
       username: itemData.createdBy.username,
-      _id: itemData.createdBy._id,
+      id: itemData.createdBy._id,
     },
     ...itemData.teamMembers,
   ];
@@ -35,6 +36,8 @@ const ProjectDetailScreen = ({navigation, route}) => {
       style={{position: 'absolute', alignSelf: 'flex-end'}}
       onPress={() =>
         navigation.navigate('AddProject', {
+          edit: true,
+          id: itemData._id,
           selfImage: itemData.createdBy.image,
           username: itemData.createdBy.username,
           title: itemData.title,
@@ -43,7 +46,9 @@ const ProjectDetailScreen = ({navigation, route}) => {
           hostedLink: itemData.hostedLink,
           startDate: itemData.duration.split(' - ')[0],
           endDate: itemData.duration.split(' - ')[1],
-          image:itemData.image
+          image: itemData.image,
+          teamMembers:data,
+          action,
         })
       }
     />
@@ -70,9 +75,9 @@ const ProjectDetailScreen = ({navigation, route}) => {
     switch (command) {
       case REST_COMMANDS.REQ_DELETE_PROJECT:
         setIsApiCalling(false);
+        action(d => !d);
         navigation.goBack();
         break;
-
       default:
         break;
     }
@@ -118,7 +123,12 @@ const ProjectDetailScreen = ({navigation, route}) => {
 
         <View className="my-2">
           <Text className="text-black font-medium text-lg">Duration</Text>
-          <Text> {`${dateStringToDDMMMYY(itemData.duration.split(' - ')[0])} - ${dateStringToDDMMMYY(itemData.duration.split(' - ')[1])}`}</Text>
+          <Text>
+            {' '}
+            {`${dateStringToDDMMMYY(
+              itemData.duration.split(' - ')[0],
+            )} - ${dateStringToDDMMMYY(itemData.duration.split(' - ')[1])}`}
+          </Text>
         </View>
         <View>
           <Text className="text-black font-medium text-lg">Team Members</Text>
@@ -130,7 +140,7 @@ const ProjectDetailScreen = ({navigation, route}) => {
               <UserCard
                 image={item.image}
                 username={item.username}
-                id={item._id}
+                id={item.id}
               />
             )}
           />

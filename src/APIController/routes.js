@@ -28,5 +28,9 @@ export const ROUTES = {
   DELETE_POST:`${BASE_URL}/post/delete`,
   DELETE_PROJECT:`${BASE_URL}/project/delete`,
   POST_CREATE_PROJECT:`${BASE_URL}/project/create`,
-  POST_CREATE_POST:`${BASE_URL}/post/create`
+  POST_CREATE_POST:`${BASE_URL}/post/create`,
+  GET_ALL_COLLABORATION_PROJECTS:`${BASE_URL}/ad/all`,
+  PATCH_UPDATE_POST:`${BASE_URL}/post/update`,
+  PATCH_UPDATE_PROFILE:`${BASE_URL}/user/update`,
+  PATCH_UPDATE_PROJECT:`${BASE_URL}/project/update`
 };
