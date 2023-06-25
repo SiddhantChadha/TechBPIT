@@ -224,37 +224,31 @@ const CommunityDetailScreen = ({navigation, route}) => {
             <Tab.Screen
               name="Posts"
               children={() => (
-                <ScrollView>
                   <PostList
                     navigation={navigation}
                     filterType={'communityPost'}
                     id={id}
                   />
-                </ScrollView>
               )}
             />
             <Tab.Screen
               name="Events"
               children={() => (
-                <ScrollView>
                   <PostList
                     navigation={navigation}
                     filterType={'eventPost'}
                     id={id}
                   />
-                </ScrollView>
               )}
             />
             <Tab.Screen
               name="Resources"
               children={() => (
-                <ScrollView>
                   <PostList
                     navigation={navigation}
                     filterType={'resourcePost'}
                     id={id}
                   />
-                </ScrollView>
               )}
             />
           </Tab.Navigator>

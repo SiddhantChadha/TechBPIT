@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
-import {dateStringToDDMMM} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMM, dateStringToTime} from '../Utils/DateTimeUtils';
 
 const EventItem = ({itemData}) => {
   return (
@@ -23,7 +23,7 @@ const EventItem = ({itemData}) => {
         }}>
         <Text style={{fontWeight: '800', color: Colors.BLACK}}>Start:</Text>
         <Text style={{fontWeight: '800', color: Colors.BLACK}}>
-          {itemData.eventTime}
+          {dateStringToTime(itemData.eventTime)}
         </Text>
       </View>
       <View

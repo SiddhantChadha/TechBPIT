@@ -3,7 +3,7 @@ import {
   ScrollView,
   VirtualizedList,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
@@ -16,7 +16,7 @@ import CommunityPostItem from '../components/CommunityPostItem';
 const PostList = ({navigation, filterType, id}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [refresh,setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -45,7 +45,7 @@ const PostList = ({navigation, filterType, id}) => {
     );
   }, [refresh]);
 
-  const onRefresh = ()=>{
+  const onRefresh = () => {
     setLoading(true);
     execute(
       REST_COMMANDS.REQ_GET_ALL_POSTS,
@@ -53,8 +53,7 @@ const PostList = ({navigation, filterType, id}) => {
       onResponseReceived,
       onResponseFailed,
     );
-    
-  }
+  };
 
   return (
     <>
@@ -268,13 +267,18 @@ const PostList = ({navigation, filterType, id}) => {
         </ScrollView>
       ) : (
         <VirtualizedList
-          scrollEnabled={false}
-          refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
+          scrollEnabled={true}
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+          }
           data={data}
           renderItem={({item}) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PostDetails', {itemData: item,action:setRefresh})
+                navigation.navigate('PostDetails', {
+                  itemData: item,
+                  action: setRefresh,
+                })
               }>
               {getPostType(item)}
             </TouchableOpacity>
