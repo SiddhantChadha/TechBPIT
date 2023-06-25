@@ -2,7 +2,7 @@ import {View, Text, Pressable} from 'react-native';
 import React, {forwardRef} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-const posts = ['Event','Community', 'Resource'];
+const posts = ['Event', 'Community', 'Resource'];
 
 const PostBottomSheet = forwardRef((props, ref) => {
   return (
@@ -17,7 +17,12 @@ const PostBottomSheet = forwardRef((props, ref) => {
             <Pressable
               onPress={() => {
                 ref.current.close();
-                props.navigation.navigate('CreatePost',{type:`${item.toLowerCase()}Post`,groupId:props.groupId,edit:false});
+                props.navigation.navigate('CreatePost', {
+                  type: `${item.toLowerCase()}Post`,
+                  groupId: props.groupId,
+                  edit: false,
+                  action: props.setRefresh,
+                });
               }}
               className="border-b-[1px] border-grey_4a w-full h-1/3 flex justify-center"
               key={idx}>

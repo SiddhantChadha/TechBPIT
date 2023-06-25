@@ -13,10 +13,9 @@ import EventPostItem from '../components/EventPostItem';
 import ResourceItem from '../components/ResourceItem';
 import CommunityPostItem from '../components/CommunityPostItem';
 
-const PostList = ({navigation, filterType, id}) => {
+const PostList = ({navigation, filterType, id, refresh, setRefresh}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [refresh, setRefresh] = useState(false);
 
   const onResponseReceived = (command, data) => {
     switch (command) {

@@ -1,5 +1,5 @@
-import {ScrollView, View} from 'react-native';
-import React from 'react';
+import {View} from 'react-native';
+import React, {useState} from 'react';
 
 import CustomTopBar from '../components/CustomTopBar';
 import {
@@ -10,6 +10,8 @@ import {Colors} from '../colors';
 import PostList from '../components/PostList';
 
 const HomeScreen = ({navigation}) => {
+  const [refresh, setRefresh] = useState(false);
+
   const chatButton = (
     <ChatBubbleLeftIcon
       color={Colors.BLACK}
@@ -35,7 +37,11 @@ const HomeScreen = ({navigation}) => {
         showLeftComponent={true}
         leftComponent={leftHeaderComponent}
       />
-      <PostList navigation={navigation} />
+      <PostList
+        navigation={navigation}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
     </View>
   );
 };

@@ -78,11 +78,14 @@ const SetupProfileScreen = ({navigation, route}) => {
         state: stateRef.current.getData(),
         about: aboutRef.current.getData(),
         image,
-        skills: skillRef.current
-          .getData()
-          .trim()
-          .replace(/(^[,\s]+)|([,\s]+$)/g, '')
-          .split(','),
+        skills:
+          skillRef.current.getData().trim().length > 0
+            ? skillRef.current
+                .getData()
+                .trim()
+                .replace(/(^[,\s]+)|([,\s]+$)/g, '')
+                .split(',')
+            : undefined,
         socialLinks: [
           {
             platformImg: links[0].platformImg,

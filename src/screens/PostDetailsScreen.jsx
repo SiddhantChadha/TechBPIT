@@ -1,7 +1,11 @@
 import {ScrollView, View, Text, Image, Pressable, Alert} from 'react-native';
 import React from 'react';
 import {Colors} from '../colors';
-import {dateStringToDDMMM, dateStringToTime, timestampToAgoFormat} from '../Utils/DateTimeUtils';
+import {
+  dateStringToDDMMM,
+  dateStringToTime,
+  timestampToAgoFormat,
+} from '../Utils/DateTimeUtils';
 import CustomTopBar from '../components/CustomTopBar';
 import {execute} from '../APIController/controller';
 import {REST_COMMANDS} from '../APIController/RestCommands';
@@ -14,7 +18,6 @@ const headerTitle = postType => {
 };
 const PostDetailsScreen = ({route, navigation}) => {
   const item = route.params.itemData;
-  console.log(item)
   const {action} = route.params;
 
   const deleteAlert = () =>
@@ -29,7 +32,7 @@ const PostDetailsScreen = ({route, navigation}) => {
     switch (command) {
       case REST_COMMANDS.REQ_DELETE_POST:
         action(d => !d);
-        navigation.navigate('Home');
+        navigation.goBack();
         break;
       default:
         break;
@@ -55,20 +58,21 @@ const PostDetailsScreen = ({route, navigation}) => {
       style={{position: 'absolute', alignSelf: 'flex-end'}}
       onPress={() =>
         navigation.navigate('CreatePost', {
-          edit:true,
-          id:item._id,
+          edit: true,
+          action,
+          id: item._id,
           type: item.postType,
           groupId: item.groupId._id,
           title: item.topic,
           description: item.description,
           resourceLink: item.link,
           readTime: item.resourceTime,
-          image:item.imageUrl,
-          eventDate:item.eventDate,
-          eventTime:item.eventTime,
-          organizer:item.organizer,
-          venue:item.venue,
-          mode:item.mode
+          image: item.imageUrl,
+          eventDate: item.eventDate,
+          eventTime: item.eventTime,
+          organizer: item.organizer,
+          venue: item.venue,
+          mode: item.mode,
         })
       }
     />

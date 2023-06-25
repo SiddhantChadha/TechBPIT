@@ -41,6 +41,7 @@ const CreatePostScreen = ({navigation, route}) => {
   const readTimeRef = useRef();
   const {
     edit,
+    action,
     id,
     type,
     groupId,
@@ -58,10 +59,12 @@ const CreatePostScreen = ({navigation, route}) => {
     switch (command) {
       case REST_COMMANDS.REQ_POST_CREATE_POST:
         setIsApiCalling(false);
+        action(d => !d);
         navigation.goBack();
         break;
       case REST_COMMANDS.REQ_PATCH_UPDATE_POST:
         setIsApiCalling(false);
+        action(d => !d);
         navigation.navigate('Home');
       default:
         break;

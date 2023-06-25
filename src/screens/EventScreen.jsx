@@ -1,5 +1,5 @@
-import {FlatList, View, Text, SafeAreaView, ScrollView} from 'react-native';
-import React, {useEffect, useState, useContext, useRef} from 'react';
+import {FlatList, View, Text, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {execute} from '../APIController/controller';
 import CustomTopBar from '../components/CustomTopBar';
 import {ChatBubbleLeftIcon} from 'react-native-heroicons/outline';
@@ -9,10 +9,12 @@ import EventItem from '../components/EventItem';
 import {checkIfDateStringUpcoming} from '../Utils/DateTimeUtils';
 import Calendar from '../assets/images/ic_calendar.svg';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {useIsFocused} from '@react-navigation/native';
 
 const EventScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
   const chatButton = (
     <ChatBubbleLeftIcon
       color={Colors.BLACK}
@@ -44,7 +46,7 @@ const EventScreen = ({navigation}) => {
       onResponseReceived,
       onResponseFailed,
     );
-  }, []);
+  }, [isFocused]);
   return (
     <View style={{flex: 1}}>
       <CustomTopBar

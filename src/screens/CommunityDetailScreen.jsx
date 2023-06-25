@@ -23,6 +23,7 @@ const CommunityDetailScreen = ({navigation, route}) => {
   const {id, name} = route.params;
   const selfId = useContext(UserContext);
   const bottomSheet = useRef();
+  const [refresh, setRefresh] = useState(false);
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -224,38 +225,49 @@ const CommunityDetailScreen = ({navigation, route}) => {
             <Tab.Screen
               name="Posts"
               children={() => (
-                  <PostList
-                    navigation={navigation}
-                    filterType={'communityPost'}
-                    id={id}
-                  />
+                <PostList
+                  navigation={navigation}
+                  filterType={'communityPost'}
+                  id={id}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
               )}
             />
             <Tab.Screen
               name="Events"
               children={() => (
-                  <PostList
-                    navigation={navigation}
-                    filterType={'eventPost'}
-                    id={id}
-                  />
+                <PostList
+                  navigation={navigation}
+                  filterType={'eventPost'}
+                  id={id}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
               )}
             />
             <Tab.Screen
               name="Resources"
               children={() => (
-                  <PostList
-                    navigation={navigation}
-                    filterType={'resourcePost'}
-                    id={id}
-                  />
+                <PostList
+                  navigation={navigation}
+                  filterType={'resourcePost'}
+                  id={id}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
               )}
             />
           </Tab.Navigator>
         </ScrollView>
       )}
 
-      <PostBottomSheet navigation={navigation} ref={bottomSheet} groupId={id} />
+      <PostBottomSheet
+        navigation={navigation}
+        ref={bottomSheet}
+        groupId={id}
+        setRefresh={setRefresh}
+      />
     </View>
   );
 };
