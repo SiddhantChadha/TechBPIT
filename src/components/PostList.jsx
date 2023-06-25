@@ -55,7 +55,7 @@ const PostList = ({navigation, filterType, id, refresh, setRefresh}) => {
   };
 
   return (
-    <>
+    <View >
       {isLoading ? (
         <ScrollView>
           <View className="flex-col rounded-lg bg-white px-2 py-4 shadow-2xl m-4">
@@ -288,7 +288,7 @@ const PostList = ({navigation, filterType, id, refresh, setRefresh}) => {
           getItem={(_data, index) => _data[index]}
         />
       )}
-    </>
+    </View>
   );
 };
 

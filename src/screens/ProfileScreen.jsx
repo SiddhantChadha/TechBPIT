@@ -59,13 +59,15 @@ const ProfileScreen = ({navigation, route}) => {
     navigation.navigate('AddProject', {
       selfImage: profileData.image,
       username: profileData.username,
-      edit:false,
+      edit: false,
       action: setRefreshProjects,
     });
   };
 
   const addCollaborationProject = () => {
-    navigation.navigate('AddCollaborationProject',{action:setRefreshCollaborationProjects});
+    navigation.navigate('AddCollaborationProject', {
+      action: setRefreshCollaborationProjects,
+    });
   };
 
   const navigateToEdit = () => {
@@ -76,9 +78,8 @@ const ProfileScreen = ({navigation, route}) => {
       city: profileData.city,
       about: profileData.about,
       skills: profileData.skills.join(','),
-      yearOfStudy: profileData.yearOfStudy,
-      links:profileData.socialLinks,
-      action:setRefreshProfile
+      links: profileData.socialLinks,
+      action: setRefreshProfile,
     });
   };
 
@@ -153,7 +154,7 @@ const ProfileScreen = ({navigation, route}) => {
   const screenWidth = Dimensions.get('window').width;
 
   return (
-    <View style={{flex: 1}}>
+    <View className="bg-gray-100 h-full">
       <CustomTopBar
         navigation={navigation}
         title={selfId == id ? 'PROFILE' : `${name}'s Profile`}
@@ -545,7 +546,7 @@ const ProfileScreen = ({navigation, route}) => {
                     onPress={() =>
                       navigation.navigate('RequirementDetails', {
                         id: item._id,
-                        action:setRefreshCollaborationProjects
+                        action: setRefreshCollaborationProjects,
                       })
                     }>
                     <ProjectRequirementItem data={item} />

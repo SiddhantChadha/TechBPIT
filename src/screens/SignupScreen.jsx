@@ -13,11 +13,11 @@ const SignupScreen = ({navigation}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const usernameRef = useRef();
+  const enrollmentNumberRef = useRef();
   const setIsLoggedIn = useContext(LoggedInContext);
   const [isApiCalling, setIsApiCalling] = useState(false);
 
   const onResponseReceived = (command, data) => {
-    console.log('oasjdnf');
     switch (command) {
       case REST_COMMANDS.REQ_POST_SIGNUP:
         navigation.navigate('Otp', {email: emailRef.current.getData()});
@@ -39,6 +39,7 @@ const SignupScreen = ({navigation}) => {
         email: emailRef.current.getData(),
         password: passwordRef.current.getData(),
         username: usernameRef.current.getData(),
+        enrollmentNumber: enrollmentNumberRef.current.getData(),
       },
       onResponseReceived,
       onResponseFailed,
@@ -56,6 +57,10 @@ const SignupScreen = ({navigation}) => {
         Fill in the required details and click Proceed
       </Text>
       <InputBox placeholder="Enter Your Email" ref={emailRef} />
+      <InputBox
+        placeholder="Enter Your Enrollment number"
+        ref={enrollmentNumberRef}
+      />
       <InputBox placeholder="Enter Your Name" ref={usernameRef} />
       <InputBox
         placeholder="Enter Password"
