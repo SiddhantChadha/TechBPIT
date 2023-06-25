@@ -19,7 +19,7 @@ import {dateStringToDDMMMYY} from '../Utils/DateTimeUtils';
 const ProjectDetailScreen = ({navigation, route}) => {
   const [isApiCalling, setIsApiCalling] = useState(false);
   const {itemData, action} = route.params;
-  
+
   const data = [
     {
       image: itemData.createdBy.image,
@@ -47,7 +47,7 @@ const ProjectDetailScreen = ({navigation, route}) => {
           startDate: itemData.duration.split(' - ')[0],
           endDate: itemData.duration.split(' - ')[1],
           image: itemData.image,
-          teamMembers:data,
+          teamMembers: data,
           action,
         })
       }
@@ -105,12 +105,13 @@ const ProjectDetailScreen = ({navigation, route}) => {
         title={itemData.title}
         rightComponent={editButton}
       />
-      <ScrollView className="mx-[10%] my-[5%]">
+      <ScrollView className="mx-[10%] my-[5%] flex-grow">
         <Image
           source={{
             uri: itemData.image,
           }}
           className="w-full aspect-video"
+          showsVerticalScrollIndicator={false}
         />
         {itemData.description && (
           <View className="my-2">
@@ -158,20 +159,23 @@ const ProjectDetailScreen = ({navigation, route}) => {
             <Text>{itemData.hostedLink}</Text>
           </View>
         )}
-
-        <View className="flex items-center justify-center my-5">
-          {isApiCalling ? (
-            <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6">
-              DELETING...
-            </Text>
-          ) : (
-            <Pressable onPress={deleteAlert}>
+        {itemData.createdBy._id === selfId ? (
+          <View className="flex items-center justify-center my-5">
+            {isApiCalling ? (
               <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6">
-                DELETE
+                DELETING...
               </Text>
-            </Pressable>
-          )}
-        </View>
+            ) : (
+              <Pressable onPress={deleteAlert}>
+                <Text className="text-base text-red-600 rounded-lg border border-red-400 py-3 px-6">
+                  DELETE
+                </Text>
+              </Pressable>
+            )}
+          </View>
+        ) : (
+          <View />
+        )}
       </ScrollView>
     </View>
   );

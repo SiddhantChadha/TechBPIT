@@ -27,6 +27,8 @@ import CreatePostScreen from './src/screens/CreatePostScreen';
 import AddProjectScreen from './src/screens/AddProjectScreen';
 import ProjectDetailScreen from './src/screens/ProjectDetailsScreen';
 import AddCollaborationProjectScreen from './src/screens/AddCollaborationProjectScreen';
+import { LogBox } from 'react-native'; 
+
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +47,9 @@ const App = () => {
   useEffect(() => {
     checkIfLoggedIn();
   }, [isLoggedIn]);
+  useEffect(() => {
+    LogBox.ignoreAllLogs(true)
+ }, [])
 
   return (
     <LoggedInContext.Provider value={setIsLoggedIn}>
