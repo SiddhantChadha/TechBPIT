@@ -98,20 +98,21 @@ const ProjectDetailScreen = ({navigation, route}) => {
   };
 
   return (
-    <View>
+    <View className="h-full">
       <CustomTopBar
         navigation={navigation}
         showBackButton={true}
         title={itemData.title}
         rightComponent={editButton}
       />
-      <ScrollView className="mx-[10%] my-[5%] flex-grow">
+      <ScrollView
+        className="mx-[10%] my-[5%] flex-grow"
+        showsVerticalScrollIndicator={false}>
         <Image
           source={{
             uri: itemData.image,
           }}
           className="w-full aspect-video"
-          showsVerticalScrollIndicator={false}
         />
         {itemData.description && (
           <View className="my-2">
