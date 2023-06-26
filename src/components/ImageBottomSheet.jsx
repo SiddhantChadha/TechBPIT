@@ -21,7 +21,7 @@ const ImageBottomSheet = forwardRef((props, ref) => {
       type: result.assets[0].type,
       name: result.assets[0].fileName,
     };
-    props.navigation.navigate('UploadImage', {file, action: props.action});
+    props.navigation.navigate('UploadImage', {file, action: props.action,edit:true});
   }, []);
 
   const onImageLibraryPress = useCallback(async () => {

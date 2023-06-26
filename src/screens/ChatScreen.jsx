@@ -18,16 +18,21 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {
   emitAllReadStatus,
   emitIsTyping,
-  getSocket,
+  emitReadStatus,
   listenIsTyping,
   listenNewMessageEvent,
-  listenTempMessageRead,
+  listenTempMessageReadFromApi,
+  listenTempMessageReadFromSocket,
   sendPersonalMessage,
+  sendGroupMessage,
+  removeListners,
+  disconnect,
 } from '../Utils/socket';
 
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 import {UserContext} from '../context/UserIdContext';
 import ImageBottomSheet from '../components/ImageBottomSheet';
+import {getUsername} from '../EncryptedStorageHelper';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,19 +44,27 @@ const ChatScreen = ({navigation, route}) => {
   const {id, image, name, isGrpChat} = route.params;
   const selfId = useContext(UserContext);
   const bottomSheet = useRef();
-
+  let selfUsername;
 
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
         setData(data);
         setIsLoading(false);
-        if (!isGrpChat) emitAllReadStatus(selfId, id);
+        emitAllReadStatus(selfId, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
-
-        if (!isGrpChat) listenNewMessageEvent(`${id}-msg`, onNewMessage);
-        if (!isGrpChat) listenTempMessageRead(`${id}-read`, onTempMessageRead);
+        listenNewMessageEvent(`${id}-msg`, onNewMessage);
+        listenTempMessageReadFromApi(`${id}-read`, onTempMessageRead);
+        listenTempMessageReadFromSocket(
+          `${id}-sent-msg-read`,
+          onTempMessageReadFromSocket,
+        );
         break;
+      case REST_COMMANDS.REQ_GET_GROUP_CHAT:
+        setData(data);
+        setIsLoading(false);
+        listenIsTyping(`${id}-isTyping`, typingListener);
+        listenNewMessageEvent(`${id}-msg`, onNewMessage);
       default:
         break;
     }
@@ -59,20 +72,40 @@ const ChatScreen = ({navigation, route}) => {
   const onResponseFailed = (command, error) => {};
 
   useEffect(() => {
-    execute(
-      REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
-      {id},
-      onResponseReceived,
-      onResponseFailed,
-    );
+    (async () => {
+      selfUsername = await getUsername();
+    })();
+
+    if (!isGrpChat) {
+      execute(
+        REST_COMMANDS.REQ_GET_PERSONAL_CHAT,
+        {id},
+        onResponseReceived,
+        onResponseFailed,
+      );
+    } else {
+      execute(
+        REST_COMMANDS.REQ_GET_GROUP_CHAT,
+        {id},
+        onResponseReceived,
+        onResponseFailed,
+      );
+    }
+
+    // return () => {
+    //   (async () => {
+    //     await removeListners();
+    //     await disconnect();
+    //   })();
+    // };
   }, []);
 
   const handleTyping = text => {
     setMessage(text);
     clearTimeout(selfTypingTimerRef.current);
-    emitIsTyping(selfId, id, true, isGrpChat, 'Tushar Jain');
+    emitIsTyping(selfId, id, true, isGrpChat, selfUsername);
     selfTypingTimerRef.current = setTimeout(() => {
-      emitIsTyping(selfId, id, false, isGrpChat, 'Tushar Jain');
+      emitIsTyping(selfId, id, false, isGrpChat, selfUsername);
     }, 1000);
   };
 
@@ -85,11 +118,12 @@ const ChatScreen = ({navigation, route}) => {
       }, 1000);
     }
   };
-  const onNewMessage = message => {
+  const onNewMessage = async message => {
+    setData(d => {
+      return [message, ...d];
+    });
     if (!isGrpChat) {
-      setData(d => {
-        return [message, ...d];
-      });
+      await emitReadStatus(selfId, id, message._id);
     }
   };
 
@@ -106,37 +140,82 @@ const ChatScreen = ({navigation, route}) => {
     });
   };
 
+  const onTempMessageReadFromSocket = id => {
+    setData(d => {
+      return d.map(item => {
+        if (item.id == id) {
+          item.isRead = true;
+        }
+
+        return item;
+      });
+    });
+  };
+
   const sendMessage = async imgUrl => {
     let msg;
 
-    if (imgUrl) {
-      msg = {
-        msgType: 'direct-message-with-image',
-        message: '',
-        sender: selfId,
-        timestamp: getCurrentTimestamp(),
-        receiver: id,
-        imageUrl: imgUrl,
-        isSent: false,
-        isError: false,
-        isRead: false,
-      };
+    if (isGrpChat) {
+      if (imgUrl) {
+        msg = {
+          msgType: 'group-message-with-image',
+          message: null,
+          sender: selfId,
+          timestamp: getCurrentTimestamp(),
+          receiver: id,
+          imageUrl: imgUrl,
+          isSent: false,
+          isError: false,
+        };
+      } else {
+        msg = {
+          msgType: 'group-message',
+          message,
+          sender: selfId,
+          timestamp: getCurrentTimestamp(),
+          receiver: id,
+          imageUrl: null,
+          isSent: false,
+          isError: false,
+        };
+      }
     } else {
-      msg = {
-        msgType: 'direct-message',
-        message,
-        sender: selfId,
-        timestamp: getCurrentTimestamp(),
-        receiver: id,
-        imageUrl: '',
-        isSent: false,
-        isError: false,
-        isRead: false,
-      };
+      if (imgUrl) {
+        msg = {
+          msgType: 'direct-message-with-image',
+          message: null,
+          sender: selfId,
+          timestamp: getCurrentTimestamp(),
+          receiver: id,
+          imageUrl: imgUrl,
+          isSent: false,
+          isError: false,
+          isRead: false,
+        };
+      } else {
+        msg = {
+          msgType: 'direct-message',
+          message,
+          sender: selfId,
+          timestamp: getCurrentTimestamp(),
+          receiver: id,
+          imageUrl: null,
+          isSent: false,
+          isError: false,
+          isRead: false,
+        };
+      }
     }
 
-    setData([msg, ...data]);
-    await sendPersonalMessage(msg, id, setData);
+    setData(d => {
+      return [msg, ...d];
+    });
+
+    if (isGrpChat) {
+      await sendGroupMessage(msg, id, setData);
+    } else {
+      await sendPersonalMessage(msg, id, setData);
+    }
     setMessage('');
   };
 
@@ -288,6 +367,7 @@ const ChatScreen = ({navigation, route}) => {
               receiver={id}
               receiverImg={image}
               receiverName={name}
+              navigation={navigation}
             />
           )}
         />
@@ -304,7 +384,7 @@ const ChatScreen = ({navigation, route}) => {
             <PhotoIcon color={Colors.WHITE} />
           </View>
         </Pressable>
-        <Pressable onPress={()=>sendMessage()}>
+        <Pressable onPress={() => sendMessage()}>
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
             <PaperAirplaneIcon color={Colors.WHITE} />
           </View>

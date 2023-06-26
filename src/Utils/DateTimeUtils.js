@@ -89,7 +89,7 @@ export const convertToLocalTime = timestamp => {
       ' pm';
   } else {
     result +=
-      d.getHours() +
+      (d.getHours()==0?'12':d.getHours()) +
       ':' +
       (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
       ' am';

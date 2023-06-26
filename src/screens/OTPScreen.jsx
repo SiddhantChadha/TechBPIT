@@ -5,7 +5,7 @@ import CustomButton from '../components/CustomButton';
 import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import React, {useRef, useContext, useState} from 'react';
 import {LoggedInContext} from '../context/LoggedInContext';
-import {setAuthTokens, setSelfId} from '../EncryptedStorageHelper';
+import {setAuthTokens, setSelfId, setUsername} from '../EncryptedStorageHelper';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import {roundToNearestPixel} from 'nativewind';
@@ -21,6 +21,7 @@ const OTPScreen = ({navigation, route}) => {
       case REST_COMMANDS.REQ_POST_VERIFY_OTP:
         setAuthTokens(data.access_token, data.refresh_token);
         setSelfId(data._id);
+        setUsername(data.username);
         setIsLoggedIn(true);
         setIsApiCalling(false);
         break;

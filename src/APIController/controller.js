@@ -240,6 +240,14 @@ export async function execute(
         onResponseFailed,
       );
       break;
+      case REST_COMMANDS.REQ_GET_GROUP_CHAT:
+        await getGroupChat(
+          command,
+          request,
+          onResponseReceived,
+          onResponseFailed,
+        );
+        break;
     default:
       break;
   }
@@ -1134,6 +1142,31 @@ async function updateProject(
       },
 
       body: JSON.stringify(body),
+    });
+
+    basicResponseHandler(
+      command,
+      response,
+      onResponseReceived,
+      onResponseFailed,
+    );
+  } catch (error) {
+    onResponseFailed(command, error);
+  }
+}
+
+async function getGroupChat(
+  command,
+  request,
+  onResponseReceived,
+  onResponseFailed,
+) {
+  try {
+    const response = await fetch(`${ROUTES.GET_GROUP_CHAT}/${request.id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
     });
 
     basicResponseHandler(

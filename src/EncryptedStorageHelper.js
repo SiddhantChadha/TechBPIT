@@ -36,6 +36,25 @@ export async function getSelfId() {
   return null;
 }
 
+export async function setUsername(username) {
+  try {
+    await EncryptedStorage.setItem('username', username);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getUsername() {
+  try {
+    const username = await EncryptedStorage.getItem('username');
+
+    if (username !== undefined) {
+      return username;
+    }
+  } catch (error) {}
+  return null;
+}
+
 export async function getAccessToken() {
   try {
     const accessToken = await EncryptedStorage.getItem('access_token');
