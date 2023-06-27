@@ -70,6 +70,11 @@ export const sendGroupMessage = async ( messageObj,
     });
 }
 
+export const joinRoom = async (groupId)=>{
+  let socket = await getSocket();
+  socket.emit('join-room',groupId);
+}
+
 export const emitIsTyping = async (
   selfId,
   receiverId,

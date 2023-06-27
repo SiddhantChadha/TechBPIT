@@ -27,6 +27,7 @@ import {
   sendGroupMessage,
   removeListners,
   disconnect,
+  joinRoom,
 } from '../Utils/socket';
 
 import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
@@ -64,6 +65,9 @@ const ChatScreen = ({navigation, route}) => {
         );
         break;
       case REST_COMMANDS.REQ_GET_GROUP_CHAT:
+        (async () => {
+          await joinRoom(id);
+        })();
         setData(data);
         setIsLoading(false);
         listenIsTyping(`${id}-isTyping`, typingListener);
