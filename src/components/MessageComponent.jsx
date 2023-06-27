@@ -12,7 +12,7 @@ import {Colors} from '../colors';
 
 export default function MessageComponent({
   item,
-  receiver,
+  selfId,
   receiverImg,
   receiverName,
   navigation,
@@ -24,7 +24,7 @@ export default function MessageComponent({
       </Text> */}
       {(item.msgType === 'direct-message' ||
         item.msgType === 'group-message') &&
-        item.receiver == receiver && (
+        (item.sender == selfId || item.sender?._id == selfId) && (
           <View className="mb-2">
             <Text className="text-white max-w-1/2 p-4 bg-primary_blue mx-1 rounded-b-lg rounded-tl-lg self-end">
               {item.message}
@@ -47,7 +47,7 @@ export default function MessageComponent({
         )}
       {(item.msgType === 'direct-message-with-image' ||
         item.msgType === 'group-message-with-image') &&
-        item.receiver == receiver && (
+        (item.sender == selfId || item.sender?._id == selfId) && (
           <View className="mb-2">
             <View className="max-w-1/2 p-2  bg-primary_blue mx-1 rounded-b-md rounded-tl-md self-end">
               <Pressable
@@ -86,18 +86,32 @@ export default function MessageComponent({
         )}
       {(item.msgType === 'direct-message' ||
         item.msgType === 'group-message') &&
-        item.sender == receiver && (
+        item.sender != selfId &&
+        item.sender._id != selfId && (
           <View className="mb-2">
             <View className="flex-row items-center">
               <Image
-                source={{uri: receiverImg}}
+                source={{
+                  uri:
+                    item.msgType === 'group-message'
+                      ? item.sender.image
+                      : receiverImg,
+                }}
                 className="rounded-full h-8 w-8 mx-1"
               />
               <View className="max-w-1/2 p-4 bg-grey_f5 mx-1 rounded-b-lg rounded-tr-lg">
                 <Text
                   className="text-xs mb-1 font-semibold"
-                  style={{color: getColorCodeFromName(receiverName)}}>
-                  {receiverName}
+                  style={{
+                    color: getColorCodeFromName(
+                      item.msgType === 'group-message'
+                        ? item.sender.username
+                        : receiverName,
+                    ),
+                  }}>
+                  {item.msgType === 'group-message'
+                    ? item.sender.username
+                    : receiverName}
                 </Text>
                 <Text className="text-black text-base">{item.message}</Text>
               </View>
@@ -109,20 +123,32 @@ export default function MessageComponent({
         )}
       {(item.msgType === 'direct-message-with-image' ||
         item.msgType === 'group-message-with-image') &&
-        item.sender == receiver && (
+        item.sender != selfId &&
+        item.sender._id != selfId && (
           <View className="mb-2">
             <View className="flex-row items-end">
               <Image
                 source={{
-                  uri: receiverImg,
+                  uri:
+                    item.msgType === 'group-message'
+                      ? item.sender.image
+                      : receiverImg,
                 }}
                 className="rounded-full h-8 w-8 bg-black mx-1 my-1 "
               />
               <View className="max-w-1/2 p-2  bg-grey_f5 mx-1 rounded-b-lg rounded-tr-lg">
                 <Text
                   className="text-xs mb-2 font-semibold"
-                  style={{color: getColorCodeFromName(receiverName)}}>
-                  {receiverName}
+                  style={{
+                    color: getColorCodeFromName(
+                      item.msgType === 'group-message'
+                        ? item.sender.username
+                        : receiverName,
+                    ),
+                  }}>
+                  {item.msgType === 'group-message'
+                    ? item.sender.username
+                    : receiverName}
                 </Text>
                 <Pressable
                   onPress={() =>

@@ -10,10 +10,12 @@ import ChatThreadCard from '../components/ChatThreadCard';
 import {REST_COMMANDS} from '../APIController/RestCommands';
 import {execute} from '../APIController/controller';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { useIsFocused } from '@react-navigation/native';
 
 const PersonalRecent = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -34,7 +36,7 @@ const PersonalRecent = ({navigation}) => {
       onResponseReceived,
       onResponseFailed,
     );
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView>

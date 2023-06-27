@@ -33,6 +33,7 @@ import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
 import {UserContext} from '../context/UserIdContext';
 import ImageBottomSheet from '../components/ImageBottomSheet';
 import {getUsername} from '../EncryptedStorageHelper';
+import {useIsFocused} from '@react-navigation/native';
 
 const ChatScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +45,9 @@ const ChatScreen = ({navigation, route}) => {
   const {id, image, name, isGrpChat} = route.params;
   const selfId = useContext(UserContext);
   const bottomSheet = useRef();
-  let selfUsername;
+  const [typingUser, setTypingUser] = useState(null);
+  const isFocused = useIsFocused();
+  const [selfUsername, setSelfUsername] = useState(null);
 
   const onResponseReceived = (command, data) => {
     switch (command) {
@@ -73,7 +76,7 @@ const ChatScreen = ({navigation, route}) => {
 
   useEffect(() => {
     (async () => {
-      selfUsername = await getUsername();
+      setSelfUsername(await getUsername());
     })();
 
     if (!isGrpChat) {
@@ -92,12 +95,12 @@ const ChatScreen = ({navigation, route}) => {
       );
     }
 
-    // return () => {
-    //   (async () => {
-    //     await removeListners();
-    //     await disconnect();
-    //   })();
-    // };
+    return () => {
+      (async () => {
+        await removeListners();
+        // await disconnect();
+      })();
+    };
   }, []);
 
   const handleTyping = text => {
@@ -115,6 +118,14 @@ const ChatScreen = ({navigation, route}) => {
       clearTimeout(receiverTypingTimerRef.current);
       receiverTypingTimerRef.current = setTimeout(() => {
         setIsTyping(false);
+      }, 1000);
+    } else {
+      setTypingUser(senderName);
+      setIsTyping(status);
+      clearTimeout(receiverTypingTimerRef.current);
+      receiverTypingTimerRef.current = setTimeout(() => {
+        setIsTyping(false);
+        setTypingUser(null);
       }, 1000);
     }
   };
@@ -231,7 +242,15 @@ const ChatScreen = ({navigation, route}) => {
       <ChatThreadHeader
         navigation={navigation}
         name={name}
-        typing={isTyping ? 'typing...' : ''}
+        typing={
+          isGrpChat
+            ? isTyping
+              ? `${typingUser} is typing...`
+              : ''
+            : isTyping
+            ? 'typing...'
+            : ''
+        }
         image={image}
         id={id}
         isGrpChat={isGrpChat}
@@ -364,7 +383,7 @@ const ChatScreen = ({navigation, route}) => {
           renderItem={({item}) => (
             <MessageComponent
               item={item}
-              receiver={id}
+              selfId={selfId}
               receiverImg={image}
               receiverName={name}
               navigation={navigation}

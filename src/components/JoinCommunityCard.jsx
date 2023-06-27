@@ -35,7 +35,7 @@ const JoinCommunityCard = ({item, navigation}) => {
           {itemData.description}
         </Text>
         <Text className="self-center mt-2 font-semibold">
-          Joined by: {itemData.totalUsers} student(s)
+          Joined by: {itemData.totalUsers} participant(s)
         </Text>
       </Pressable>
     </View>
