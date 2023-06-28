@@ -1,10 +1,8 @@
 import {
   View,
-  Text,
   ScrollView,
   TextInput,
   Pressable,
-  FlatList,
   VirtualizedList,
 } from 'react-native';
 import React, {useState, useRef, useEffect, useContext} from 'react';
@@ -69,7 +67,6 @@ const ChatScreen = ({navigation, route}) => {
           await joinRoom(id);
           listenIsTyping(`${id}-isTyping`, typingListener);
           listenNewMessageEvent(`${id}-msg`, onNewMessage);
-          console.log(data)
           setData(data);
           setIsLoading(false);
         })();
@@ -408,12 +405,12 @@ const ChatScreen = ({navigation, route}) => {
           className="m-2 px-5 rounded-3xl border  border-grey_4a flex-1"
           placeholder={'Type a message'}
         />
-        <Pressable onPress={() => bottomSheet.current.open()} >
+        <Pressable onPress={() => bottomSheet.current.open()}>
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
             <PhotoIcon color={Colors.WHITE} />
           </View>
         </Pressable>
-        <Pressable onPress={() => sendMessage()} >
+        <Pressable onPress={() => sendMessage()}>
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
             <PaperAirplaneIcon color={Colors.WHITE} />
           </View>
