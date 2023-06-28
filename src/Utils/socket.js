@@ -106,7 +106,7 @@ export const emitReadStatus = async (selfId,receiverId,messageId)=>{
 export const listenNewMessageEvent = async (event, onNewMessage) => {
   let socket = await getSocket();
   socket.on(event, (arg)=> {
-    console.log(arg)
+ 
     onNewMessage(arg);
   });
 };
@@ -134,4 +134,5 @@ export const removeListners = async()=>{
 export const disconnect = async()=>{
   let socket = await getSocket();
   socket.disconnect();
+  socket = null
 }

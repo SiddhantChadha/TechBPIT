@@ -53,8 +53,6 @@ const ChatScreen = ({navigation, route}) => {
   const onResponseReceived = (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_PERSONAL_CHAT:
-        setData(data);
-        setIsLoading(false);
         emitAllReadStatus(selfId, id);
         listenIsTyping(`${id}-isTyping`, typingListener);
         listenNewMessageEvent(`${id}-msg`, onNewMessage);
@@ -63,15 +61,20 @@ const ChatScreen = ({navigation, route}) => {
           `${id}-sent-msg-read`,
           onTempMessageReadFromSocket,
         );
+        setData(data);
+        setIsLoading(false);
         break;
       case REST_COMMANDS.REQ_GET_GROUP_CHAT:
         (async () => {
           await joinRoom(id);
+          listenIsTyping(`${id}-isTyping`, typingListener);
+          listenNewMessageEvent(`${id}-msg`, onNewMessage);
+          console.log(data)
+          setData(data);
+          setIsLoading(false);
         })();
-        setData(data);
-        setIsLoading(false);
-        listenIsTyping(`${id}-isTyping`, typingListener);
-        listenNewMessageEvent(`${id}-msg`, onNewMessage);
+
+        break;
       default:
         break;
     }
@@ -102,7 +105,7 @@ const ChatScreen = ({navigation, route}) => {
     return () => {
       (async () => {
         await removeListners();
-        // await disconnect();
+        await disconnect();
       })();
     };
   }, []);
@@ -134,12 +137,14 @@ const ChatScreen = ({navigation, route}) => {
     }
   };
   const onNewMessage = async message => {
-    setData(d => {
-      return [message, ...d];
-    });
+    console.log(message);
+
     if (!isGrpChat) {
       await emitReadStatus(selfId, id, message._id);
     }
+    setData(d => {
+      return [message, ...d];
+    });
   };
 
   const onTempMessageRead = () => {
