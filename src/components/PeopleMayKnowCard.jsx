@@ -3,7 +3,7 @@ import React from 'react';
 
 const PeopleMayKnowCard = ({item, navigation}) => {
   const itemData = item.item;
-  console.log('aa gya items', itemData);
+
   return (
     <View className="w-1/2">
       <View className="rounded-lg shadow-lg bg-white p-4 m-2 items-center justify-center flex-1">

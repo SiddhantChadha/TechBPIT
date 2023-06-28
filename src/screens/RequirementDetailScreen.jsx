@@ -19,6 +19,7 @@ const RequirementDetailScreen = ({navigation, route}) => {
   const onResponseReceived = async (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECT:
+        console.log(data);
         setData(data);
         setIsLoading(false);
         break;
@@ -257,7 +258,16 @@ const RequirementDetailScreen = ({navigation, route}) => {
           ) : (
             <CustomButton
               title="Show Interest"
-              onPress={() => console.log('clicked')}
+              onPress={() =>
+                navigation.navigate('Chat', {
+                  id: data.createdBy._id,
+                  image: data.createdBy.image,
+                  name: data.createdBy.username,
+                  isGrpChat:false,
+                  action: 'sendCollabMessage',
+                  defaultMessage: 'Hello World',
+                })
+              }
             />
           )}
         </View>

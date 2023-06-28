@@ -91,7 +91,6 @@ const ExploreScreen = ({navigation}) => {
   }, [searchString]);
 
   const getSearchedString = text => {
-    console.log('MAking api calls');
     execute(
       REST_COMMANDS.REQ_GET_SEARCH_EXPLORE,
       {searchString: text},

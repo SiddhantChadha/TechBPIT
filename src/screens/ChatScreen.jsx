@@ -41,7 +41,7 @@ const ChatScreen = ({navigation, route}) => {
   const [isTyping, setIsTyping] = useState(false);
   const selfTypingTimerRef = useRef(null);
   const receiverTypingTimerRef = useRef(null);
-  const {id, image, name, isGrpChat} = route.params;
+  const {id, image, name, isGrpChat, action, defaultMessage} = route.params;
   const selfId = useContext(UserContext);
   const bottomSheet = useRef();
   const [typingUser, setTypingUser] = useState(null);
@@ -61,6 +61,11 @@ const ChatScreen = ({navigation, route}) => {
         );
         setData(data);
         setIsLoading(false);
+
+        if (action === 'sendCollabMessage') {
+          sendMessage(null, defaultMessage);
+        }
+
         break;
       case REST_COMMANDS.REQ_GET_GROUP_CHAT:
         (async () => {
@@ -169,7 +174,7 @@ const ChatScreen = ({navigation, route}) => {
     });
   };
 
-  const sendMessage = async imgUrl => {
+  const sendMessage = async (imgUrl, msgContent) => {
     let msg;
 
     if (isGrpChat) {
@@ -212,7 +217,7 @@ const ChatScreen = ({navigation, route}) => {
       } else {
         msg = {
           msgType: 'direct-message',
-          message,
+          message: msgContent ? msgContent : message,
           sender: selfId,
           timestamp: getCurrentTimestamp(),
           receiver: id,
