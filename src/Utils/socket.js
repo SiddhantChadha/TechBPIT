@@ -133,6 +133,5 @@ export const removeListners = async()=>{
 
 export const disconnect = async()=>{
   let socket = await getSocket();
-  socket.disconnect();
   socket = null
 }

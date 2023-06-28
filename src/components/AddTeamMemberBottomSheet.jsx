@@ -15,7 +15,7 @@ import {REST_COMMANDS} from '../APIController/RestCommands';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import UserCard from './UserCard';
 import NotFound from '../assets/images/ic_not_found.svg';
-import {MinusCircleIcon} from 'react-native-heroicons/outline';
+import {MinusCircleIcon, XMarkIcon} from 'react-native-heroicons/outline';
 import {Colors} from '../colors';
 
 const AddTeamMemberBottomSheet = forwardRef((props, ref) => {
@@ -81,9 +81,10 @@ const AddTeamMemberBottomSheet = forwardRef((props, ref) => {
             source={{uri: image}}
             className="h-10 w-10 rounded-full mb-1"
           />
-          <MinusCircleIcon
-            color="red"
-            style={{position: 'absolute', top: 0, right: 0}}
+          <XMarkIcon
+            color="black"
+            style={{position: 'absolute', top: -5, right: -8}}
+            size={16}
             onPress={() => removeMember(id)}
           />
         </View>
@@ -170,7 +171,7 @@ const AddTeamMemberBottomSheet = forwardRef((props, ref) => {
             </SkeletonPlaceholder>
           </ScrollView>
         ) : searchedData.length ? (
-          <View className="mb-4 flex-grow">
+          <View className="mb-4">
             <FlatList
               data={list}
               renderItem={({item}) => {

@@ -20,7 +20,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SearchedItem from '../components/SearchedItem';
 import ProjectRequirementItem from '../components/ProjectRequirementItem';
 import PeopleMayKnowCard from '../components/PeopleMayKnowCard';
-import AddSkillSvg from '../assets/images/ic_add_skills.svg';
+import AddSkillSvg from '../assets/images/ic_add_projects.svg';
 
 const ExploreScreen = ({navigation}) => {
   const [isGroupLoading, setGroupLoading] = useState(true);

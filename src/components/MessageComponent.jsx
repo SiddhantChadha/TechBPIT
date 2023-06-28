@@ -36,11 +36,11 @@ export default function MessageComponent({
               {item.isRead ? (
                 <DoubleTick />
               ) : item.isSent ? (
-                <CheckIcon color={Colors.BLACK} />
+                <CheckIcon color={Colors.BLACK} size={16} />
               ) : item.isError ? (
-                <ExclamationTriangleIcon color="red" />
+                <ExclamationTriangleIcon color="red" size={16} />
               ) : (
-                <ClockIcon color={Colors.GREY_4A} />
+                <ClockIcon color={Colors.GREY_4A} size={16} />
               )}
             </View>
           </View>
@@ -75,11 +75,11 @@ export default function MessageComponent({
               {item.isRead ? (
                 <DoubleTick />
               ) : item.isSent ? (
-                <CheckIcon color={Colors.BLACK} />
+                <CheckIcon color={Colors.BLACK} size={16} />
               ) : item.isError ? (
-                <ExclamationTriangleIcon color="red" />
+                <ExclamationTriangleIcon color="red" size={16} />
               ) : (
-                <ClockIcon color={Colors.GREY_4A} />
+                <ClockIcon color={Colors.GREY_4A} size={16} />
               )}
             </View>
           </View>
