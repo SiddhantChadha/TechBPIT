@@ -398,16 +398,17 @@ const ChatScreen = ({navigation, route}) => {
       <View className="flex-row items-center">
         <TextInput
           value={message}
+          multiline={true}
           onChangeText={text => handleTyping(text)}
-          className="m-2 px-5 rounded-3xl border  border-grey_4a flex-grow"
+          className="m-2 px-5 rounded-3xl border  border-grey_4a flex-1"
           placeholder={'Type a message'}
         />
-        <Pressable onPress={() => bottomSheet.current.open()}>
+        <Pressable onPress={() => bottomSheet.current.open()} >
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center">
             <PhotoIcon color={Colors.WHITE} />
           </View>
         </Pressable>
-        <Pressable onPress={() => sendMessage()}>
+        <Pressable onPress={() => sendMessage()} >
           <View className="rounded-full w-12 h-12 bg-primary_blue items-center justify-center mx-2">
             <PaperAirplaneIcon color={Colors.WHITE} />
           </View>
