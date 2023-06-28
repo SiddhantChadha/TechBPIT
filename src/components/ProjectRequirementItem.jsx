@@ -7,7 +7,7 @@ const ProjectRequirementItem = props => {
   const {image, title, teamSize, skillsRequired} = props.data;
 
   return (
-    <View className="shadow-xl p-4 bg-white rounded-lg mx-4 my-5">
+    <View className="shadow-xl p-4 bg-white rounded-lg mx-4 my-5 w-80">
       <View className="flex-row items-center ">
         <Image
           source={{
@@ -21,7 +21,7 @@ const ProjectRequirementItem = props => {
         <UserGroupIcon color={Colors.GREY_4A} />
         <Text className="mx-1 text-grey_4a">{teamSize} Members</Text>
       </View>
-      <View className="flex-row overflow-hidden">
+      <View className="flex-row truncate">
         {skillsRequired.map(item => (
           <Text className="bg-light_purple p-2 m-1 rounded-lg text-purple font-medium">
             {item}

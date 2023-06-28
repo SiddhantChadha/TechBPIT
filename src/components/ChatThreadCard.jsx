@@ -5,40 +5,46 @@ import {convertToLocalTime} from '../Utils/DateTimeUtils';
 const ChatThreadCard = ({id, name, image, lastMessage}) => {
   return (
     <View className="flex flex-row bg-white p-3">
-      <View className="">
-        <Image
-          source={{
-            uri: image,
-          }}
-          className="rounded-full h-14 w-14 bg-black"
-        />
-      </View>
+      <Image
+        source={{
+          uri: image,
+        }}
+        className="rounded-full h-14 w-14 bg-black"
+      />
 
-      <View className="flex-grow mx-3">
+      <View className="flex-1 mx-3">
         <Text className="text-black text-lg">{name}</Text>
         <View className="flex flex-row">
           {lastMessage && lastMessage.msgType === 'direct-message' ? (
             id === lastMessage.sender ? (
-              <Text>
+              <Text className="text-ellipsis" numberOfLines={1}>
                 {name} : {lastMessage.message}
               </Text>
             ) : (
-              <Text>You : {lastMessage.message}</Text>
+              <Text className="text-ellipsis" numberOfLines={1}>
+                You : {lastMessage.message}
+              </Text>
             )
           ) : lastMessage &&
             lastMessage.msgType === 'direct-message-with-image' ? (
             id === lastMessage.sender ? (
-              <Text>{name} : Image</Text>
+              <Text className="text-ellipsis" numberOfLines={1}>
+                {name} : Image
+              </Text>
             ) : (
-              <Text>You : Image</Text>
+              <Text className="text-ellipsis" numberOfLines={1}>
+                You : Image
+              </Text>
             )
           ) : lastMessage && lastMessage.msgType === 'group-message' ? (
-            <Text>
+            <Text className="text-ellipsis" numberOfLines={1}>
               {lastMessage.sender.username} : {lastMessage.message}
             </Text>
           ) : lastMessage &&
             lastMessage.msgType === 'group-message-with-image' ? (
-            <Text>{lastMessage.sender.username} : Image</Text>
+            <Text className="text-ellipsis" numberOfLines={1}>
+              {lastMessage.sender.username} : Image
+            </Text>
           ) : (
             <></>
           )}
