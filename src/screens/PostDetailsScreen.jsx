@@ -87,20 +87,26 @@ const PostDetailsScreen = ({route, navigation}) => {
         rightComponent={editButton}
       />
       <View style={{marginHorizontal: '10%'}}>
-        {item.imageUrl ? (
-          <Image
-            source={{
-              uri: item.imageUrl,
-            }}
-            style={{
-              width: '90%',
-              aspectRatio: 1,
-              alignSelf: 'center',
-              marginVertical: 10,
-            }}
-          />
-        ) : (
-          <View />
+        {item.imageUrl && (
+          <Pressable
+            onPress={() =>
+              navigation.navigate('UploadImage', {
+                edit: false,
+                file: {uri: item.imageUrl},
+              })
+            }>
+            <Image
+              source={{
+                uri: item.imageUrl,
+              }}
+              style={{
+                width: '90%',
+                aspectRatio: 1,
+                alignSelf: 'center',
+                marginVertical: 10,
+              }}
+            />
+          </Pressable>
         )}
         {item.topic ? (
           <Text style={{fontSize: 34, color: Colors.BLACK, fontWeight: 'bold'}}>
