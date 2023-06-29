@@ -15,6 +15,7 @@ import ExploreScreen from '../screens/ExploreScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EventScreen from '../screens/EventScreen';
 import {UserContext} from '../context/UserIdContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
 // import useUser from "../hooks/useUser";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -24,50 +25,52 @@ const HomeTabs = () => {
   console.log('In home tabs', selfId);
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarInactiveTintColor: Colors.BLACK,
-      }}
-      shifting={true}>
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: () => {
-            return <HomeIcon color={Colors.BLACK} />;
-          },
+    <SafeAreaView className="h-full">
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarInactiveTintColor: Colors.BLACK,
         }}
-      />
-      <Tab.Screen
-        name="Explore"
-        component={ExploreScreen}
-        options={{
-          tabBarIcon: () => {
-            return <MagnifyingGlassIcon color={Colors.BLACK} />;
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Events"
-        component={EventScreen}
-        options={{
-          tabBarIcon: () => {
-            return <CalendarDaysIcon color={Colors.BLACK} />;
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        initialParams={{id: selfId}}
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({color}) => {
-            return <UserIcon color={color} />;
-          },
-        }}
-      />
-    </Tab.Navigator>
+        shifting={true}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: () => {
+              return <HomeIcon color={Colors.BLACK} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Explore"
+          component={ExploreScreen}
+          options={{
+            tabBarIcon: () => {
+              return <MagnifyingGlassIcon color={Colors.BLACK} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Events"
+          component={EventScreen}
+          options={{
+            tabBarIcon: () => {
+              return <CalendarDaysIcon color={Colors.BLACK} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          initialParams={{id: selfId}}
+          component={ProfileScreen}
+          options={{
+            tabBarIcon: ({color}) => {
+              return <UserIcon color={color} />;
+            },
+          }}
+        />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 };
 

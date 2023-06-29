@@ -27,8 +27,8 @@ import CreatePostScreen from './src/screens/CreatePostScreen';
 import AddProjectScreen from './src/screens/AddProjectScreen';
 import ProjectDetailScreen from './src/screens/ProjectDetailsScreen';
 import AddCollaborationProjectScreen from './src/screens/AddCollaborationProjectScreen';
-import { LogBox } from 'react-native'; 
-
+import {LogBox} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,68 +48,87 @@ const App = () => {
     checkIfLoggedIn();
   }, [isLoggedIn]);
   useEffect(() => {
-    LogBox.ignoreAllLogs(true)
- }, [])
+    LogBox.ignoreAllLogs(true);
+  }, []);
 
   return (
-    <LoggedInContext.Provider value={setIsLoggedIn}>
-      <StatusBar
-        barStyle="light-content"
-        hidden={false}
-        backgroundColor={Colors.PRIMARY_BLUE}
-      />
-      <NavigationContainer>
-        {selfId ? (
-          <UserContext.Provider value={selfId}>
+    <SafeAreaProvider
+      initialMetrics={{
+        insets: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+        },
+      }}>
+      <LoggedInContext.Provider value={setIsLoggedIn}>
+        <StatusBar
+          barStyle="light-content"
+          hidden={false}
+          backgroundColor={Colors.PRIMARY_BLUE}
+        />
+        <NavigationContainer>
+          {selfId ? (
+            <UserContext.Provider value={selfId}>
+              <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="HomeTabs" component={HomeTabs} />
+                <Stack.Screen name="RecentChat" component={RecentChatScreen} />
+                <Stack.Screen
+                  name="SetupProfile"
+                  component={SetupProfileScreen}
+                />
+                <Stack.Screen name="Chat" component={ChatScreen} />
+                <Stack.Screen
+                  name="UploadImage"
+                  component={UplaodImageScreen}
+                />
+                <Stack.Screen
+                  name="ViewUserProfile"
+                  component={ProfileScreen}
+                />
+                <Stack.Screen
+                  name="CommunityDetail"
+                  component={CommunityDetailScreen}
+                />
+                <Stack.Screen
+                  name="PostDetails"
+                  component={PostDetailsScreen}
+                />
+                <Stack.Screen
+                  name="RequirementDetails"
+                  component={RequirementDetailScreen}
+                />
+                <Stack.Screen
+                  name="ModeratorGroups"
+                  component={ModeratorsGroupScreen}
+                />
+                <Stack.Screen
+                  name="StartNewChat"
+                  component={StartNewChatScreen}
+                />
+                <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+                <Stack.Screen name="AddProject" component={AddProjectScreen} />
+                <Stack.Screen
+                  name="ProjectDetails"
+                  component={ProjectDetailScreen}
+                />
+                <Stack.Screen
+                  name="AddCollaborationProject"
+                  component={AddCollaborationProjectScreen}
+                />
+              </Stack.Navigator>
+            </UserContext.Provider>
+          ) : (
             <Stack.Navigator screenOptions={{headerShown: false}}>
-              <Stack.Screen name="HomeTabs" component={HomeTabs} />
-              <Stack.Screen name="RecentChat" component={RecentChatScreen} />
-              <Stack.Screen
-                name="SetupProfile"
-                component={SetupProfileScreen}
-              />
-              <Stack.Screen name="Chat" component={ChatScreen} />
-              <Stack.Screen name="UploadImage" component={UplaodImageScreen} />
-              <Stack.Screen name="ViewUserProfile" component={ProfileScreen} />
-              <Stack.Screen
-                name="CommunityDetail"
-                component={CommunityDetailScreen}
-              />
-              <Stack.Screen name="PostDetails" component={PostDetailsScreen} />
-              <Stack.Screen
-                name="RequirementDetails"
-                component={RequirementDetailScreen}
-              />
-              <Stack.Screen
-                name="ModeratorGroups"
-                component={ModeratorsGroupScreen}
-              />
-              <Stack.Screen
-                name="StartNewChat"
-                component={StartNewChatScreen}
-              />
-              <Stack.Screen name="CreatePost" component={CreatePostScreen} />
-              <Stack.Screen name="AddProject" component={AddProjectScreen} />
-              <Stack.Screen
-                name="ProjectDetails"
-                component={ProjectDetailScreen}
-              />
-              <Stack.Screen
-                name="AddCollaborationProject"
-                component={AddCollaborationProjectScreen}
-              />
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Otp" component={OTPScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
             </Stack.Navigator>
-          </UserContext.Provider>
-        ) : (
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Otp" component={OTPScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
-    </LoggedInContext.Provider>
+          )}
+        </NavigationContainer>
+      </LoggedInContext.Provider>
+    </SafeAreaProvider>
   );
 };
 
