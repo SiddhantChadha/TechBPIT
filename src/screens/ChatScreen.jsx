@@ -28,7 +28,7 @@ import {
   joinRoom,
 } from '../Utils/socket';
 
-import {getCurrentTimestamp} from '../Utils/DateTimeUtils';
+import {dateStringToDDMMMYY, getCurrentTimestamp} from '../Utils/DateTimeUtils';
 import {UserContext} from '../context/UserIdContext';
 import ImageBottomSheet from '../components/ImageBottomSheet';
 import {getUsername} from '../EncryptedStorageHelper';
@@ -59,6 +59,22 @@ const ChatScreen = ({navigation, route}) => {
           `${id}-sent-msg-read`,
           onTempMessageReadFromSocket,
         );
+
+        data = data.map((item, idx, arr) => {
+          if (idx < arr.length - 1) {
+            let str1 = dateStringToDDMMMYY(Number(item.timestamp));
+            let str2 = dateStringToDDMMMYY(Number(arr[idx + 1].timestamp));
+
+            if (str1 != str2) {
+              item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
+            }
+          } else {
+            item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
+          }
+
+          return item;
+        });
+
         setData(data);
         setIsLoading(false);
 
@@ -72,6 +88,22 @@ const ChatScreen = ({navigation, route}) => {
           await joinRoom(id);
           listenIsTyping(`${id}-isTyping`, typingListener);
           listenNewMessageEvent(`${id}-msg`, onNewMessage);
+
+          data = data.map((item, idx, arr) => {
+            if (idx < arr.length - 1) {
+              let str1 = dateStringToDDMMMYY(Number(item.timestamp));
+              let str2 = dateStringToDDMMMYY(Number(arr[idx + 1].timestamp));
+
+              if (str1 != str2) {
+                item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
+              }
+            } else {
+              item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
+            }
+
+            return item;
+          });
+
           setData(data);
           setIsLoading(false);
         })();
@@ -139,12 +171,11 @@ const ChatScreen = ({navigation, route}) => {
     }
   };
   const onNewMessage = async message => {
-    console.log(message);
-
     if (!isGrpChat) {
       await emitReadStatus(selfId, id, message._id);
     }
     setData(d => {
+      addPreparedDateToSocketMsg(d, message);
       return [message, ...d];
     });
   };
@@ -230,6 +261,8 @@ const ChatScreen = ({navigation, route}) => {
     }
 
     setData(d => {
+      addPreparedDateToSocketMsg(d, msg);
+
       return [msg, ...d];
     });
 
@@ -239,6 +272,17 @@ const ChatScreen = ({navigation, route}) => {
       await sendPersonalMessage(msg, id, setData);
     }
     setMessage('');
+  };
+
+  const addPreparedDateToSocketMsg = (d, message) => {
+    if (
+      d.length > 0 &&
+      d[0].preparedDate != dateStringToDDMMMYY(Number(message.timestamp))
+    ) {
+      message.preparedDate = dateStringToDDMMMYY(Number(message.timestamp));
+    } else {
+      message.preparedDate = dateStringToDDMMMYY(Number(message.timestamp));
+    }
   };
 
   useEffect(() => {

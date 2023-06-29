@@ -19,9 +19,15 @@ export default function MessageComponent({
 }) {
   return (
     <View>
-      {/* <Text className="self-center px-4 py-2 bg-gray-200 rounded-full text-gray-600">
-        Today
-      </Text> */}
+      {item.preparedDate && (
+        <View className="flex flex-row justify-center my-2">
+          <View className="bg-gray-200 rounded-sm px-2 py-1">
+            <Text className="text-xs text-gray-800">
+              {item.preparedDate}
+            </Text>
+          </View>
+        </View>
+      )}
       {(item.msgType === 'direct-message' ||
         item.msgType === 'group-message') &&
         (item.sender == selfId || item.sender?._id == selfId) && (
