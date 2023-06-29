@@ -19,7 +19,6 @@ const RequirementDetailScreen = ({navigation, route}) => {
   const onResponseReceived = async (command, data) => {
     switch (command) {
       case REST_COMMANDS.REQ_GET_COLLABORATION_PROJECT:
-        console.log(data);
         setData(data);
         setIsLoading(false);
         break;
@@ -223,7 +222,7 @@ const RequirementDetailScreen = ({navigation, route}) => {
             source={{
               uri: data.image,
             }}
-            className="rounded-md bg-white shadow-xl aspect-video w-full"
+            className="rounded-md bg-white aspect-video w-full"
           />
           <Text className="text-2xl text-black font-medium">{data.title}</Text>
           <View className="flex-row items-center my-2 mx-1">
@@ -263,9 +262,9 @@ const RequirementDetailScreen = ({navigation, route}) => {
                   id: data.createdBy._id,
                   image: data.createdBy.image,
                   name: data.createdBy.username,
-                  isGrpChat:false,
+                  isGrpChat: false,
                   action: 'sendCollabMessage',
-                  defaultMessage: 'Hello World',
+                  defaultMessage: `Hello ${data.createdBy.username}, hope you are doing well! I would like to collaborate with on ${data.title} project as I believe I have the required skills.`,
                 })
               }
             />

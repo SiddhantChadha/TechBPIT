@@ -60,21 +60,7 @@ const ChatScreen = ({navigation, route}) => {
           onTempMessageReadFromSocket,
         );
 
-        data = data.map((item, idx, arr) => {
-          if (idx < arr.length - 1) {
-            let str1 = dateStringToDDMMMYY(Number(item.timestamp));
-            let str2 = dateStringToDDMMMYY(Number(arr[idx + 1].timestamp));
-
-            if (str1 != str2) {
-              item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
-            }
-          } else {
-            item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
-          }
-
-          return item;
-        });
-
+        data = prepareData(data);
         setData(data);
         setIsLoading(false);
 
@@ -89,21 +75,7 @@ const ChatScreen = ({navigation, route}) => {
           listenIsTyping(`${id}-isTyping`, typingListener);
           listenNewMessageEvent(`${id}-msg`, onNewMessage);
 
-          data = data.map((item, idx, arr) => {
-            if (idx < arr.length - 1) {
-              let str1 = dateStringToDDMMMYY(Number(item.timestamp));
-              let str2 = dateStringToDDMMMYY(Number(arr[idx + 1].timestamp));
-
-              if (str1 != str2) {
-                item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
-              }
-            } else {
-              item.preparedDate = dateStringToDDMMMYY(Number(item.timestamp));
-            }
-
-            return item;
-          });
-
+          data = prepareData(data);
           setData(data);
           setIsLoading(false);
         })();
@@ -175,7 +147,7 @@ const ChatScreen = ({navigation, route}) => {
       await emitReadStatus(selfId, id, message._id);
     }
     setData(d => {
-      addPreparedDateToSocketMsg(d, message);
+      prepareSocketMsgData(d, message);
       return [message, ...d];
     });
   };
@@ -261,7 +233,7 @@ const ChatScreen = ({navigation, route}) => {
     }
 
     setData(d => {
-      addPreparedDateToSocketMsg(d, msg);
+      prepareSocketMsgData(d, msg);
 
       return [msg, ...d];
     });
@@ -274,15 +246,34 @@ const ChatScreen = ({navigation, route}) => {
     setMessage('');
   };
 
-  const addPreparedDateToSocketMsg = (d, message) => {
+  const prepareSocketMsgData = (d, message) => {
     if (
-      d.length > 0 &&
-      d[0].preparedDate != dateStringToDDMMMYY(Number(message.timestamp))
+      d.length == 0 ||
+      (d.length > 0 &&
+        dateStringToDDMMMYY(Number(d[0].timestamp)) !=
+          dateStringToDDMMMYY(Number(message.timestamp)))
     ) {
-      message.preparedDate = dateStringToDDMMMYY(Number(message.timestamp));
-    } else {
-      message.preparedDate = dateStringToDDMMMYY(Number(message.timestamp));
+      message.showDate = true;
     }
+  };
+
+  const prepareData = data => {
+    return data.map((item, idx, arr) => {
+      if (idx < arr.length - 1) {
+        let str1 = dateStringToDDMMMYY(Number(arr[idx].timestamp));
+        let str2 = dateStringToDDMMMYY(Number(arr[idx + 1].timestamp));
+
+        if (str1 != str2) {
+          item.showDate = true;
+        } else {
+          item.showDate = false;
+        }
+      } else {
+        item.showDate = true;
+      }
+
+      return item;
+    });
   };
 
   useEffect(() => {

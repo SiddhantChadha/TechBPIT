@@ -2,7 +2,7 @@ import {View, Text, Image, Pressable} from 'react-native';
 import DoubleTick from '../assets/images/ic_double_tick.svg';
 import React from 'react';
 import {getColorCodeFromName} from '../Utils/NameToColorUtil';
-import {convertToLocalTime} from '../Utils/DateTimeUtils';
+import {convertToLocalTime, dateStringToDDMMMYY} from '../Utils/DateTimeUtils';
 import {
   CheckIcon,
   ClockIcon,
@@ -19,11 +19,11 @@ export default function MessageComponent({
 }) {
   return (
     <View>
-      {item.preparedDate && (
+      {item.showDate && (
         <View className="flex flex-row justify-center my-2">
           <View className="bg-gray-200 rounded-sm px-2 py-1">
             <Text className="text-xs text-gray-800">
-              {item.preparedDate}
+              {dateStringToDDMMMYY(Number(item.timestamp))}
             </Text>
           </View>
         </View>
