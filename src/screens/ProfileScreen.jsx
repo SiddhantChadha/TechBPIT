@@ -65,7 +65,7 @@ const ProfileScreen = ({navigation, route}) => {
   };
 
   const addCollaborationProject = () => {
-    navigation.navigate('AddCollaborationProject', {
+    navigation.push('AddCollaborationProject', {
       edit:false,
       action: setRefreshCollaborationProjects,
     });

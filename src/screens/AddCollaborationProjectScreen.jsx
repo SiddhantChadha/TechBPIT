@@ -30,7 +30,7 @@ const AddCollaborationProjectScreen = ({navigation, route}) => {
       case REST_COMMANDS.REQ_POST_CREATE_COLLABORATION_PROJECT:
         setIsApiCalling(false);
         action(d => !d);
-        navigation.navigate('Profile', {id: selfId});
+        navigation.pop();
         break;
       case REST_COMMANDS.REQ_PATCH_COLLABORATION_PROJECT:
         setIsApiCalling(false);
