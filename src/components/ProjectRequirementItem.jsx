@@ -7,7 +7,7 @@ const ProjectRequirementItem = props => {
   const {image, title, teamSize, skillsRequired} = props.data;
 
   return (
-    <View className="shadow-xl p-4 bg-white rounded-lg mx-4 my-5 w-80">
+    <View className="shadow-xl p-4 bg-white rounded-lg mx-4 my-5 w-11/12">
       <View className="flex-row items-center ">
         <Image
           source={{

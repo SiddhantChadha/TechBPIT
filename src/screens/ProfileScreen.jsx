@@ -66,7 +66,7 @@ const ProfileScreen = ({navigation, route}) => {
 
   const addCollaborationProject = () => {
     navigation.push('AddCollaborationProject', {
-      edit:false,
+      edit: false,
       action: setRefreshCollaborationProjects,
     });
   };
@@ -438,15 +438,15 @@ const ProfileScreen = ({navigation, route}) => {
               <View className="mx-4">
                 {profileData.socialLinks &&
                   profileData.socialLinks.map(link => {
-                      if(link.platformLink){
-                        return <SocialLinks
-                        image={link.platformImg}
-                        link={link.platformLink}
-                      />
-                      }
-                  }
-                    
-                  )}
+                    if (link.platformLink) {
+                      return (
+                        <SocialLinks
+                          image={link.platformImg}
+                          link={link.platformLink}
+                        />
+                      );
+                    }
+                  })}
               </View>
               <HorizontalLine />
             </View>
@@ -538,30 +538,24 @@ const ProfileScreen = ({navigation, route}) => {
             <View></View>
           )}
           {collaborationProjectData?.length > 0 && (
-            <View className="px-4">
-              <Text className="text-base text-black font-medium">
+            <View className="">
+              <Text className="text-base text-black font-medium px-4">
                 Collaborations
               </Text>
-
-              <FlatList
-                className="flex-grow"
+              <Carousel
                 data={collaborationProjectData}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth - 50}
                 renderItem={({item}) => (
                   <Pressable
                     onPress={() =>
                       navigation.navigate('RequirementDetails', {
                         id: item._id,
-                        action: setRefreshCollaborationProjects,
                       })
                     }>
                     <ProjectRequirementItem data={item} />
                   </Pressable>
                 )}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  paddingHorizontal: 16,
-                }}
               />
             </View>
           )}

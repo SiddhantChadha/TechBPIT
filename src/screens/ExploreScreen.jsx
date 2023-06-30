@@ -280,9 +280,10 @@ const ExploreScreen = ({navigation}) => {
                   Collaborate on Projects
                 </Text>
                 {collaborationProjectData?.length ? (
-                  <FlatList
-                    className="flex-grow"
+                  <Carousel
                     data={collaborationProjectData}
+                    sliderWidth={screenWidth}
+                    itemWidth={screenWidth - 50}
                     renderItem={({item}) => (
                       <Pressable
                         onPress={() =>
@@ -293,11 +294,6 @@ const ExploreScreen = ({navigation}) => {
                         <ProjectRequirementItem data={item} />
                       </Pressable>
                     )}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{
-                      paddingHorizontal: 16,
-                    }}
                   />
                 ) : (
                   <View className="items-center m-2">
