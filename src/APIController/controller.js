@@ -240,14 +240,14 @@ export async function execute(
         onResponseFailed,
       );
       break;
-      case REST_COMMANDS.REQ_GET_GROUP_CHAT:
-        await getGroupChat(
-          command,
-          request,
-          onResponseReceived,
-          onResponseFailed,
-        );
-        break;
+    case REST_COMMANDS.REQ_GET_GROUP_CHAT:
+      await getGroupChat(
+        command,
+        request,
+        onResponseReceived,
+        onResponseFailed,
+      );
+      break;
     default:
       break;
   }
